@@ -5,7 +5,7 @@ import "twin.macro";
 
 const Header = () => {
     return (
-        <header tw="fixed top-0 shadow w-full text-white">
+        <header tw="fixed top-0 shadow w-full text-white z-10">
             <div tw="h-full w-full bg-black opacity-80 absolute top-0"></div>
             <nav tw="flex justify-center items-center gap-[1rem] p-[1rem] relative">
                 {navLinks.map(({ id, text, src }) => (
