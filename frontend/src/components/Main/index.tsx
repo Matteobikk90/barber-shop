@@ -1,4 +1,4 @@
-const Header = () => {
-    return <header></header>;
+const Main = () => {
+    return <main></main>;
 };
-export default Header;
+export default Main;
