@@ -1,5 +1,6 @@
-import Homepage from "components/Homepage";
-import Product from "components/Product";
+import Homepage from "components/Main/Homepage";
+import Product from "components/Main/Product";
+import Gallery from "./Gallery";
 /** @jsxImportSource @emotion/react */
 import "twin.macro";
 
@@ -8,6 +9,7 @@ const Main = () => {
         <main tw="pt-[4.18rem]">
             <Homepage />
             <Product />
+            <Gallery />
         </main>
     );
 };

@@ -1,5 +1,5 @@
-import AnimatedImages from "components//Homepage/AnimatedImages";
-import Video from "components/Homepage/Video";
+import AnimatedImages from "components/Main/Homepage/AnimatedImages";
+import Video from "components/Main/Homepage/Video";
 /** @jsxImportSource @emotion/react */
 import "twin.macro";
 
