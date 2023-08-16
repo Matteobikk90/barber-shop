@@ -1,6 +1,7 @@
-import { NavLinksTypes } from "types/navlinks.types";
+import { IdTextPairTypes } from "types/id-text-pair.types";
+import razor from "assets/images/razor.svg";
 
-export const navLinks: NavLinksTypes[] = [
+export const navLinks: IdTextPairTypes[] = [
     {
         id: "products",
         text: "Prodotti"
@@ -21,5 +22,32 @@ export const navLinks: NavLinksTypes[] = [
     {
         id: "book",
         text: "Prenota"
+    }
+];
+
+export const products: IdTextPairTypes[] = [
+    {
+        id: "rasors",
+        text: "Rasoi",
+        src: razor,
+        price: 20
+    },
+    {
+        id: "shampoo",
+        text: "Shampi",
+        src: razor,
+        price: 15
+    },
+    {
+        id: "gel",
+        text: "Cere",
+        src: razor,
+        price: 31
+    },
+    {
+        id: "afterShave",
+        text: "Dopo barba",
+        src: razor,
+        price: 18
     }
 ];

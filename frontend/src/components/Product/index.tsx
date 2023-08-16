@@ -1,5 +1,6 @@
-import AnimatedImages from "components//Homepage/AnimatedImages";
-import Video from "components/Homepage/Video";
+import Items from "components/Product/Items";
+import Thumbnail from "components/Product/Thumbnail";
+import wood from "assets/images/wood.png";
 /** @jsxImportSource @emotion/react */
 import "twin.macro";
 
@@ -7,11 +8,11 @@ const Product = () => {
     return (
         <section
             id="product"
-            tw="h-[calc(50dvh - 2.09rem)] grid grid-cols-2 relative"
+            tw="overflow-hidden h-[calc(50dvh - 2.09rem)] grid grid-cols-2 relative bg-contain bg-center"
+            style={{ backgroundImage: `url(${wood})` }}
         >
-            <div tw="h-full w-full bg-green opacity-50 absolute top-0"></div>
-            <AnimatedImages />
-            <Video />
+            <Items />
+            <Thumbnail />
         </section>
     );
 };

@@ -16,7 +16,7 @@ const ErrorFallback = () => (
     <>
         <header tw="absolute flex justify-between w-full items-center p-[1rem 3rem] lg:p-[1rem] font-medium text-black z-[1]">
             <h1 tw="flex justify-between items-center gap-[0.5rem] md:text-sm">
-                <img src={logo} alt="Logo" />
+                <img loading="lazy" src={logo} alt="Logo" />
                 WORLD DATA LAB
             </h1>
             <a
@@ -71,7 +71,7 @@ const ErrorFallback = () => (
                             tw="md:hidden font-semiBold text-lg gap-[1rem] text-center flex justify-between items-center hover:border-b border-b-[#2B3081] py-[0.5rem] lg:text-[1rem]"
                         >
                             WDL BLOG
-                            <img src={arrow} alt="Chevron" />
+                            <img loading="lazy" src={arrow} alt="Chevron" />
                         </a>
                     </div>
                 </div>

@@ -13,7 +13,8 @@ module.exports = {
             white: "#FFFFFF",
             cream: "#efece8",
             black: "#160f0f",
-            green: "#334a3b"
+            green: "#334a3b",
+            brown: "#6a4f31"
         },
         fontSize: {
             xs: ["0.75rem", "0.75rem"],
@@ -24,7 +25,6 @@ module.exports = {
             xxl: ["2rem", "2rem"]
         },
         fontWeight: {
-            light: 300,
             regular: 400,
             medium: 500,
             semiBold: 600,
