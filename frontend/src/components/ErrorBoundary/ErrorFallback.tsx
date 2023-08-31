@@ -3,7 +3,7 @@ import background_mobile from "components/ErrorBoundary/assets/images/background
 import arrow from "components/ErrorBoundary/assets/images/chevronRight.svg";
 import desktopLingkaran from "components/ErrorBoundary/assets/images/desktopLingkaran.svg";
 import gradient from "components/ErrorBoundary/assets/images/gradientDesktop.png";
-import logo from "components/ErrorBoundary/assets/images/logo.svg";
+import logo from "components/ErrorBoundary/assets/images/logo.png";
 import scientist from "components/ErrorBoundary/assets/images/scientist.png";
 import workInProgress from "components/ErrorBoundary/assets/images/workInProgress.svg";
 import React from "react";

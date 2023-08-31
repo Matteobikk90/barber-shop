@@ -81,3 +81,30 @@ export const products: IdTextPairTypes[] = [
         price: 18
     }
 ];
+export const services: IdTextPairTypes[] = [
+    {
+        id: "cut",
+        text: "Taglio",
+        price: 18
+    },
+    {
+        id: "shave",
+        text: "Rasata",
+        price: 12
+    },
+    {
+        id: "cut&shave",
+        text: "Taglio + barba",
+        price: 25
+    },
+    {
+        id: "cut",
+        text: "Taglio",
+        price: 18
+    },
+    {
+        id: "cut",
+        text: "Taglio",
+        price: 18
+    }
+];

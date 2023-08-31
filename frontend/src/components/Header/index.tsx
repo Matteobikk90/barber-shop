@@ -1,5 +1,5 @@
 import { navLinks } from "utils/items";
-import logo from "assets/images/logo.svg";
+import logo from "assets/images/logo.png";
 /** @jsxImportSource @emotion/react */
 import "twin.macro";
 
@@ -13,7 +13,7 @@ const Header = () => {
                         {src ? (
                             <img
                                 loading="lazy"
-                                width={50}
+                                width={300}
                                 src={logo}
                                 alt="Logo"
                             />

@@ -1,4 +1,4 @@
-import logo from "assets/images/logo.svg";
+import logo from "assets/images/logo2.png";
 /** @jsxImportSource @emotion/react */
 import "twin.macro";
 import { socials } from "utils/items";
@@ -6,7 +6,7 @@ import { socials } from "utils/items";
 const Footer = () => {
     return (
         <footer tw="flex p-[2rem 4rem] bg-black text-cream gap-[10rem] flex-wrap">
-            <img src={logo} width={50} alt="Logo" />
+            <img src={logo} width={300} alt="Logo" />
             <div tw="flex flex-col">
                 <p>Via Rivoli 143</p>
                 <p>Rivoli (TO), 10098</p>
