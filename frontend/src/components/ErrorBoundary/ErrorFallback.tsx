@@ -43,7 +43,7 @@ const ErrorFallback = () => (
                         Technical Difficulties
                     </strong>
                 </h2>
-                <p tw="lg:text-[1.125rem] lg:leading-[1.5rem] text-xxl sm:pb-[1rem] font-light">
+                <p tw="lg:text-[1.125rem] lg:leading-[1.5rem] text-xxl sm:pb-[1rem]">
                     Our support team is currently working to fix the issue.
                     <br />
                     Thanks for your patience!
@@ -54,7 +54,7 @@ const ErrorFallback = () => (
                 >
                     go back
                 </button>
-                <div tw="flex flex-col gap-[1rem] font-light mt-[1rem]">
+                <div tw="flex flex-col gap-[1rem] mt-[1rem]">
                     <p tw="text-xl lg:text-[1rem] lg:leading-[1.25rem]">
                         While you wait, why not take a look at our blog or World
                         Data Pro?
