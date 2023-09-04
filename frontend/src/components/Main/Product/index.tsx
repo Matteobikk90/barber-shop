@@ -8,7 +8,7 @@ const Product = () => {
     return (
         <section
             id="products"
-            tw="overflow-hidden h-[calc(50dvh - 2.09rem)] grid grid-cols-2 relative bg-contain bg-center"
+            tw="overflow-hidden grid grid-cols-2 relative bg-contain bg-center"
             style={{ backgroundImage: `url(${wood})` }}
         >
             <Items />

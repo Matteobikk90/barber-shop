@@ -22,10 +22,10 @@ const responsive = {
 
 const Gallery = () => {
     return (
-        <section
-            id="gallery"
-            tw="h-[calc(50dvh - 2.109rem)] p-[1rem 2rem] bg-green"
-        >
+        <section id="gallery" tw=" p-[2rem] bg-green">
+            <h2 tw="text-xxl text-cream text-center">
+                <strong>Galleria</strong>
+            </h2>
             <Carousel
                 swipeable={false}
                 draggable={false}

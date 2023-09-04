@@ -3,8 +3,6 @@ import { SocialsTypes } from "types/social.types";
 import razor from "assets/images/razor.svg";
 import instagram from "assets/images/socials/instagram.svg";
 import facebook from "assets/images/socials/facebook.svg";
-import linkedin from "assets/images/socials/linkedin.svg";
-import twitter from "assets/images/socials/twitter.svg";
 import whatsapp from "assets/images/socials/whatsapp.svg";
 
 export const navLinks: IdTextPairTypes[] = [
@@ -39,38 +37,28 @@ export const socials: SocialsTypes[] = [
     },
     {
         url: "luca@insta.it",
-        src: twitter,
-        id: "Twitter"
-    },
-    {
-        url: "luca@insta.it",
         src: facebook,
         id: "facebook"
-    },
-    {
-        url: "luca@insta.it",
-        src: linkedin,
-        id: "Linkedin"
     },
     { url: "https://wa.me/39357848484", src: whatsapp, id: "WhatsApp" }
 ];
 
 export const products: IdTextPairTypes[] = [
     {
-        id: "rasors",
-        text: "Rasoi",
+        id: "framesi",
+        text: "Framesi Barber Gen",
         src: razor,
         price: 20
     },
     {
-        id: "shampoo",
-        text: "Shampi",
+        id: "level",
+        text: "L3V3L",
         src: razor,
         price: 15
     },
     {
-        id: "gel",
-        text: "Cere",
+        id: "uppercut",
+        text: "UPPERCUT",
         src: razor,
         price: 31
     },

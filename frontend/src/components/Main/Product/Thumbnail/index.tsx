@@ -4,7 +4,7 @@ import "twin.macro";
 
 const Thumbnail = () => {
     return (
-        <article tw="h-full p-[2rem 4rem] bg-cream text-black">
+        <article tw="h-full p-[1rem] bg-cream text-black">
             <div tw="w-full h-full bg-white flex items-center justify-between p-[1rem]">
                 <div tw="flex flex-col gap-[1rem]">
                     <h3 tw="font-semiBold">Shampoo Bain Divalent</h3>
