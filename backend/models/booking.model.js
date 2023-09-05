@@ -8,7 +8,11 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING,
             allowNull: false
         },
-        date_time: {
+        start_time: {
+            type: Sequelize.STRING,
+            allowNull: false
+        },
+        end_time: {
             type: Sequelize.STRING,
             allowNull: false
         },
