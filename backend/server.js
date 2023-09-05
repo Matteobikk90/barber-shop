@@ -27,7 +27,9 @@ app.use(express.urlencoded({ extended: true }));
 
 // simple route
 app.get("/", (req, res) => {
-    res.json({ message: "Welcome to Bledon booking API." });
+    res.json({
+        message: "Welcome to Bledon booking API." + process.env.MYSQL_PASSWORD
+    });
 });
 
 require("./routes/booking.routes")(app);

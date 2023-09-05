@@ -15,7 +15,8 @@ exports.create = (req, res) => {
     const booking = {
         name: req.body.name,
         message: req.body.message,
-        date_time: req.body.date_time,
+        start_time: req.body.start_time,
+        end_time: req.body.end_time,
         email: req.body.email,
         phone: req.body.phone
     };

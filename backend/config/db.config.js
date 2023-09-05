@@ -1,7 +1,9 @@
+const dotenv = require("dotenv").config().parsed;
+
 module.exports = {
     HOST: "localhost",
-    USER: "root",
-    PASSWORD: "Peccido1!",
+    USER: dotenv.USER,
+    PASSWORD: dotenv.PASSWORD,
     DB: "blendon_booking",
     dialect: "mysql",
     pool: {
