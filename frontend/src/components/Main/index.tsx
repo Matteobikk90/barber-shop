@@ -11,6 +11,7 @@ const openHours = [
     [9.5, 15],
     [9, 23.5]
 ];
+
 function loggingTime(time: string) {
     console.log(time);
 }
@@ -32,6 +33,7 @@ const Main = () => {
     return (
         <main tw="pt-[4.18rem]">
             <Homepage />
+            <Product />
             <Menu />
             <Gallery />
             <Contact />
@@ -52,5 +54,3 @@ const Main = () => {
     );
 };
 export default Main;
-
-<Product />;

@@ -25,7 +25,7 @@ const Menu = () => {
                                     backgroundSize: "5px 3px"
                                 }}
                                 key={id}
-                                tw="font-medium p-[2rem] flex justify-between items-center bg-bottom bg-repeat-x"
+                                tw="font-medium p-[1rem] flex justify-between items-center bg-bottom bg-repeat-x"
                             >
                                 <span>{text}</span>
                                 <span tw="font-bold">€ {price}</span>

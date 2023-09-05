@@ -8,23 +8,25 @@ const Footer = () => {
         <footer tw="flex p-[2rem 4rem] bg-cream text-black gap-[8rem] text-lg">
             <img src={logo} width={300} alt="Logo" />
             <div tw="flex flex-col">
-                <p>Via Manzoni 21</p>
+                <p>Via Manzoni 21/A</p>
                 <p>Rivoli (TO), 10098</p>
-                <a href="mailto:lucafrasca4@gmail.com">lucafrasca4@gmail.com</a>
+                <a href="mailto:blendon.barbershop@gmail.com">
+                    blendon.barbershop@gmail.com
+                </a>
                 <a href="tel:+390118746583">+39 011 95 28 176</a>
             </div>
             <div tw="flex flex-col">
                 <h4 tw="text-xxl font-medium">Orari:</h4>
-                <p>Mar-Sab: 09AM-19PM</p>
-                <p>Mercoledì: 11AM-20PM</p>
-                <p>Domenica chiuso</p>
+                <p>Lunedì - Domenica chiuso</p>
+                <p>Mar-Sab: 09:00 - 13:00 / 14:00 - 19:00</p>
+                <p>Mercoledì: 11:00 - 13:00 / 14:00 - 20:30</p>
             </div>
             <div tw="flex flex-col gap-[1rem]">
                 <h4 tw="text-xxl font-medium">Seguici su:</h4>
                 <div tw="flex gap-[1rem]">
                     {socials.map(({ url, src, id }) => (
                         <a key={id} href={url}>
-                            <img width={24} alt="id" src={src} />
+                            <img width={35} height={35} alt="id" src={src} />
                         </a>
                     ))}
                 </div>

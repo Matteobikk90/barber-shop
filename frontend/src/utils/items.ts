@@ -31,7 +31,7 @@ export const navLinks: IdTextPairTypes[] = [
 
 export const socials: SocialsTypes[] = [
     {
-        url: "luca@insta.it",
+        url: "blendon_barbershop",
         src: instagram,
         id: "Instagram"
     },
@@ -73,12 +73,7 @@ export const services: IdTextPairTypes[] = [
     {
         id: "cut",
         text: "Taglio",
-        price: 18
-    },
-    {
-        id: "shave",
-        text: "Rasata",
-        price: 12
+        price: 17
     },
     {
         id: "cut&shave",
@@ -86,13 +81,28 @@ export const services: IdTextPairTypes[] = [
         price: 25
     },
     {
-        id: "cut",
-        text: "Taglio",
-        price: 18
+        id: "barba",
+        text: "Barba definita",
+        price: 12
     },
     {
-        id: "cut",
-        text: "Taglio",
-        price: 18
+        id: "barbaModellata",
+        text: "Barba modellata",
+        price: 12
+    },
+    {
+        id: "barbaCompleta",
+        text: "Barba completa",
+        price: 15
+    },
+    {
+        id: "bimbo",
+        text: "Taglio bimbo (max 12 anni)",
+        price: 12
+    },
+    {
+        id: "shampoo",
+        text: "Shampoo + asciugatura",
+        price: 5
     }
 ];
