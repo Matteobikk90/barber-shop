@@ -73,36 +73,43 @@ export const services: IdTextPairTypes[] = [
     {
         id: "cut",
         text: "Taglio",
-        price: 17
+        price: 17,
+        time: 30
     },
     {
         id: "cut&shave",
         text: "Taglio + barba",
-        price: 25
+        price: 25,
+        time: 45
     },
     {
         id: "barba",
         text: "Barba definita",
-        price: 12
+        price: 12,
+        time: 30
     },
     {
         id: "barbaModellata",
         text: "Barba modellata",
-        price: 12
+        price: 12,
+        time: 30
     },
     {
         id: "barbaCompleta",
         text: "Barba completa",
-        price: 15
+        price: 15,
+        time: 30
     },
     {
         id: "bimbo",
         text: "Taglio bimbo (max 12 anni)",
-        price: 12
+        price: 12,
+        time: 30
     },
     {
         id: "shampoo",
         text: "Shampoo + asciugatura",
-        price: 5
+        price: 5,
+        time: 30
     }
 ];

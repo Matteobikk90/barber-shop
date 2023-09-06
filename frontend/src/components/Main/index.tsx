@@ -3,54 +3,34 @@ import Product from "components/Main/Product";
 import Menu from "components/Main/Menu";
 import Gallery from "components/Main/Gallery";
 import Contact from "components/Main/Contact";
-import TimeCalendar from "react-timecalendar";
+import Booking from "components/Main/Booking";
+import BookingBtn from "components/BookingBtn";
+import useToggle from "hooks/useToggle";
 /** @jsxImportSource @emotion/react */
-import "twin.macro";
-
-const openHours = [
-    [9.5, 15],
-    [9, 23.5]
-];
-
-function loggingTime(time: string) {
-    console.log(time);
-}
-
-const bookings: any = [
-    {
-        id: 1,
-        start_time: "2023-09-10 13:00:00",
-        end_time: "2023-09-10 13:30:00"
-    },
-    {
-        id: 2,
-        start_time: "2023-09-10 15:00:00",
-        end_time: "2023-09-10 15:45:00"
-    }
-];
+import tw from "twin.macro";
 
 const Main = () => {
+    const { toggleState, handleToggleState } = useToggle();
+
     return (
-        <main tw="pt-[4.18rem]">
-            <Homepage />
-            <Product />
-            <Menu />
-            <Gallery />
-            <Contact />
-            <TimeCalendar
-                disableHistory
-                clickable
-                timeSlot={15}
-                openHours={openHours}
-                onTimeClick={loggingTime}
-                bookings={bookings}
-                onDateFunction={() => null}
-                selectedTime={{
-                    start: "",
-                    end: ""
-                }}
-            />
-        </main>
+        <>
+            {!toggleState.isBooking && (
+                <BookingBtn handleToggleState={handleToggleState} />
+            )}
+            <main css={[tw`pt-[4.18rem]`, toggleState.isBooking && tw`pt-0`]}>
+                {toggleState.isBooking ? (
+                    <Booking handleToggleState={handleToggleState} />
+                ) : (
+                    <>
+                        <Homepage />
+                        <Product />
+                        <Menu />
+                        <Gallery />
+                        <Contact />
+                    </>
+                )}
+            </main>
+        </>
     );
 };
 export default Main;
