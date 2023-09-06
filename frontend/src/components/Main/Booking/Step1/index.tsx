@@ -1,12 +1,12 @@
 import { services } from "utils/items";
 /** @jsxImportSource @emotion/react */
 import "twin.macro";
+import BookingFormContainer from "../Container";
 
 const Step1 = () => {
     return (
-        <article>
-            <h3 tw="text-xxl">Seleziona un servizio:</h3>
-            <ul tw="grid grid-cols-[repeat(3, 1fr)] gap-[2rem] mt-[2rem]">
+        <BookingFormContainer title="Seleziona un servizio">
+            <ul tw="grid grid-cols-[repeat(auto-fit, minmax(18.75rem, auto))] gap-[2rem]">
                 {services.map(({ id, text, price, time }) => (
                     <li tw="flex-1" key={id}>
                         <button
@@ -22,7 +22,7 @@ const Step1 = () => {
                     </li>
                 ))}
             </ul>
-        </article>
+        </BookingFormContainer>
     );
 };
 

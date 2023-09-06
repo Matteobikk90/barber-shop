@@ -23,7 +23,7 @@
   },
   "include": [
     "src"
-  ],
+, "src/db/firebase.js", "src/db/firebase.js"  ],
   "exclude": [
     "**/*.test.ts",
     "**/*.test.tsx"

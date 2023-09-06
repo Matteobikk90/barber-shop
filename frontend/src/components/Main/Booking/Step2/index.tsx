@@ -1,15 +1,17 @@
+import { useEffect } from "react";
 import TimeCalendar from "react-timecalendar";
 /** @jsxImportSource @emotion/react */
 import "twin.macro";
+import BookingFormContainer from "../Container";
 
 const openHours = [
     [0, 0],
     [0, 0],
-    [9, 19],
-    [11, 20.5],
-    [9, 19],
-    [9, 19],
-    [9, 19]
+    [9, 18.5],
+    [11, 20],
+    [9, 18.5],
+    [9, 18.5],
+    [9, 18.5]
 ];
 
 const thirtyMinutes = 30 * 60 * 1000;
@@ -62,20 +64,30 @@ const bookings: any = [
 ];
 
 const Step2 = () => {
+    // useEffect(() => {
+    //     const calendarDiv = document.querySelector(
+    //         ".calendar .header .col-center span"
+    //     ) as HTMLDivElement;
+    //     calendarDiv.replaceWith("<span>Giovedì</span>");
+    //     console.log(calendarDiv);
+    // }, []);
+
     return (
-        <TimeCalendar
-            disableHistory
-            clickable
-            timeSlot={15}
-            openHours={openHours}
-            onTimeClick={formatDateTime}
-            bookings={bookings}
-            onDateFunction={goToTimeSelection}
-            selectedTime={{
-                start: "",
-                end: ""
-            }}
-        />
+        <BookingFormContainer title="Seleziona una data e un orario">
+            <TimeCalendar
+                disableHistory
+                clickable
+                timeSlot={15}
+                openHours={openHours}
+                onTimeClick={formatDateTime}
+                bookings={bookings}
+                onDateFunction={goToTimeSelection}
+                selectedTime={{
+                    start: "",
+                    end: ""
+                }}
+            />
+        </BookingFormContainer>
     );
 };
 

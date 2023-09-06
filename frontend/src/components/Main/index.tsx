@@ -5,13 +5,10 @@ import Gallery from "components/Main/Gallery";
 import Contact from "components/Main/Contact";
 import Booking from "components/Main/Booking";
 import BookingBtn from "components/BookingBtn";
-import useToggle from "hooks/useToggle";
 /** @jsxImportSource @emotion/react */
 import tw from "twin.macro";
 
-const Main = () => {
-    const { toggleState, handleToggleState } = useToggle();
-
+const Main = ({ toggleState, handleToggleState }: any) => {
     return (
         <>
             {!toggleState.isBooking && (
