@@ -11,10 +11,10 @@ const Menu = () => {
                     <strong>Servizi</strong>
                 </h2>
             </div>
-            <div tw="bg-cream p-[1rem 2rem] border border-green">
+            <div tw="bg-cream md:p-[1rem] p-[1rem 2rem] sm:p-[2rem 0] border border-green">
                 <article tw="p-[1rem] border border-green max-w-[950px] m-[-200px auto 0]">
                     <ul
-                        tw="text-[2.5rem] uppercase"
+                        tw="text-[2.5rem] uppercase sm:text-xxl"
                         style={{ backgroundImage: `url(${prism})` }}
                     >
                         {services.map(({ id, price, text }) => (

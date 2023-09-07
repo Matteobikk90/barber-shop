@@ -5,8 +5,8 @@ import { socials } from "utils/items";
 
 const Footer = () => {
     return (
-        <footer tw="flex p-[2rem 4rem] bg-cream text-black gap-[8rem] text-lg">
-            <img src={logo} width={300} alt="Logo" />
+        <footer tw="grid grid-cols-[repeat(4, 1fr)] lg:grid-cols-[repeat(2, 1fr)] sm:grid-cols-none sm:text-center sm:justify-center p-[2rem 4rem] bg-cream text-black gap-[1.5rem] text-lg justify-between items-center md:p-[1rem]">
+            <img width={250} src={logo} alt="Logo" />
             <div tw="flex flex-col">
                 <p>Via Manzoni 21/A</p>
                 <p>Rivoli (TO), 10098</p>
@@ -21,7 +21,7 @@ const Footer = () => {
                 <p>Mar-Sab: 09:00 - 13:00 / 14:00 - 19:00</p>
                 <p>Mercoledì: 11:00 - 13:00 / 14:00 - 20:30</p>
             </div>
-            <div tw="flex flex-col gap-[1rem]">
+            <div tw="flex flex-col gap-[1rem] sm:m-auto">
                 <h4 tw="text-xxl font-medium">Seguici su:</h4>
                 <div tw="flex gap-[1rem]">
                     {socials.map(({ url, src, id }) => (

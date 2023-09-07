@@ -6,7 +6,16 @@ import { collection, addDoc, Timestamp } from "firebase/firestore";
 /* function to add new booking to firestore */
 export const handleSubmitBooking = async (
     e: FormEvent,
-    { service, name, surname, start_time, end_time, phone, email }: BookingTypes
+    {
+        service,
+        name,
+        surname,
+        start_time,
+        end_time,
+        phone,
+        email
+    }: BookingTypes,
+    next: () => void
 ) => {
     e.preventDefault();
     try {
@@ -20,9 +29,9 @@ export const handleSubmitBooking = async (
             email,
             id: Timestamp.now()
         });
-        console.log("done");
-        // onClose();
+        next();
     } catch (err) {
-        alert(err);
+        console.log(err);
+        alert("Qualcosa è andato storto, per favore riprova");
     }
 };

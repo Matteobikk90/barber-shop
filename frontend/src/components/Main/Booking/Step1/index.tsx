@@ -6,7 +6,7 @@ import "twin.macro";
 
 const Step1 = ({ handleBookingInfo }: Partial<BookingTypes>) => (
     <BookingFormContainer title="Seleziona un servizio">
-        <ul tw="grid grid-cols-[repeat(auto-fit, minmax(18.75rem, auto))] gap-[2rem]">
+        <ul tw="grid grid-cols-[repeat(auto-fit, minmax(17.75rem, auto))] gap-[2rem]">
             {services.map(({ id, text, price, time }) => (
                 <li tw="flex-1" key={id}>
                     <button

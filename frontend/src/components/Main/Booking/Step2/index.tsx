@@ -2,15 +2,16 @@ import { useEffect, useState } from "react";
 import BookingFormContainer from "components/Main/Booking/Container";
 import { getBookings } from "services/getBookings";
 import {
+    fifteenMinutes,
     thirtyMinutes,
     fourtyFiveMinutes,
     formatOptions,
     openHours
 } from "utils/utilities";
 import TimeCalendar from "react-timecalendar";
+import { BookingTypes } from "types/booking.types";
 /** @jsxImportSource @emotion/react */
 import "twin.macro";
-import { BookingTypes } from "types/booking.types";
 
 const goToTimeSelection = () => {
     const goToTimeBtn = document.querySelector(
@@ -23,34 +24,40 @@ const Step2 = ({ service, handleBookingInfo }: Partial<BookingTypes>) => {
     const [bookedBookings, setBookedBookings] = useState<any>([]);
 
     const formatDateTime = (bookingDateTime: any) => {
+        let allowBookingBasedOnService: any = new Date(
+            bookingDateTime.getTime() -
+                (service === "Taglio + barba" ? thirtyMinutes : fifteenMinutes)
+        );
         let serviceDuration: any = new Date(
             bookingDateTime.getTime() +
                 (service === "Taglio + barba"
                     ? fourtyFiveMinutes
                     : thirtyMinutes)
         );
-        const cloneDateStart = bookingDateTime;
-        const clonedDateEnd = serviceDuration;
-        bookingDateTime = new Intl.DateTimeFormat(
-            "fr-CA",
+        const readable_start_time = `${new Intl.DateTimeFormat(
+            undefined,
             formatOptions
-        ).format(bookingDateTime);
-        serviceDuration = new Intl.DateTimeFormat(
-            "fr-CA",
-            formatOptions
-        ).format(serviceDuration);
-        const start_time = `${bookingDateTime} ${cloneDateStart.toLocaleTimeString(
+        ).format(bookingDateTime)} ${bookingDateTime.toLocaleTimeString(
             "it-IT"
         )}`;
-        const end_time = `${serviceDuration} ${clonedDateEnd.toLocaleTimeString(
+        const start_time = `${new Intl.DateTimeFormat(
+            "fr-CA",
+            formatOptions
+        ).format(
+            bookingDateTime
+        )} ${allowBookingBasedOnService.toLocaleTimeString("it-IT")}`;
+        const end_time = `${new Intl.DateTimeFormat(
+            "fr-CA",
+            formatOptions
+        ).format(serviceDuration)} ${serviceDuration.toLocaleTimeString(
             "it-IT"
         )}`;
-        handleBookingInfo!({ start_time, end_time });
+        handleBookingInfo!({ start_time, end_time, readable_start_time });
     };
 
-    useEffect(() => {
-        getBookings().then((item) => setBookedBookings(item));
-    }, []);
+    // useEffect(() => {
+    //     getBookings().then((item) => setBookedBookings(item));
+    // }, []);
     // useEffect(() => {
     //     const calendarDiv = document.querySelector(
     //         ".calendar .header .col-center span"

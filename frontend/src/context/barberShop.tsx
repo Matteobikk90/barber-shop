@@ -1,18 +1,4 @@
-import {
-    createContext,
-    useContext,
-    useReducer,
-    useState,
-    useEffect
-} from "react";
-import { db } from "db/firebase";
-import {
-    collection,
-    query,
-    orderBy,
-    onSnapshot,
-    getDocs
-} from "firebase/firestore";
+import { createContext, useContext, useReducer } from "react";
 import { globalStateReducer } from "reducers/globalState";
 import {
     ActiveFiltersDispatchProps,
