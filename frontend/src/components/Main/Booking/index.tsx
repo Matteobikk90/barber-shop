@@ -1,6 +1,4 @@
-import { FormEvent, useState, useEffect } from "react";
-import { db } from "db/firebase";
-import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
+import { FormEvent, useState } from "react";
 import Step1 from "components/Main/Booking/Step1";
 import Step2 from "components/Main/Booking/Step2";
 import Step3 from "components/Main/Booking/Step3";
@@ -8,8 +6,33 @@ import { BookingTypes } from "types/booking.types";
 import useMultiStepForm from "hooks/useMultiStepForm";
 /** @jsxImportSource @emotion/react */
 import tw from "twin.macro";
+import { handleSubmitBooking } from "services/addBooking";
+
+const INITIAL_DATA: BookingTypes = {
+    service: "",
+    name: "",
+    surname: "",
+    email: "",
+    phone: null,
+    start_time: "",
+    end_time: "",
+    handleBookingInfo: () => {}
+};
 
 const Booking = ({ handleToggleState }: any) => {
+    const [booking, setBooking] = useState(INITIAL_DATA);
+
+    const handleBookingInfo = (bookinfInfo: Partial<BookingTypes>) => {
+        setBooking((prev) => ({ ...prev, ...bookinfInfo }));
+        next();
+    };
+
+    const submitBooking = (e: FormEvent) => {
+        e.preventDefault();
+        handleSubmitBooking(e, booking);
+        next();
+    };
+
     const {
         back,
         currentStepIndex,
@@ -18,42 +41,11 @@ const Booking = ({ handleToggleState }: any) => {
         isLastStep,
         step,
         steps
-    } = useMultiStepForm([<Step1 />, <Step2 />, <Step3 />]);
-    const [newBooking, setNewBooking] = useState<BookingTypes>({
-        service: "",
-        name: "",
-        surname: "",
-        email: "",
-        phone: "",
-        message: "",
-        start_time: "",
-        end_time: ""
-    });
-    const [bookings, setBookings] = useState<any>([]);
-
-    /* function to get all bookings from firestore in realtime */
-    useEffect(() => {
-        const q = query(collection(db, "bookings"), orderBy("created", "desc"));
-        onSnapshot(q, (querySnapshot) => {
-            console.log(
-                querySnapshot.docs.map((doc) => ({
-                    id: doc.id,
-                    data: doc.data()
-                }))
-            );
-            setBookings(
-                querySnapshot.docs.map((doc) => ({
-                    id: doc.id,
-                    data: doc.data()
-                }))
-            );
-        });
-    }, []);
-
-    const submitBooking = (e: FormEvent) => {
-        e.preventDefault();
-        next();
-    };
+    } = useMultiStepForm([
+        <Step1 handleBookingInfo={handleBookingInfo} />,
+        <Step2 {...booking} handleBookingInfo={handleBookingInfo} />,
+        <Step3 {...booking} handleBookingInfo={handleBookingInfo} />
+    ]);
 
     return (
         <form
@@ -80,9 +72,13 @@ const Booking = ({ handleToggleState }: any) => {
                         Indietro
                     </button>
                 )}
-                <button type="submit">
-                    {isLastStep ? "Prenota" : "Avanti"}
-                </button>
+                {isLastStep &&
+                booking.name &&
+                booking.surname &&
+                booking.phone &&
+                booking.email ? (
+                    <button type="submit">Prenota</button>
+                ) : null}
             </div>
         </form>
     );

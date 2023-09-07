@@ -3,8 +3,8 @@ export type BookingTypes = {
     name: string;
     surname: string;
     email: string;
-    phone: string;
-    message?: string;
+    phone: number | null;
     start_time: string;
     end_time: string;
+    handleBookingInfo: (bookingInfo: Partial<BookingTypes>) => void;
 };

@@ -1,27 +1,16 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import BookingFormContainer from "components/Main/Booking/Container";
+import { getBookings } from "services/getBookings";
+import {
+    thirtyMinutes,
+    fourtyFiveMinutes,
+    formatOptions,
+    openHours
+} from "utils/utilities";
 import TimeCalendar from "react-timecalendar";
 /** @jsxImportSource @emotion/react */
 import "twin.macro";
-import BookingFormContainer from "../Container";
-
-const openHours = [
-    [0, 0],
-    [0, 0],
-    [9, 18.5],
-    [11, 20],
-    [9, 18.5],
-    [9, 18.5],
-    [9, 18.5]
-];
-
-const thirtyMinutes = 30 * 60 * 1000;
-const fourtyFiveMinutes = 45 * 60 * 1000;
-
-const formatOptions: any = {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit"
-};
+import { BookingTypes } from "types/booking.types";
 
 const goToTimeSelection = () => {
     const goToTimeBtn = document.querySelector(
@@ -30,40 +19,38 @@ const goToTimeSelection = () => {
     goToTimeBtn.click();
 };
 
-const formatDateTime = (bookingDateTime: any) => {
-    let serviceDuration: any = new Date(
-        bookingDateTime.getTime() + thirtyMinutes
-    );
-    const cloneDateStart = bookingDateTime;
-    const clonedDateEnd = serviceDuration;
-    bookingDateTime = new Intl.DateTimeFormat("fr-CA", formatOptions).format(
-        bookingDateTime
-    );
-    serviceDuration = new Intl.DateTimeFormat("fr-CA", formatOptions).format(
-        serviceDuration
-    );
-    const start_time = `${bookingDateTime} ${cloneDateStart.toLocaleTimeString(
-        "it-IT"
-    )}`;
-    const end_time = `${serviceDuration} ${clonedDateEnd.toLocaleTimeString(
-        "it-IT"
-    )}`;
-};
+const Step2 = ({ service, handleBookingInfo }: Partial<BookingTypes>) => {
+    const [bookedBookings, setBookedBookings] = useState<any>([]);
 
-const bookings: any = [
-    {
-        id: 1,
-        start_time: "2023-09-15 13:00:00",
-        end_time: "2023-09-15 13:30:00"
-    },
-    {
-        id: 2,
-        start_time: "2023-09-15 15:00:00",
-        end_time: "2023-09-15 15:45:00"
-    }
-];
+    const formatDateTime = (bookingDateTime: any) => {
+        let serviceDuration: any = new Date(
+            bookingDateTime.getTime() +
+                (service === "Taglio + barba"
+                    ? fourtyFiveMinutes
+                    : thirtyMinutes)
+        );
+        const cloneDateStart = bookingDateTime;
+        const clonedDateEnd = serviceDuration;
+        bookingDateTime = new Intl.DateTimeFormat(
+            "fr-CA",
+            formatOptions
+        ).format(bookingDateTime);
+        serviceDuration = new Intl.DateTimeFormat(
+            "fr-CA",
+            formatOptions
+        ).format(serviceDuration);
+        const start_time = `${bookingDateTime} ${cloneDateStart.toLocaleTimeString(
+            "it-IT"
+        )}`;
+        const end_time = `${serviceDuration} ${clonedDateEnd.toLocaleTimeString(
+            "it-IT"
+        )}`;
+        handleBookingInfo!({ start_time, end_time });
+    };
 
-const Step2 = () => {
+    useEffect(() => {
+        getBookings().then((item) => setBookedBookings(item));
+    }, []);
     // useEffect(() => {
     //     const calendarDiv = document.querySelector(
     //         ".calendar .header .col-center span"
@@ -80,7 +67,7 @@ const Step2 = () => {
                 timeSlot={15}
                 openHours={openHours}
                 onTimeClick={formatDateTime}
-                bookings={bookings}
+                bookings={bookedBookings}
                 onDateFunction={goToTimeSelection}
                 selectedTime={{
                     start: "",

@@ -1,7 +1,18 @@
+import BookingFormContainer from "../Container";
+import { BookingTypes } from "types/booking.types";
 /** @jsxImportSource @emotion/react */
 import "twin.macro";
-import BookingFormContainer from "../Container";
-const Step3 = () => {
+
+const Step3 = ({
+    name,
+    surname,
+    phone,
+    email,
+    start_time,
+    end_time,
+    service,
+    handleBookingInfo
+}: BookingTypes) => {
     return (
         <BookingFormContainer title="Inserisci i tuoi dati e prenota">
             <div tw="flex justify-center">
@@ -14,6 +25,9 @@ const Step3 = () => {
                                 autoFocus
                                 required
                                 type="text"
+                                onChange={(e) =>
+                                    handleBookingInfo!({ name: e.target.value })
+                                }
                             />
                         </div>
                         <div tw="flex flex-col items-start gap-[0.5rem]">
@@ -22,6 +36,11 @@ const Step3 = () => {
                                 tw="rounded-[0.5rem] text-black p-[1rem] w-full"
                                 required
                                 type="text"
+                                onChange={(e) =>
+                                    handleBookingInfo!({
+                                        surname: e.target.value
+                                    })
+                                }
                             />
                         </div>
                     </div>
@@ -32,6 +51,11 @@ const Step3 = () => {
                                 tw="rounded-[0.5rem] text-black p-[1rem] w-full"
                                 required
                                 type="email"
+                                onChange={(e) =>
+                                    handleBookingInfo!({
+                                        email: e.target.value
+                                    })
+                                }
                             />
                         </div>
                         <div tw="flex flex-col items-start gap-[0.5rem]">
@@ -40,6 +64,11 @@ const Step3 = () => {
                                 tw="rounded-[0.5rem] text-black p-[1rem] w-full"
                                 required
                                 type="number"
+                                onChange={(e) =>
+                                    handleBookingInfo!({
+                                        phone: Number(e.target.value)
+                                    })
+                                }
                             />
                         </div>
                     </div>

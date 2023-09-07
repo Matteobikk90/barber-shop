@@ -1,20 +1,11 @@
-import Header from "components/Header";
-import Main from "components/Main";
-import Footer from "components/Footer";
-import useToggle from "hooks/useToggle";
+import BarberShop from "layouts";
+import { BarberShopionContextProvider } from "context/barberShop";
 
 const App = () => {
-    const { toggleState, handleToggleState } = useToggle();
-
     return (
-        <>
-            <Header toggleState={toggleState} />
-            <Main
-                handleToggleState={handleToggleState}
-                toggleState={toggleState}
-            />
-            <Footer />
-        </>
+        <BarberShopionContextProvider>
+            <BarberShop />
+        </BarberShopionContextProvider>
     );
 };
 

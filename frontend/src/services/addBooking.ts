@@ -3,8 +3,8 @@ import { BookingTypes } from "types/booking.types";
 import { db } from "db/firebase";
 import { collection, addDoc, Timestamp } from "firebase/firestore";
 
-/* function to add new task to firestore */
-export const handleSubmit = async (
+/* function to add new booking to firestore */
+export const handleSubmitBooking = async (
     e: FormEvent,
     { service, name, surname, start_time, end_time, phone, email }: BookingTypes
 ) => {
@@ -18,8 +18,9 @@ export const handleSubmit = async (
             end_time,
             phone,
             email,
-            created: Timestamp.now()
+            id: Timestamp.now()
         });
+        console.log("done");
         // onClose();
     } catch (err) {
         alert(err);

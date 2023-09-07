@@ -1,20 +1,18 @@
+import App from "App";
+import "./App.css";
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
-import "./App.css";
-import App from "./App";
-import reportWebVitals from "./reportWebVitals";
-import ErrorBoundary from "components/ErrorBoundary";
+import reportWebVitals from "reportWebVitals";
 import { GlobalStyles } from "twin.macro";
 
 const root = ReactDOM.createRoot(
     document.getElementById("root") as HTMLElement
 );
+
 root.render(
     <StrictMode>
-        <ErrorBoundary>
-            <App />
-            <GlobalStyles />
-        </ErrorBoundary>
+        <App />
+        <GlobalStyles />
     </StrictMode>
 );
 
