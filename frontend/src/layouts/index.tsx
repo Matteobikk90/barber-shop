@@ -8,15 +8,15 @@ const BarberShop = () => {
 
     return (
         <>
-            <Header
+            {/* <Header
                 toggleState={toggleState}
                 handleToggleState={handleToggleState}
-            />
+            /> */}
             <Main
                 handleToggleState={handleToggleState}
                 toggleState={toggleState}
             />
-            <Footer />
+            {/* <Footer /> */}
         </>
     );
 };
