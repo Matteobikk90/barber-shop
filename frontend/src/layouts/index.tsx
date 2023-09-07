@@ -8,7 +8,10 @@ const BarberShop = () => {
 
     return (
         <>
-            <Header toggleState={toggleState} />
+            <Header
+                toggleState={toggleState}
+                handleToggleState={handleToggleState}
+            />
             <Main
                 handleToggleState={handleToggleState}
                 toggleState={toggleState}

@@ -3,7 +3,7 @@ import logo from "assets/images/logo.png";
 /** @jsxImportSource @emotion/react */
 import tw from "twin.macro";
 
-const Header = ({ toggleState }: any) => {
+const Header = ({ toggleState, handleToggleState }: any) => {
     return (
         <header
             css={[
@@ -14,7 +14,14 @@ const Header = ({ toggleState }: any) => {
             <div tw="h-full w-full bg-cream absolute top-0"></div>
             <nav tw="flex justify-center items-center gap-[3rem] p-[1rem] relative">
                 {navLinks.map(({ id, text, src }) => (
-                    <a key={id} href={`#${id}`}>
+                    <a
+                        onClick={() =>
+                            toggleState.isBooking &&
+                            handleToggleState("isBooking")
+                        }
+                        key={id}
+                        href={`#${id}`}
+                    >
                         {src ? (
                             <img
                                 loading="lazy"
