@@ -40,7 +40,7 @@ export const socials: SocialsTypes[] = [
         src: facebook,
         id: "facebook"
     },
-    { url: "https://wa.me/39357848484", src: whatsapp, id: "WhatsApp" }
+    { url: "https://wa.me/390110745767", src: whatsapp, id: "WhatsApp" }
 ];
 
 export const products: IdTextPairTypes[] = [
