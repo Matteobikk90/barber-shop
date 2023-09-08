@@ -85,7 +85,7 @@ export const services: IdTextPairTypes[] = [
     {
         id: "barba",
         text: "Barba definita",
-        price: 12,
+        price: 10,
         time: 30
     },
     {

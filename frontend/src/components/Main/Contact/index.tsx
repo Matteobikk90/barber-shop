@@ -6,12 +6,12 @@ import "twin.macro";
 const Contact = () => (
     <section
         id="contact"
-        tw="bg-cream text-black p-[2rem] md:p-[1rem] sm:p-[2rem 0]"
+        tw="bg-cream text-black p-[2rem] md:p-[1rem] sm:p-[2rem 1rem]"
     >
         <h2 tw="text-xxl text-center">
             <strong>Contatti</strong>
         </h2>
-        <div>
+        <div tw="grid grid-cols-[repeat(2, 1fr)] mt-[3rem] gap-[3rem] md:grid-cols-[repeat(1, 1fr)]auto-rows-fr justify-between items-center h-full text-xl">
             <Map />
             <ContactForm />
         </div>
