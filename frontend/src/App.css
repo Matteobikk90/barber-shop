@@ -52,15 +52,46 @@ body {
 
 .calendar .body .row .cell {
     height: 2.8em !important;
+    transition: none !important;
 }
 
 .calendar .timeSelector .cell {
     height: auto !important;
 }
 
+.calendar .body .disabled {
+    opacity: 0.75;
+}
+
 .disabled {
-    color: #e52b50 !important;
     cursor: not-allowed !important;
+}
+
+.Sun,
+.Mon {
+    cursor: not-allowed !important;
+    color: #e52b50 !important;
+}
+
+.calendar .body + .timeSelector {
+    display: none !important;
+}
+
+.calendar .timeSelector + .timeSelector {
+    display: block !important;
+}
+
+.calendar .timeSelector .disabled {
+    color: #e52b50 !important;
+}
+
+.calendar .body .row .selected {
+    border: 0 !important;
+    border-right: 1px solid #eee !important;
+}
+
+.calendar .body .selected .bg {
+    opacity: 0 !important;
 }
 
 .calendar .body .cell .bg {

@@ -4,7 +4,7 @@ import razor from "assets/images/razor.svg";
 import instagram from "assets/images/socials/instagram.svg";
 import whatsapp from "assets/images/socials/whatsapp.svg";
 
-export const navLinks: IdTextPairTypes[] = [
+export const navLinks: Partial<IdTextPairTypes>[] = [
     {
         id: "products",
         text: "Prodotti"
@@ -37,7 +37,7 @@ export const socials: SocialsTypes[] = [
     { url: "https://wa.me/390110745767", src: whatsapp, id: "WhatsApp" }
 ];
 
-export const products: IdTextPairTypes[] = [
+export const products: Partial<IdTextPairTypes>[] = [
     {
         id: "framesi",
         text: "Framesi Barber Gen",
@@ -63,7 +63,7 @@ export const products: IdTextPairTypes[] = [
         price: 18
     }
 ];
-export const services: IdTextPairTypes[] = [
+export const services: Partial<IdTextPairTypes>[] = [
     {
         id: "cut",
         text: "Taglio",
@@ -72,7 +72,7 @@ export const services: IdTextPairTypes[] = [
     },
     {
         id: "cut&shave",
-        text: "Taglio + barba",
+        text: "Taglio + rifinitura barba",
         price: 25,
         time: 45
     },

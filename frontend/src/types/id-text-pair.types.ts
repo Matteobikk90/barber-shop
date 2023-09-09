@@ -1,7 +1,7 @@
 export type IdTextPairTypes = {
     id: string;
     text: string;
-    src?: string;
-    price?: number;
-    time?: number;
+    src: string;
+    price: number;
+    time: number;
 };

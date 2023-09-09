@@ -1,26 +1,24 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import BookingFormContainer from "components/Main/Booking/Container";
+import useCalendar from "hooks/useCalendar";
 import { getBookings } from "services/getBookings";
 import {
     fifteenMinutes,
     thirtyMinutes,
     fourtyFiveMinutes,
-    formatOptions,
-    openHours
+    formatOptions
 } from "utils/utilities";
+import { openHours } from "utils/calendar";
 import TimeCalendar from "react-timecalendar";
 import { BookingTypes } from "types/booking.types";
 /** @jsxImportSource @emotion/react */
 import "twin.macro";
 
-const goToTimeSelection = () => {
-    const goToTimeBtn = document.querySelector(
-        ".timeSelector"
-    ) as HTMLButtonElement;
-    goToTimeBtn.click();
-};
-
 const Step2 = ({ service, handleBookingInfo }: Partial<BookingTypes>) => {
+    const { handleClosedDays, handleTranslation, goToTimeSelection } =
+        useCalendar();
+    const calendarRef = useRef<any>();
+
     const [bookedBookings, setBookedBookings] = useState<any>([]);
 
     const formatDateTime = (bookingDateTime: any) => {
@@ -58,29 +56,35 @@ const Step2 = ({ service, handleBookingInfo }: Partial<BookingTypes>) => {
     // useEffect(() => {
     //     getBookings().then((item) => setBookedBookings(item));
     // }, []);
-    // useEffect(() => {
-    //     const calendarDiv = document.querySelector(
-    //         ".calendar .header .col-center span"
-    //     ) as HTMLDivElement;
-    //     calendarDiv.replaceWith("<span>Giovedì</span>");
-    //     console.log(calendarDiv);
-    // }, []);
+
+    useEffect(() => {
+        const calendarBody = document.querySelector(
+            ".calendar .body"
+        ) as HTMLDivElement;
+        const calendarDayHeader = document.querySelector(
+            ".calendar .header .col-center span"
+        ) as HTMLDivElement;
+        handleTranslation();
+        handleClosedDays();
+    }, [handleClosedDays, handleTranslation]);
 
     return (
         <BookingFormContainer title="Seleziona una data e un orario">
-            <TimeCalendar
-                disableHistory
-                clickable
-                timeSlot={15}
-                openHours={openHours}
-                onTimeClick={formatDateTime}
-                bookings={bookedBookings}
-                onDateFunction={goToTimeSelection}
-                selectedTime={{
-                    start: "",
-                    end: ""
-                }}
-            />
+            <article ref={calendarRef}>
+                <TimeCalendar
+                    disableHistory
+                    clickable
+                    timeSlot={15}
+                    openHours={openHours}
+                    onTimeClick={formatDateTime}
+                    bookings={bookedBookings}
+                    onDateFunction={goToTimeSelection}
+                    selectedTime={{
+                        start: "",
+                        end: ""
+                    }}
+                />
+            </article>
         </BookingFormContainer>
     );
 };
