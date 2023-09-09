@@ -2,7 +2,6 @@ import BookingFormContainer from "components/Main/Booking/Container";
 import { BookingTypes } from "types/booking.types";
 /** @jsxImportSource @emotion/react */
 import "twin.macro";
-import { read } from "fs";
 
 const Success = ({
     name,

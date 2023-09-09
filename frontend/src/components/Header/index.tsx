@@ -7,7 +7,7 @@ const Header = ({ toggleState, handleToggleState }: any) => {
     return (
         <header
             css={[
-                tw`fixed top-0 shadow w-full text-black z-10 text-xxl`,
+                tw`fixed top-0 shadow w-full text-black z-[401] text-xxl`,
                 toggleState.isBooking && tw`relative`
             ]}
         >

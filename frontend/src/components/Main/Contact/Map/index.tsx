@@ -1,6 +1,6 @@
 import { memo, useEffect, useState } from "react";
 import useLeaflet from "hooks/useLeaflet";
-import { MapContainer, TileLayer, Marker } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { LeafletEvent } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { centerMap, defaultMapZoom } from "utils/map";
@@ -9,7 +9,7 @@ import "twin.macro";
 
 const Map = () => {
     const [mapRef, setMapRef] = useState<LeafletEvent | null>(null);
-    const { handleResize } = useLeaflet(mapRef);
+    const { handleResize, marker } = useLeaflet(mapRef);
 
     useEffect(() => {
         window.addEventListener("resize", handleResize);
@@ -25,9 +25,6 @@ const Map = () => {
             zoom={defaultMapZoom}
             minZoom={5}
             maxZoom={20}
-            zoomControl={false}
-            doubleClickZoom={false}
-            dragging={false}
             trackResize={false}
             touchZoom={false}
             scrollWheelZoom={false}
@@ -36,7 +33,11 @@ const Map = () => {
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            <Marker position={centerMap}></Marker>
+            <Marker position={centerMap} icon={marker}>
+                <Popup>
+                    Blendon Barber Shop <br /> Ti aspettiamo !
+                </Popup>
+            </Marker>
         </MapContainer>
     );
 };

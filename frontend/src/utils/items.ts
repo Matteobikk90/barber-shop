@@ -2,7 +2,6 @@ import { IdTextPairTypes } from "types/id-text-pair.types";
 import { SocialsTypes } from "types/social.types";
 import razor from "assets/images/razor.svg";
 import instagram from "assets/images/socials/instagram.svg";
-import facebook from "assets/images/socials/facebook.svg";
 import whatsapp from "assets/images/socials/whatsapp.svg";
 
 export const navLinks: IdTextPairTypes[] = [
@@ -34,11 +33,6 @@ export const socials: SocialsTypes[] = [
         url: "blendon_barbershop",
         src: instagram,
         id: "Instagram"
-    },
-    {
-        url: "luca@insta.it",
-        src: facebook,
-        id: "facebook"
     },
     { url: "https://wa.me/390110745767", src: whatsapp, id: "WhatsApp" }
 ];
