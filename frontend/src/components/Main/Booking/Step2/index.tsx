@@ -15,8 +15,7 @@ import { BookingTypes } from "types/booking.types";
 import "twin.macro";
 
 const Step2 = ({ service, handleBookingInfo }: Partial<BookingTypes>) => {
-    const { handleClosedDays, handleTranslation, goToTimeSelection } =
-        useCalendar();
+    const { goToTimeSelection } = useCalendar();
     const calendarRef = useRef<any>();
 
     const [bookedBookings, setBookedBookings] = useState<any>([]);
@@ -56,17 +55,6 @@ const Step2 = ({ service, handleBookingInfo }: Partial<BookingTypes>) => {
     // useEffect(() => {
     //     getBookings().then((item) => setBookedBookings(item));
     // }, []);
-
-    useEffect(() => {
-        const calendarBody = document.querySelector(
-            ".calendar .body"
-        ) as HTMLDivElement;
-        const calendarDayHeader = document.querySelector(
-            ".calendar .header .col-center span"
-        ) as HTMLDivElement;
-        handleTranslation();
-        handleClosedDays();
-    }, [handleClosedDays, handleTranslation]);
 
     return (
         <BookingFormContainer title="Seleziona una data e un orario">

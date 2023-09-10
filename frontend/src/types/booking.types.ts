@@ -5,7 +5,7 @@ export type BookingTypes = {
     email: string;
     phone: number | null;
     start_time: string;
-    readable_start_time: any;
+    readable_start_time: string;
     end_time: string;
     handleBookingInfo: (bookingInfo: Partial<BookingTypes>) => void;
 };
