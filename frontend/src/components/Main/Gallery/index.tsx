@@ -1,24 +1,8 @@
+import { carouselGalleryConfig } from "utils/carousels";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 /** @jsxImportSource @emotion/react */
 import "twin.macro";
-
-const responsive = {
-    desktop: {
-        breakpoint: { max: 3000, min: 1024 },
-        items: 3,
-        slidesToSlide: 3
-    },
-    tablet: {
-        breakpoint: { max: 1024, min: 464 },
-        items: 2,
-        slidesToSlide: 2
-    },
-    mobile: {
-        breakpoint: { max: 464, min: 0 },
-        items: 1
-    }
-};
 
 const Gallery = () => {
     return (
@@ -29,7 +13,7 @@ const Gallery = () => {
             <Carousel
                 swipeable={false}
                 draggable={false}
-                responsive={responsive}
+                responsive={carouselGalleryConfig}
                 infinite={true}
                 autoPlay={true}
                 autoPlaySpeed={5000}

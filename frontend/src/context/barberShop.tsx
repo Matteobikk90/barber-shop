@@ -7,6 +7,7 @@ import {
 } from "types/barber-shop.types";
 
 const initialState: GlobalState = {
+    selectedBrand: "framesi",
     setActiveFilter: () => {}
 };
 
@@ -43,6 +44,7 @@ export const BarberShopionContextProvider = ({ children }: ChildrenProps) => {
         });
 
     const value = {
+        selectedBrand: state.selectedBrand,
         setActiveFilter
     };
 

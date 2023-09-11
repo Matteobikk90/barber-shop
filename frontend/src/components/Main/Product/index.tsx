@@ -4,17 +4,15 @@ import wood from "assets/images/wood.png";
 /** @jsxImportSource @emotion/react */
 import "twin.macro";
 
-const Product = () => {
-    return (
-        <section
-            id="products"
-            tw="overflow-hidden grid grid-cols-[repeat(2, 1fr)] md:grid-cols-none relative bg-contain bg-center"
-            style={{ backgroundImage: `url(${wood})` }}
-        >
-            <Items />
-            <Thumbnail />
-        </section>
-    );
-};
+const Product = () => (
+    <section
+        id="products"
+        tw="overflow-hidden grid grid-cols-[repeat(2, 1fr)] md:grid-cols-none relative bg-contain bg-center"
+        style={{ backgroundImage: `url(${wood})` }}
+    >
+        <Items />
+        <Thumbnail />
+    </section>
+);
 
 export default Product;

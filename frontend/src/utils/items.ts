@@ -37,7 +37,7 @@ export const socials: SocialsTypes[] = [
     { url: "https://wa.me/390110745767", src: whatsapp, id: "WhatsApp" }
 ];
 
-export const products: Partial<IdTextPairTypes>[] = [
+export const brands: Partial<IdTextPairTypes>[] = [
     {
         id: "framesi",
         text: "Framesi Barber Gen",
