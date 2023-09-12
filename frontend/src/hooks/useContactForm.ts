@@ -1,5 +1,6 @@
-import { FormDataTypes, InputTypes } from "types/contact-form.types";
 import { FormEvent, useState } from "react";
+import emailjs from "@emailjs/browser";
+import { FormDataTypes, InputTypes } from "types/contact-form.types";
 
 const useContactForm = (
     initialState: FormDataTypes = {
@@ -7,8 +8,8 @@ const useContactForm = (
         phone: null,
         email: "",
         message: ""
-    }
-    // onValidated: any
+    },
+    contactFormRef: any
 ) => {
     const [formData, setFormData] = useState(initialState);
 
@@ -28,12 +29,17 @@ const useContactForm = (
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        // onValidated({
-        //     name: formData.name,
-        //     phone: formData.phone,
-        //     email: formData.email,
-        //     message: formData.message
-        // });
+        emailjs
+            .sendForm(
+                process.env.REACT_APP_EMAIL_JS_SERVICE!,
+                process.env.REACT_APP_EMAIL_JS_CONTACTFORM_TEMPLATE!,
+                contactFormRef.current!,
+                process.env.REACT_APP_EMAIL_JS_API
+            )
+            .then(
+                (result: any) => console.log(result.text),
+                (error: any) => console.log(error.text)
+            );
     };
 
     return { formData, handleInputChange, handleReset, handleSubmit };

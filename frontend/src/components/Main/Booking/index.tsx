@@ -1,4 +1,5 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, useRef } from "react";
+import emailjs from "@emailjs/browser";
 import Step1 from "components/Main/Booking/Step1";
 import Step2 from "components/Main/Booking/Step2";
 import Step3 from "components/Main/Booking/Step3";
@@ -23,6 +24,7 @@ const INITIAL_DATA: BookingTypes = {
 
 const Booking = ({ handleToggleState }: any) => {
     const [booking, setBooking] = useState(INITIAL_DATA);
+    const bookingFormRef = useRef<HTMLFormElement | null>(null);
 
     const handleBookingInfo = (bookinfInfo: Partial<BookingTypes>) => {
         setBooking((prev) => ({ ...prev, ...bookinfInfo }));
@@ -32,7 +34,17 @@ const Booking = ({ handleToggleState }: any) => {
     const submitBooking = (e: FormEvent) => {
         e.preventDefault();
         // handleSubmitBooking(e, booking, next);
-        next();
+        emailjs
+            .sendForm(
+                process.env.REACT_APP_EMAIL_JS_SERVICE!,
+                process.env.REACT_APP_EMAIL_JS_BOOKING_TEMPLATE!,
+                bookingFormRef.current!,
+                process.env.REACT_APP_EMAIL_JS_API
+            )
+            .then(
+                (result: any) => console.log(result.text),
+                (error: any) => console.log(error.text)
+            );
     };
 
     const {
@@ -53,6 +65,7 @@ const Booking = ({ handleToggleState }: any) => {
 
     return (
         <form
+            ref={bookingFormRef}
             onSubmit={submitBooking}
             css={[
                 tw`relative text-center bg-green text-cream shadow min-h-[450px] p-[2rem 5rem 4rem]md:p-[2rem 1rem 4rem] sm:p-[4rem 1rem]`,
@@ -81,7 +94,9 @@ const Booking = ({ handleToggleState }: any) => {
                 booking.surname &&
                 booking.phone &&
                 booking.email ? (
-                    <button type="submit">Prenota</button>
+                    <button type="submit" value="Send">
+                        Prenota
+                    </button>
                 ) : null}
             </div>
         </form>

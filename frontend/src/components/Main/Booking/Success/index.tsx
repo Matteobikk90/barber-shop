@@ -39,11 +39,25 @@ const Success = ({
             <div tw="flex gap-[4rem] sm:flex-wrap sm:gap-[2rem]">
                 <div tw="flex flex-col items-start sm:items-center gap-[0.5rem] w-full">
                     <label>Servizio:</label>
-                    <p tw="font-bold">{service}</p>
+                    <input
+                        type="text"
+                        value={service}
+                        name="service"
+                        tw="font-bold"
+                        style={{ background: "transparent" }}
+                        readOnly
+                    />
                 </div>
                 <div tw="flex flex-col items-start sm:items-center gap-[0.5rem] w-full">
                     <label>Data:</label>
-                    <p tw="font-bold">{readable_start_time}</p>
+                    <input
+                        type="text"
+                        value={readable_start_time}
+                        name="readable_start_time"
+                        tw="font-bold"
+                        style={{ background: "transparent" }}
+                        readOnly
+                    />
                 </div>
             </div>
         </div>

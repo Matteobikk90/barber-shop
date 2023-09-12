@@ -18,6 +18,7 @@ const Step3 = ({ handleBookingInfo }: Partial<BookingTypes>) => (
                             onChange={(e) =>
                                 handleBookingInfo!({ name: e.target.value })
                             }
+                            name="name"
                         />
                     </div>
                     <div tw="flex flex-col items-start gap-[0.5rem] w-full">
@@ -31,6 +32,7 @@ const Step3 = ({ handleBookingInfo }: Partial<BookingTypes>) => (
                                     surname: e.target.value
                                 })
                             }
+                            name="surname"
                         />
                     </div>
                 </div>
@@ -46,6 +48,7 @@ const Step3 = ({ handleBookingInfo }: Partial<BookingTypes>) => (
                                     email: e.target.value
                                 })
                             }
+                            name="email"
                         />
                     </div>
                     <div tw="flex flex-col items-start gap-[0.5rem] w-full">
@@ -59,6 +62,7 @@ const Step3 = ({ handleBookingInfo }: Partial<BookingTypes>) => (
                                     phone: Number(e.target.value)
                                 })
                             }
+                            name="phone"
                         />
                     </div>
                 </div>
