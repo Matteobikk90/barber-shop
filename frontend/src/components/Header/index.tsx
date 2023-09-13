@@ -15,6 +15,7 @@ const Header = ({ toggleState, handleToggleState }: any) => {
             <nav tw="flex justify-center items-center gap-[3rem] p-[1rem] relative">
                 {navLinks.map(({ id, text, src }) => (
                     <a
+                        tw="hover:text-green"
                         onClick={() =>
                             toggleState.isBooking &&
                             handleToggleState("isBooking")

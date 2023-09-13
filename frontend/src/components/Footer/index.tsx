@@ -1,4 +1,4 @@
-import logo from "assets/images/logo.png";
+import logo from "assets/images/logo-footer.png";
 /** @jsxImportSource @emotion/react */
 import "twin.macro";
 import { socials } from "utils/items";
