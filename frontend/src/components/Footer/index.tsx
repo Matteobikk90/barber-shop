@@ -5,7 +5,7 @@ import { socials } from "utils/items";
 
 const Footer = () => {
     return (
-        <footer tw="grid grid-cols-[repeat(4, 1fr)] lg:grid-cols-[repeat(2, 1fr)] sm:grid-cols-none sm:text-center sm:justify-center p-[2rem 4rem] bg-cream text-black gap-[1.5rem] text-lg justify-between items-center md:p-[1rem]">
+        <footer tw="shadow-[0px -4px 5px 0px rgba(0,0,0,0.1)] grid grid-cols-[repeat(4, 1fr)] lg:grid-cols-[repeat(2, 1fr)] sm:grid-cols-none sm:text-center sm:justify-center p-[2rem 4rem] bg-cream text-black gap-[1.5rem] text-lg justify-between items-center md:p-[1rem]">
             <img width={250} src={logo} alt="Logo" />
             <div tw="flex flex-col">
                 <p>Via Manzoni 21/A</p>
