@@ -52,9 +52,9 @@ const Step2 = ({ service, handleBookingInfo }: Partial<BookingTypes>) => {
         handleBookingInfo!({ start_time, end_time, readable_start_time });
     };
 
-    // useEffect(() => {
-    //     getBookings().then((item) => setBookedBookings(item));
-    // }, []);
+    useEffect(() => {
+        getBookings().then((item) => setBookedBookings(item));
+    }, []);
 
     return (
         <BookingFormContainer title="Seleziona una data e un orario">

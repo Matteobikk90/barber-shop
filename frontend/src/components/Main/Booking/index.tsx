@@ -33,7 +33,7 @@ const Booking = ({ handleToggleState }: any) => {
 
     const submitBooking = (e: FormEvent) => {
         e.preventDefault();
-        // handleSubmitBooking(e, booking, next);
+        handleSubmitBooking(e, booking, next);
         emailjs
             .sendForm(
                 process.env.REACT_APP_EMAIL_JS_SERVICE!,

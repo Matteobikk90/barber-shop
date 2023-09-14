@@ -3,7 +3,11 @@ import { BookingTypes } from "types/booking.types";
 /** @jsxImportSource @emotion/react */
 import "twin.macro";
 
-const Step3 = ({ handleBookingInfo }: Partial<BookingTypes>) => (
+const Step3 = ({
+    service,
+    readable_start_time,
+    handleBookingInfo
+}: Partial<BookingTypes>) => (
     <BookingFormContainer title="Inserisci i tuoi dati e prenota">
         <div tw="flex justify-center">
             <div tw="grid grid-cols-[repeat(auto-fit, minmax(17.75rem, auto))] gap-[1.5rem] text-xxl sm:w-full">
@@ -65,6 +69,18 @@ const Step3 = ({ handleBookingInfo }: Partial<BookingTypes>) => (
                             name="phone"
                         />
                     </div>
+                    <input
+                        type="hidden"
+                        value={service}
+                        name="service"
+                        readOnly
+                    />
+                    <input
+                        type="hidden"
+                        value={readable_start_time}
+                        name="readable_start_time"
+                        readOnly
+                    />
                 </div>
                 <p tw="text-left text-lg">* Tutti i campi sono obbligatori</p>
             </div>
