@@ -19,10 +19,10 @@ const Main = ({ toggleState, handleToggleState }: any) => {
                     <Booking handleToggleState={handleToggleState} />
                 ) : (
                     <>
-                        <Homepage />
-                        <Product />
+                        {/* <Homepage /> */}
+                        {/* <Product /> */}
                         <Menu />
-                        <Gallery />
+                        {/* <Gallery /> */}
                         <Contact />
                     </>
                 )}

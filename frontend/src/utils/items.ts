@@ -1,14 +1,18 @@
 import { IdTextPairTypes } from "types/id-text-pair.types";
 import { SocialsTypes } from "types/social.types";
-import razor from "assets/images/razor.svg";
+import frameli from "assets/images/brands/frameli.png";
+import level from "assets/images/brands/level.png";
+import fanola from "assets/images/brands/fanola.png";
+import uppercut from "assets/images/brands/uppercut.png";
+import agiva from "assets/images/brands/agiva.png";
 import instagram from "assets/images/socials/instagram.svg";
 import whatsapp from "assets/images/socials/whatsapp.svg";
 
 export const navLinks: Partial<IdTextPairTypes>[] = [
-    {
-        id: "products",
-        text: "Prodotti"
-    },
+    // {
+    //     id: "products",
+    //     text: "Prodotti"
+    // },
     {
         id: "services",
         text: "Servizi"
@@ -18,10 +22,10 @@ export const navLinks: Partial<IdTextPairTypes>[] = [
         text: "",
         src: "home"
     },
-    {
-        id: "gallery",
-        text: "Galleria"
-    },
+    // {
+    //     id: "gallery",
+    //     text: "Galleria"
+    // },
     {
         id: "contact",
         text: "Contatti"
@@ -41,26 +45,27 @@ export const brands: Partial<IdTextPairTypes>[] = [
     {
         id: "framesi",
         text: "Framesi Barber Gen",
-        src: razor,
-        price: 20
+        src: frameli
     },
     {
         id: "level",
         text: "L3V3L",
-        src: razor,
-        price: 15
+        src: level
     },
     {
         id: "uppercut",
         text: "UPPERCUT",
-        src: razor,
-        price: 31
+        src: uppercut
     },
     {
-        id: "afterShave",
-        text: "Dopo barba",
-        src: razor,
-        price: 18
+        id: "fanola",
+        text: "Fanola",
+        src: fanola
+    },
+    {
+        id: "agiva",
+        text: "Agiva",
+        src: agiva
     }
 ];
 export const services: Partial<IdTextPairTypes>[] = [

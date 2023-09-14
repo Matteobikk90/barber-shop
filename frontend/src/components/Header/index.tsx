@@ -7,7 +7,7 @@ const Header = ({ toggleState, handleToggleState }: any) => {
     return (
         <header
             css={[
-                tw`fixed top-0 shadow w-full text-black z-[401] text-xxl`,
+                tw`fixed top-0 shadow w-full text-black z-[401] text-xxl sm:text-[1.5rem]`,
                 toggleState.isBooking && tw`relative`
             ]}
         >
@@ -25,6 +25,7 @@ const Header = ({ toggleState, handleToggleState }: any) => {
                     >
                         {src ? (
                             <img
+                                tw="sm:w-[150px]"
                                 loading="lazy"
                                 width={300}
                                 src={logo}

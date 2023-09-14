@@ -12,6 +12,16 @@ html {
     scroll-padding-top: 7.875rem;
 }
 
+@media (max-width: 639px) {
+    html {
+        scroll-padding-top: 4.25rem;
+    }
+
+    main {
+        padding-top: 0;
+    }
+}
+
 body {
     margin: 0;
     letter-spacing: 0.25px;
