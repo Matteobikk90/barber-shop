@@ -69,20 +69,24 @@ const Step3 = ({
                             name="phone"
                         />
                     </div>
+                </div>
+                <p tw="text-left text-lg">* Tutti i campi sono obbligatori</p>
+                <div>
                     <input
-                        type="hidden"
+                        tw="h-0 opacity-0"
+                        type="text"
                         value={service}
                         name="service"
                         readOnly
                     />
                     <input
-                        type="hidden"
+                        tw="h-0 opacity-0"
+                        type="text"
                         value={readable_start_time}
                         name="readable_start_time"
                         readOnly
                     />
                 </div>
-                <p tw="text-left text-lg">* Tutti i campi sono obbligatori</p>
             </div>
         </div>
     </BookingFormContainer>

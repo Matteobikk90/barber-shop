@@ -59,7 +59,7 @@ const Booking = ({ handleToggleState }: any) => {
     } = useMultiStepForm([
         <Step1 handleBookingInfo={handleBookingInfo} />,
         <Step2 {...booking} handleBookingInfo={handleBookingInfo} />,
-        <Step3 handleBookingInfo={handleBookingInfo} />,
+        <Step3 {...booking} handleBookingInfo={handleBookingInfo} />,
         <Success {...booking} />
     ]);
 
