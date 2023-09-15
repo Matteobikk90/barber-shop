@@ -23,11 +23,13 @@ const Step2 = ({ service, handleBookingInfo }: Partial<BookingTypes>) => {
     const formatDateTime = (bookingDateTime: any) => {
         let allowBookingBasedOnService: any = new Date(
             bookingDateTime.getTime() -
-                (service === "Taglio + barba" ? thirtyMinutes : fifteenMinutes)
+                (service === "Taglio + rifinitura barba"
+                    ? thirtyMinutes
+                    : fifteenMinutes)
         );
         let serviceDuration: any = new Date(
             bookingDateTime.getTime() +
-                (service === "Taglio + barba"
+                (service === "Taglio + rifinitura barba"
                     ? fourtyFiveMinutes
                     : thirtyMinutes)
         );
@@ -54,12 +56,6 @@ const Step2 = ({ service, handleBookingInfo }: Partial<BookingTypes>) => {
 
     useEffect(() => {
         getBookings().then((item) => setBookedBookings(item));
-        console.log(
-            bookedBookings.sort(
-                (a: BookingTypes, b: BookingTypes) =>
-                    +new Date(a.start_time) - +new Date(b.start_time)
-            )
-        );
     }, []);
 
     return (
