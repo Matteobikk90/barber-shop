@@ -4,9 +4,16 @@ type Booking = {
     isBooking: boolean;
 };
 
+type NavBarMobile = {
+    isMobileNavbarOpen: boolean;
+};
+
+type CombinedProps = Booking & NavBarMobile;
+
 const useToggle = () => {
-    const [toggleState, setToggleState] = useState<Booking>({
-        isBooking: false
+    const [toggleState, setToggleState] = useState<CombinedProps>({
+        isBooking: false,
+        isMobileNavbarOpen: false
     });
 
     const handleToggleState = useCallback(

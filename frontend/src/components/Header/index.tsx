@@ -1,3 +1,4 @@
+import Mobile from "components/Header/Mobile";
 import { navLinks } from "utils/items";
 import logo from "assets/images/logo.png";
 /** @jsxImportSource @emotion/react */
@@ -12,7 +13,7 @@ const Header = ({ toggleState, handleToggleState }: any) => {
             ]}
         >
             <div tw="h-full w-full bg-cream absolute top-0"></div>
-            <nav tw="flex justify-center items-center gap-[3rem] p-[1rem] relative">
+            <nav tw="flex justify-center items-center gap-[3rem] p-[1rem] relative md:hidden">
                 {navLinks.map(({ id, text, src }) => (
                     <a
                         tw="hover:text-green"
@@ -36,6 +37,7 @@ const Header = ({ toggleState, handleToggleState }: any) => {
                     </a>
                 ))}
             </nav>
+            <Mobile />
         </header>
     );
 };
