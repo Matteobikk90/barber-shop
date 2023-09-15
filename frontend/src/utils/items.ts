@@ -1,6 +1,6 @@
 import { IdTextPairTypes } from "types/id-text-pair.types";
 import { SocialsTypes } from "types/social.types";
-import frameli from "assets/images/brands/frameli.png";
+import framesi from "assets/images/brands/framesi.png";
 import level from "assets/images/brands/level.png";
 import fanola from "assets/images/brands/fanola.png";
 import uppercut from "assets/images/brands/uppercut.png";
@@ -45,7 +45,7 @@ export const brands: Partial<IdTextPairTypes>[] = [
     {
         id: "framesi",
         text: "Framesi Barber Gen",
-        src: frameli
+        src: framesi
     },
     {
         id: "level",

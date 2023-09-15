@@ -12,13 +12,9 @@ html {
     scroll-padding-top: 7.875rem;
 }
 
-@media (max-width: 639px) {
+@media (max-width: 768px) {
     html {
-        scroll-padding-top: 4.25rem;
-    }
-
-    main {
-        padding-top: 0;
+        scroll-padding-top: 4rem;
     }
 }
 
