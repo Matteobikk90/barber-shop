@@ -20,23 +20,26 @@ const MobileNavbar = () => {
             </button>
             <ul
                 css={[
-                    tw`w-full flex top-0 justify-evenly absolute flex-col text-center mt-[4rem] translate-x-[-100%] transition duration-500 bg-cream h-[calc(100vh - 4rem)] text-black`,
+                    tw`w-full flex top-0 justify-evenly absolute flex-col text-center mt-[4rem] ml-[-1rem] translate-x-[-100%] transition duration-500 bg-cream h-[calc(100vh - 4rem)] text-black`,
                     toggleState.isMobileNavbarOpen && tw`translate-x-0`
                 ]}
             >
-                {navLinks.map(({ text, id }) => (
-                    <li tw="relative" key={id}>
-                        <a
-                            tw="hover:text-green"
-                            onClick={() =>
-                                handleToggleState("isMobileNavbarOpen")
-                            }
-                            href={`#${id}`}
-                        >
-                            {text}
-                        </a>
-                    </li>
-                ))}
+                {navLinks.map(
+                    ({ text, id }) =>
+                        text && (
+                            <li tw="relative" key={id}>
+                                <a
+                                    tw="hover:text-green"
+                                    onClick={() =>
+                                        handleToggleState("isMobileNavbarOpen")
+                                    }
+                                    href={`#${id}`}
+                                >
+                                    {text}
+                                </a>
+                            </li>
+                        )
+                )}
             </ul>
         </nav>
     );

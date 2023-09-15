@@ -54,6 +54,12 @@ const Step2 = ({ service, handleBookingInfo }: Partial<BookingTypes>) => {
 
     useEffect(() => {
         getBookings().then((item) => setBookedBookings(item));
+        console.log(
+            bookedBookings.sort(
+                (a: BookingTypes, b: BookingTypes) =>
+                    +new Date(a.start_time) - +new Date(b.start_time)
+            )
+        );
     }, []);
 
     return (
