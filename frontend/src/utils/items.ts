@@ -10,11 +10,11 @@ import whatsapp from "assets/images/socials/whatsapp.svg";
 
 export const navLinks: Partial<IdTextPairTypes>[] = [
     // {
-    //     id: "products",
+    //     id: "prodotti",
     //     text: "Prodotti"
     // },
     {
-        id: "services",
+        id: "servizi",
         text: "Servizi"
     },
     {
@@ -23,11 +23,11 @@ export const navLinks: Partial<IdTextPairTypes>[] = [
         src: "home"
     },
     // {
-    //     id: "gallery",
+    //     id: "galleria",
     //     text: "Galleria"
     // },
     {
-        id: "contact",
+        id: "contatti",
         text: "Contatti"
     }
 ];

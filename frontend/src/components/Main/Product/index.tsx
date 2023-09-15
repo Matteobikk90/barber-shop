@@ -6,7 +6,7 @@ import "twin.macro";
 
 const Product = () => (
     <section
-        id="products"
+        id="prodotti"
         tw="overflow-hidden grid grid-cols-[repeat(2, 1fr)] md:grid-cols-none relative bg-contain bg-center"
         style={{ backgroundImage: `url(${wood})` }}
     >

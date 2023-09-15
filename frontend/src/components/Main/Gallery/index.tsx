@@ -6,7 +6,7 @@ import "twin.macro";
 
 const Gallery = () => {
     return (
-        <section id="gallery" tw=" p-[2rem] bg-green">
+        <section id="galleria" tw=" p-[2rem] bg-green">
             <h2 tw="text-xxl text-cream text-center">
                 <strong>Galleria</strong>
             </h2>

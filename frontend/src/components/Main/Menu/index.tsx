@@ -4,7 +4,7 @@ import prism from "assets/images/prism.png";
 import "twin.macro";
 
 const Menu = () => (
-    <section id="services" tw="text-cream">
+    <section id="servizi" tw="text-cream">
         <div tw="h-[calc(50dvh - 2.109rem)] text-xxl bg-black text-center p-[2rem]">
             <h2>
                 <strong>Servizi</strong>
