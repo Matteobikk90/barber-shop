@@ -13,7 +13,8 @@ export const handleSubmitBooking = async (
         start_time,
         end_time,
         phone,
-        email
+        email,
+        readable_start_time
     }: BookingTypes,
     next: () => void
 ) => {
@@ -27,7 +28,8 @@ export const handleSubmitBooking = async (
             end_time,
             phone,
             email,
-            id: Timestamp.now()
+            id: Timestamp.now(),
+            readable_start_time
         });
         next();
     } catch (err) {
