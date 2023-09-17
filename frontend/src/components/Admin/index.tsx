@@ -36,19 +36,19 @@ const AdminPanel = () => {
     }, []);
 
     return (
-        <section tw="flex flex-row flex-wrap gap-[1rem] m-[2rem 1rem] bg-cream">
+        <section tw="flex flex-row flex-wrap gap-[1rem] m-[2rem 1rem]">
             {handleBookings()?.map((item) => (
                 <article
                     key={item.date}
                     tw="flex gap-[0.25rem] rounded text-xl"
                 >
-                    <strong>
-                        <h2 tw="w-[50px] text-center">{item.date}</h2>
-                    </strong>
+                    <h2 tw="w-[50px] text-center">
+                        <strong>{item.date}</strong>
+                    </h2>
                     {item.bookings.map((booking: BookingTypes) => (
                         <div
                             key={booking.start_time}
-                            tw="w-[11.25rem] h-[12.25rem] p-[1rem] flex gap-[0.25rem] border border-black"
+                            tw="w-[11.25rem] h-[12.25rem] p-[1rem] flex flex-col gap-[0.25rem] border border-black"
                         >
                             <p>{booking.name}</p>
                             <p>{booking.surname}</p>
