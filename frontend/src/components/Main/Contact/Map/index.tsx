@@ -24,10 +24,11 @@ const Map = () => {
             center={centerMap}
             zoom={defaultMapZoom}
             minZoom={5}
-            maxZoom={20}
+            maxZoom={18}
             trackResize={false}
             touchZoom={false}
             scrollWheelZoom={false}
+            dragging={false}
         >
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
