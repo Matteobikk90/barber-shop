@@ -36,30 +36,36 @@ const AdminPanel = () => {
     }, []);
 
     return (
-        <section tw="flex flex-row flex-wrap gap-[1rem] m-[2rem 1rem]">
-            {handleBookings()?.map((item) => (
+        <section id="calendar" tw="flex flex-row gap-[2rem] m-[2rem 1rem]">
+            {handleBookings()?.map((item: any) => (
                 <article
                     key={item.date}
-                    tw="flex gap-[0.25rem] rounded text-xl"
+                    tw="flex flex-col gap-[0.25rem] rounded items-center"
                 >
-                    <h2 tw="w-[50px] text-center">
+                    <h2 tw="w-[120px] text-center">
                         <strong>{item.date}</strong>
                     </h2>
-                    {item.bookings.map((booking: BookingTypes) => (
-                        <div
-                            key={booking.start_time}
-                            tw="w-[11.25rem] h-[12.25rem] p-[1rem] flex flex-col gap-[0.25rem] border border-black"
-                        >
-                            <p>{booking.name}</p>
-                            <p>{booking.surname}</p>
-                            <p>{booking.service}</p>
-                            <p>{booking.email}</p>
-                            <p>{booking.phone}</p>
-                            <strong>
-                                <p>{booking.start_time}</p>
-                            </strong>
-                        </div>
-                    ))}
+                    {item.bookings.map(
+                        ({
+                            start_time,
+                            name,
+                            surname,
+                            phone,
+                            service
+                        }: BookingTypes) => (
+                            <div
+                                key={start_time}
+                                tw="w-[13rem] h-[8rem] p-[0.25rem] flex flex-col gap-[0.25rem] border border-black"
+                            >
+                                <strong>
+                                    <p>{start_time.split(" ")[1]}</p>
+                                </strong>
+                                <p>{`${name} ${surname}`}</p>
+                                <p>{service}</p>
+                                <p>{phone}</p>
+                            </div>
+                        )
+                    )}
                 </article>
             ))}
         </section>
