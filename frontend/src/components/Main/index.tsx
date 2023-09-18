@@ -21,14 +21,15 @@ const Main = ({ toggleState, handleToggleState }: any) => {
                 ]}
             >
                 {toggleState.isBooking ? (
-                    <Booking handleToggleState={handleToggleState} />
+                    // <Booking handleToggleState={handleToggleState} />
+                    <div></div>
                 ) : (
                     <>
-                        {/* <Homepage /> */}
+                        <Homepage />
                         {/* <Product /> */}
-                        <Menu />
+                        {/* <Menu /> */}
                         {/* <Gallery /> */}
-                        <Contact />
+                        {/* <Contact /> */}
                     </>
                 )}
             </main>
