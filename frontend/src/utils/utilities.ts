@@ -7,3 +7,5 @@ export const formatOptions: Intl.DateTimeFormatOptions = {
     month: "2-digit",
     day: "2-digit"
 };
+
+export const today = new Date().toISOString().split("T")[0];

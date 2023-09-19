@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { today } from "utils/utilities";
 import { getBookings } from "services/getBookings";
 import { BookingTypes } from "types/booking.types";
 /** @jsxImportSource @emotion/react */
@@ -6,7 +7,7 @@ import "twin.macro";
 
 const AdminPanel = () => {
     const [bookedBookings, setBookedBookings] = useState<any>([]);
-    const [selectedDate, setSelectedDate] = useState("");
+    const [selectedDate, setSelectedDate] = useState(today);
 
     const handleBookings = () => {
         const sortedDate = bookedBookings.sort(
