@@ -30,10 +30,14 @@ const Form = () => {
             >
                 <div tw="flex items-center justify-between gap-[1rem] mb-[1.5rem]">
                     <div tw="w-full">
-                        <label tw="pb-[0.5rem] text-black font-semiBold block">
+                        <label
+                            htmlFor="name"
+                            tw="pb-[0.5rem] text-black font-semiBold block"
+                        >
                             Nome
                         </label>
                         <input
+                            id="name"
                             required
                             css={[
                                 tw`border border-black text-black rounded-[0.25rem] bg-[transparent] p-[0.5rem] w-full focus:border-2 outline-none`,
@@ -47,10 +51,14 @@ const Form = () => {
                         />
                     </div>
                     <div tw="w-full">
-                        <label tw="pb-[0.5rem] text-black font-semiBold block">
+                        <label
+                            htmlFor="phone"
+                            tw="pb-[0.5rem] text-black font-semiBold block"
+                        >
                             Telefono
                         </label>
                         <input
+                            id="phone"
                             required
                             css={[
                                 tw`border border-black text-black rounded-[0.25rem] bg-[transparent] p-[0.5rem] w-full focus:border-2 outline-none`,
@@ -64,10 +72,14 @@ const Form = () => {
                         />
                     </div>
                 </div>
-                <label tw="text-black font-semiBold block mb-[0.5rem]">
+                <label
+                    htmlFor="email"
+                    tw="text-black font-semiBold block mb-[0.5rem]"
+                >
                     Email
                 </label>
                 <input
+                    id="email"
                     required
                     css={[
                         tw`border border-black text-black rounded-[0.25rem] bg-[transparent] p-[0.5rem] w-full focus:border-2 outline-none`,

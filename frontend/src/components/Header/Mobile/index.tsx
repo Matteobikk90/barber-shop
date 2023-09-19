@@ -10,7 +10,7 @@ const MobileNavbar = () => {
 
     return (
         <nav tw="md:flex hidden items-center justify-between w-full">
-            <img width={150} alt="Logo" src={logo} />
+            <img width={150} alt="Blendon Barber Shop Mobile Logo" src={logo} />
             <button
                 tw="items-center hidden md:flex justify-between gap-[0.5rem]"
                 onClick={() => handleToggleState("isMobileNavbarOpen")}

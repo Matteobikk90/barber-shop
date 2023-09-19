@@ -29,7 +29,7 @@ const Header = ({ toggleState, handleToggleState }: any) => {
                                 loading="lazy"
                                 width={300}
                                 src={logo}
-                                alt="Logo"
+                                alt="Blendon Barber Shop Logo"
                             />
                         ) : null}
                         {text}

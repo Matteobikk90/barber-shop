@@ -27,7 +27,11 @@ const Gallery = () => {
                 removeArrowOnDeviceType={["tablet", "mobile"]}
             >
                 {gallery.map(({ src, id }) => (
-                    <img key={id} src={src} alt={id} />
+                    <img
+                        key={id}
+                        src={src}
+                        alt={`Blendon Barber Shop - ${id}`}
+                    />
                 ))}
             </Carousel>
         </section>
