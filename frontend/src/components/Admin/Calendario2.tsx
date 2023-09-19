@@ -46,7 +46,7 @@ const AdminPanel = () => {
                 id="bookings"
             >
                 {handleBookings()?.map((item: any) => (
-                    <option key={item.data} value={item.data}>
+                    <option key={item.date} value={item.date}>
                         {item.date}
                     </option>
                 ))}
