@@ -1,7 +1,6 @@
 import { useCallback } from "react";
 import { centerMap, defaultMapZoom } from "utils/map";
 import L from "leaflet";
-import pin from "assets/images/pin.svg";
 
 const useLeaflet = (mapRef: any) => {
     const handleResize = useCallback(() => {
@@ -10,7 +9,7 @@ const useLeaflet = (mapRef: any) => {
     }, [mapRef?.target]);
 
     const marker = L.icon({
-        iconUrl: pin,
+        iconUrl: "https://blendon-barber-shop.it/assets/images/pin.png",
         iconSize: [50, 50],
         popupAnchor: [0, 0]
     });

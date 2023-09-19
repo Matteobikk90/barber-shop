@@ -1,7 +1,7 @@
 import { services } from "utils/items";
-import prism from "assets/images/prism.png";
 /** @jsxImportSource @emotion/react */
 import "twin.macro";
+import { url } from "inspector";
 
 const Menu = () => (
     <section id="servizi" tw="text-cream">
@@ -14,7 +14,10 @@ const Menu = () => (
             <article tw="p-[1rem] border border-green max-w-[950px] m-[-200px auto 0]">
                 <ul
                     tw="text-[2.5rem] uppercase sm:text-xxl"
-                    style={{ backgroundImage: `url(${prism})` }}
+                    style={{
+                        backgroundImage:
+                            "url(https://blendon-barber-shop.it/assets/images/prism.png)"
+                    }}
                 >
                     {services.map(({ id, price, text }) => (
                         <li

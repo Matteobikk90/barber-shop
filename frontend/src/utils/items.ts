@@ -1,20 +1,5 @@
 import { IdTextPairTypes } from "types/id-text-pair.types";
 import { SocialsTypes } from "types/social.types";
-import framesi from "assets/images/brands/framesi.png";
-import level from "assets/images/brands/level.png";
-import fanola from "assets/images/brands/fanola.png";
-import uppercut from "assets/images/brands/uppercut.png";
-import agiva from "assets/images/brands/agiva.png";
-import instagram from "assets/images/socials/instagram.svg";
-import whatsapp from "assets/images/socials/whatsapp.svg";
-import gallery1 from "assets/images/gallery/gallery1.jpg";
-import gallery2 from "assets/images/gallery/gallery2.jpg";
-import gallery3 from "assets/images/gallery/gallery3.jpg";
-import gallery4 from "assets/images/gallery/gallery4.jpg";
-import gallery5 from "assets/images/gallery/gallery5.jpg";
-import gallery6 from "assets/images/gallery/gallery6.jpg";
-import gallery7 from "assets/images/gallery/gallery7.jpg";
-import gallery8 from "assets/images/gallery/gallery8.jpg";
 
 export const navLinks: Partial<IdTextPairTypes>[] = [
     // {
@@ -43,72 +28,76 @@ export const navLinks: Partial<IdTextPairTypes>[] = [
 export const gallery: Partial<IdTextPairTypes>[] = [
     {
         id: "Gallery 1",
-        src: gallery1
+        src: "https://blendon-barber-shop.it/assets/images/gallery/gallery1.jpg"
     },
     {
         id: "Gallery 2",
-        src: gallery2
+        src: "https://blendon-barber-shop.it/assets/images/gallery/gallery2.jpg"
     },
     {
         id: "Gallery 3",
-        src: gallery3
+        src: "https://blendon-barber-shop.it/assets/images/gallery/gallery3.jpg"
     },
     {
         id: "Gallery 4",
-        src: gallery4
+        src: "https://blendon-barber-shop.it/assets/images/gallery/gallery4.jpg"
     },
     {
         id: "Gallery 5",
-        src: gallery5
+        src: "https://blendon-barber-shop.it/assets/images/gallery/gallery5.jpg"
     },
     {
         id: "Gallery 6",
-        src: gallery6
+        src: "https://blendon-barber-shop.it/assets/images/gallery/gallery6.jpg"
     },
     {
         id: "Gallery 7",
-        src: gallery7
+        src: "https://blendon-barber-shop.it/assets/images/gallery/gallery7.jpg"
     },
     {
         id: "Gallery 8",
-        src: gallery8
+        src: "https://blendon-barber-shop.it/assets/images/gallery/gallery8.jpg"
     }
 ];
 
 export const socials: SocialsTypes[] = [
     {
         url: "blendon_barbershop",
-        src: instagram,
+        src: "https://blendon-barber-shop.it/assets/images/socials/instagram.svg",
         id: "Instagram"
     },
-    { url: "https://wa.me/390110745767", src: whatsapp, id: "WhatsApp" }
+    {
+        url: "https://wa.me/390110745767",
+        src: "https://blendon-barber-shop.it/assets/images/socials/whatsapp.svg",
+        id: "WhatsApp"
+    }
 ];
 
 export const brands: Partial<IdTextPairTypes>[] = [
     {
         id: "framesi",
         text: "Framesi Barber Gen",
-        src: framesi
+        src: "https://blendon-barber-shop.it/assets/images/assets/images/brands/framesi.png"
     },
     {
         id: "level",
         text: "L3V3L",
-        src: level
+        src: "https://blendon-barber-shop.it/assets/images/assets/images/brands/level.png"
     },
     {
         id: "uppercut",
         text: "UPPERCUT",
-        src: uppercut
+        src: "https://blendon-barber-shop.it/assets/images/assets/images/brands/uppercut.png"
     },
     {
         id: "fanola",
         text: "Fanola",
-        src: fanola
+        src: "https://blendon-barber-shop.it/assets/images/assets/images/brands/fanola.png"
     },
     {
         id: "agiva",
         text: "Agiva",
-        src: agiva
+        src: "https://blendon-barber-shop.it/assets/images/assets/images/brands/agiva.png"
     }
 ];
 export const services: Partial<IdTextPairTypes>[] = [

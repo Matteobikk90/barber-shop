@@ -1,6 +1,5 @@
 import Mobile from "components/Header/Mobile";
 import { navLinks } from "utils/items";
-import logo from "assets/images/logo.png";
 /** @jsxImportSource @emotion/react */
 import tw from "twin.macro";
 
@@ -28,7 +27,7 @@ const Header = ({ toggleState, handleToggleState }: any) => {
                                 tw="sm:w-[150px]"
                                 loading="lazy"
                                 width={300}
-                                src={logo}
+                                src="https://blendon-barber-shop.it/assets/images/logo.png"
                                 alt="Blendon Barber Shop Logo"
                             />
                         ) : null}
