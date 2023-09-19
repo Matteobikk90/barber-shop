@@ -3,30 +3,32 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 /** @jsxImportSource @emotion/react */
 import "twin.macro";
+import { gallery } from "utils/items";
 
 const Gallery = () => {
     return (
-        <section id="galleria" tw=" p-[2rem] bg-green">
-            <h2 tw="text-xxl text-cream text-center">
+        <section
+            id="galleria"
+            tw="p-[2rem] md:p-[1rem] sm:p-[2rem 1rem] bg-green shadow"
+        >
+            <h2 tw="text-xxl text-cream text-center mb-[3rem]">
                 <strong>Galleria</strong>
             </h2>
             <Carousel
-                swipeable={false}
-                draggable={false}
+                showDots={true}
                 responsive={carouselGalleryConfig}
+                ssr={true}
                 infinite={true}
                 autoPlay={true}
                 autoPlaySpeed={5000}
-                customTransition="all .5"
-                transitionDuration={500}
-                containerClass="carousel-container"
+                keyBoardControl={true}
+                customTransition="all 1s"
+                transitionDuration={1000}
                 removeArrowOnDeviceType={["tablet", "mobile"]}
-                dotListClass="custom-dot-list-style"
             >
-                <div>Item 1</div>
-                <div>Item 2</div>
-                <div>Item 3</div>
-                <div>Item 4</div>
+                {gallery.map(({ src, id }) => (
+                    <img key={id} src={src} alt={id} />
+                ))}
             </Carousel>
         </section>
     );

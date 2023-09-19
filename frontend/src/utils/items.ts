@@ -7,6 +7,14 @@ import uppercut from "assets/images/brands/uppercut.png";
 import agiva from "assets/images/brands/agiva.png";
 import instagram from "assets/images/socials/instagram.svg";
 import whatsapp from "assets/images/socials/whatsapp.svg";
+import gallery1 from "assets/images/gallery/gallery1.jpg";
+import gallery2 from "assets/images/gallery/gallery2.jpg";
+import gallery3 from "assets/images/gallery/gallery3.jpg";
+import gallery4 from "assets/images/gallery/gallery4.jpg";
+import gallery5 from "assets/images/gallery/gallery5.jpg";
+import gallery6 from "assets/images/gallery/gallery6.jpg";
+import gallery7 from "assets/images/gallery/gallery7.jpg";
+import gallery8 from "assets/images/gallery/gallery8.jpg";
 
 export const navLinks: Partial<IdTextPairTypes>[] = [
     // {
@@ -22,13 +30,48 @@ export const navLinks: Partial<IdTextPairTypes>[] = [
         text: "",
         src: "home"
     },
-    // {
-    //     id: "galleria",
-    //     text: "Galleria"
-    // },
+    {
+        id: "galleria",
+        text: "Galleria"
+    },
     {
         id: "contatti",
         text: "Contatti"
+    }
+];
+
+export const gallery: Partial<IdTextPairTypes>[] = [
+    {
+        id: "Gallery 1",
+        src: gallery1
+    },
+    {
+        id: "Gallery 2",
+        src: gallery2
+    },
+    {
+        id: "Gallery 3",
+        src: gallery3
+    },
+    {
+        id: "Gallery 4",
+        src: gallery4
+    },
+    {
+        id: "Gallery 5",
+        src: gallery5
+    },
+    {
+        id: "Gallery 6",
+        src: gallery6
+    },
+    {
+        id: "Gallery 7",
+        src: gallery7
+    },
+    {
+        id: "Gallery 8",
+        src: gallery8
     }
 ];
 
