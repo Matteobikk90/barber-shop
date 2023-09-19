@@ -22,10 +22,7 @@ const Step2 = ({ service, handleBookingInfo }: Partial<BookingTypes>) => {
 
     const formatDateTime = (bookingDateTime: any) => {
         let allowBookingBasedOnService: any = new Date(
-            bookingDateTime.getTime() -
-                (service === "Taglio + rifinitura barba"
-                    ? thirtyMinutes
-                    : fifteenMinutes)
+            bookingDateTime.getTime() - fifteenMinutes
         );
         let serviceDuration: any = new Date(
             bookingDateTime.getTime() +
