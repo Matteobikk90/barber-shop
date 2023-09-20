@@ -8,7 +8,7 @@ const Items = () => {
 
     return (
         <article tw="h-full p-[1rem]">
-            <ul tw="w-full h-full bg-black text-white flex flex-col justify-between">
+            <ul tw="w-full h-full bg-black text-cream flex flex-col justify-between">
                 {brands.map(({ id, src }) => (
                     <li
                         key={id}
@@ -23,20 +23,20 @@ const Items = () => {
                             }
                             tw="flex items-center gap-[2rem] text-xxl"
                         >
-                            {/* <img
+                            <img
                                 loading="lazy"
-                                width={50}
+                                width={80}
                                 src={src}
-                                alt={`Product ${id}`}
-                            /> */}
-                            {/* <span tw="flex flex-col">
-                                <h3 tw="font-semiBold">{text}</h3>
-                                <em tw="text-lg">
-                                    Il miglior rasoio per la barba
-                                </em>
-                            </span> */}
+                                alt={`Blendon Barber SHop - Brand ${id}`}
+                            />
                         </button>
-                        Scopri
+                        <div>
+                            <h3>Scopri</h3>
+                            <img
+                                alt="Arrow"
+                                src="https://blendon-barber-shop.it/assets/images/arrow.svg"
+                            />
+                        </div>
                     </li>
                 ))}
             </ul>

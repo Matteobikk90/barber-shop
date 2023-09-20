@@ -96,27 +96,27 @@ export const brands: Partial<IdTextPairTypes>[] = [
     {
         id: "framesi",
         text: "Framesi Barber Gen",
-        src: "https://blendon-barber-shop.it/assets/images/assets/images/brands/framesi.png"
+        src: "https://blendon-barber-shop.it/assets/images/brands/framesi.png"
     },
     {
         id: "level",
         text: "L3V3L",
-        src: "https://blendon-barber-shop.it/assets/images/assets/images/brands/level.png"
+        src: "https://blendon-barber-shop.it/assets/images/brands/level.png"
     },
     {
         id: "uppercut",
         text: "UPPERCUT",
-        src: "https://blendon-barber-shop.it/assets/images/assets/images/brands/uppercut.png"
+        src: "https://blendon-barber-shop.it/assets/images/brands/uppercut.png"
     },
     {
         id: "fanola",
         text: "Fanola",
-        src: "https://blendon-barber-shop.it/assets/images/assets/images/brands/fanola.png"
+        src: "https://blendon-barber-shop.it/assets/images/brands/fanola.png"
     },
     {
         id: "agiva",
         text: "Agiva",
-        src: "https://blendon-barber-shop.it/assets/images/assets/images/brands/agiva.png"
+        src: "https://blendon-barber-shop.it/assets/images/brands/agiva.png"
     }
 ];
 export const services: Partial<IdTextPairTypes>[] = [
