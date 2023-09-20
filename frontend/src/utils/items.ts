@@ -25,6 +25,25 @@ export const navLinks: Partial<IdTextPairTypes>[] = [
     }
 ];
 
+export const shop: Partial<IdTextPairTypes>[] = [
+    {
+        id: "Shop 1",
+        src: "https://blendon-barber-shop.it/assets/images/shop/shop1.jpg"
+    },
+    {
+        id: "Shop 2",
+        src: "https://blendon-barber-shop.it/assets/images/shop/shop2.jpg"
+    },
+    {
+        id: "Shop 3",
+        src: "https://blendon-barber-shop.it/assets/images/shop/shop3.jpg"
+    },
+    {
+        id: "Shop 5",
+        src: "https://blendon-barber-shop.it/assets/images/shop/shop5.jpg"
+    }
+];
+
 export const gallery: Partial<IdTextPairTypes>[] = [
     {
         id: "Gallery 1",

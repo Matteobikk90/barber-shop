@@ -1,7 +1,6 @@
 import { carouselProductConfig } from "utils/carousels";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import shampo from "assets/images/products/shampo.jpg";
 /** @jsxImportSource @emotion/react */
 import "twin.macro";
 import { useBarberShop } from "context/barberShop";
@@ -22,12 +21,6 @@ const Thumbnail = () => {
                         preparare i capelli per la notte.
                     </em>
                 </div>
-                <img
-                    loading="lazy"
-                    tw="max-w-[190px]"
-                    src={shampo}
-                    alt="Shampo"
-                />
             </div>
             <Carousel
                 responsive={carouselProductConfig}

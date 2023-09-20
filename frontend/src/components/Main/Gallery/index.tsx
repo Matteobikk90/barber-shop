@@ -1,9 +1,9 @@
 import { carouselGalleryConfig } from "utils/carousels";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import { gallery } from "utils/items";
 /** @jsxImportSource @emotion/react */
 import "twin.macro";
-import { gallery } from "utils/items";
 
 const Gallery = () => {
     return (
@@ -21,7 +21,6 @@ const Gallery = () => {
                 infinite={true}
                 autoPlay={true}
                 autoPlaySpeed={5000}
-                keyBoardControl={true}
                 customTransition="all 1s"
                 transitionDuration={1000}
                 removeArrowOnDeviceType={["tablet", "mobile"]}

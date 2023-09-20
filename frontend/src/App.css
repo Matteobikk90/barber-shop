@@ -43,6 +43,11 @@ html {
     object-fit: cover;
 }
 
+#home .react-multi-carousel-item img {
+    object-fit: contain;
+    height: 100%;
+}
+
 #calendar {
     font-family: "Work Sans", sans-serif !important;
 }
