@@ -16,11 +16,11 @@ const Thumbnail = () => {
         return activeBrand?.map(({ id, text, price, src }) => (
             <div
                 key={id}
-                tw="w-full h-full bg-white flex items-center justify-between"
+                tw="w-full h-full bg-white flex gap-[2rem] flex-col items-center p-[3rem] justify-between"
             >
                 <div tw="flex flex-col gap-[1rem]">
-                    <h3 tw="font-semiBold">{id}</h3>
-                    <em tw="text-sm leading-5">{text}</em>
+                    <h3 tw="text-xl font-semiBold">{id}</h3>
+                    <em tw="text-lg leading-5">{text}</em>
                 </div>
                 <img
                     loading="lazy"
@@ -32,17 +32,16 @@ const Thumbnail = () => {
     };
 
     return (
-        <article tw="h-full p-[1rem] bg-cream text-black">
+        <article tw="h-full p-[1rem] bg-cream text-black" id="thumbnails">
             <Carousel
                 showDots={true}
                 responsive={carouselProductConfig}
                 ssr={true}
-                infinite={true}
-                autoPlay={true}
+                // infinite={true}
+                // autoPlay={true}
                 autoPlaySpeed={5000}
                 customTransition="all 1s"
                 transitionDuration={1000}
-                removeArrowOnDeviceType={["tablet", "mobile"]}
             >
                 {handleActiveBrandSlide()}
             </Carousel>

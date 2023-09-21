@@ -18,12 +18,19 @@ const Brands = () => {
                         ]}
                     >
                         <button
-                            onClick={() =>
+                            onClick={() => {
+                                document
+                                    .querySelector("#thumbnails")!
+                                    .scrollIntoView({
+                                        behavior: "smooth",
+                                        block: "start",
+                                        inline: "start"
+                                    });
                                 setActiveFilter({
                                     name: "selectedBrand",
                                     value: id
-                                })
-                            }
+                                });
+                            }}
                             tw="flex items-center w-full justify-between gap-[2rem] text-xxl"
                         >
                             <img

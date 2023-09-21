@@ -48,6 +48,19 @@ html {
     height: 100%;
 }
 
+#prodotti .react-multi-carousel-item img {
+    height: 20rem;
+    object-fit: contain;
+}
+
+#prodotti .react-multiple-carousel__arrow {
+    bottom: 2rem;
+}
+
+#prodotti .react-multi-carousel-dot-list {
+    gap: 0.5rem;
+}
+
 #calendar {
     font-family: "Work Sans", sans-serif !important;
 }

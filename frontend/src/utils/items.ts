@@ -2,10 +2,10 @@ import { IdTextPairTypes } from "types/id-text-pair.types";
 import { SocialsTypes } from "types/social.types";
 
 export const navLinks: Partial<IdTextPairTypes>[] = [
-    // {
-    //     id: "prodotti",
-    //     text: "Prodotti"
-    // },
+    {
+        id: "prodotti",
+        text: "Prodotti"
+    },
     {
         id: "servizi",
         text: "Servizi"
@@ -210,7 +210,7 @@ export const brands: Partial<IdTextPairTypes>[] = [
             {
                 id: "Tinted Gel Black",
                 text: "Gel Colorante, copre i capelli bianchi al 100% senza colare semipermanete, di facile applicazione  si lava facilmente",
-                src: "https://blendon-barber-shop.it/assets/images/brands/level/4.svg",
+                src: "https://blendon-barber-shop.it/assets/images/brands/level/3.svg",
                 price: 20
             }
         ]
