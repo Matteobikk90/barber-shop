@@ -196,20 +196,20 @@ export const brands: Partial<IdTextPairTypes>[] = [
         src: "https://blendon-barber-shop.it/assets/images/brands/level.png",
         products: [
             {
-                id: "11 Tipi di Hair Wax Differenti da 155ml",
-                text: "11 Wax differenti, una per ogni esigenza.",
+                id: "Hair Cream Gel - 500ml",
+                text: "Gel cremoso e nutriente, dona un’effetto naturale con la possibilità di rimodellare l’acconciatura durante la giornata",
                 src: "https://blendon-barber-shop.it/assets/images/brands/level/1.svg",
                 price: 20
             },
             {
-                id: "Polveri Styling Dust  Agiva 01/02/03 Volume - 20g",
-                text: "Polvere volumizzante ad effetto Opaco! Diverse Tenute",
+                id: "Slime Gel, Extra strong",
+                text: "Tenuta e volume per tutto il giorno.  Capelli lucenti e in salute grazie all’effetto nutriente della vitamine B5",
                 src: "https://blendon-barber-shop.it/assets/images/brands/level/3.svg",
                 price: 20
             },
             {
-                id: "Gel da rasatura Freshness 1000ml",
-                text: "Shaving gel ad effetto freddo",
+                id: "Tinted Gel Black",
+                text: "Gel Colorante, copre i capelli bianchi al 100% senza colare semipermanete, di facile applicazione  si lava facilmente",
                 src: "https://blendon-barber-shop.it/assets/images/brands/level/4.svg",
                 price: 20
             }
@@ -252,21 +252,9 @@ export const brands: Partial<IdTextPairTypes>[] = [
                 price: 20
             },
             {
-                id: "Shampoo da Lavello  10 Litri - MAXI FORMATO",
-                text: "Quello che tutti dovrebbero avere sul proprio lavello Quello che tutti dovrebbero avere sul proprio lavello. Codice: N.1 pz da 10 Litri",
-                src: "https://blendon-barber-shop.it/assets/images/brands/fanola/6.svg",
-                price: 20
-            },
-            {
-                id: "Shampoo Daily",
-                text: "Shampoo per lavaggi frequenti nutriente nel formato da Salone e da Rivendita.",
-                src: "https://blendon-barber-shop.it/assets/images/brands/fanola/7.svg",
-                price: 20
-            },
-            {
                 id: "Permanente Curling Pro - Tutti i capelli",
                 text: "Sistema ondulante (Liquido ondulante +Neutralizzante). La composizione é priva di tioglicolati. Codice: 1Conf. 1pz 250ml + 1pz 250ml  L3PCP",
-                src: "https://blendon-barber-shop.it/assets/images/brands/fanola/8.svg",
+                src: "https://blendon-barber-shop.it/assets/images/brands/fanola/9.svg",
                 price: 20
             }
         ]
@@ -277,21 +265,21 @@ export const brands: Partial<IdTextPairTypes>[] = [
         src: "https://blendon-barber-shop.it/assets/images/brands/agiva.png",
         products: [
             {
-                id: "Deluxe Pomade 100g",
-                text: "Pomata Lucida per un look pettinato dalla tenuta estrema. Codice: N.1 pz 100g  BLUPP003",
+                id: "11 Tipi di Hair Wax Differenti da 155ml",
+                text: "11 Wax differenti, una per ogni esigenza.",
                 src: "https://blendon-barber-shop.it/assets/images/brands/agiva/1.svg",
                 price: 20
             },
             {
-                id: "Matte Pomade",
-                text: "Pomata Opaca, dalla media tenuta, per un look ordinato e opaco. Codice: N.1 pz da 100g BLUPP002",
-                src: "https://blendon-barber-shop.it/assets/images/brands/agiva/2.svg",
+                id: "Polveri Styling Dust  Agiva 01/02/03 Volume - 20g",
+                text: "Polvere volumizzante ad effetto Opaco! Diverse Tenute",
+                src: "https://blendon-barber-shop.it/assets/images/brands/agiva/3.svg",
                 price: 20
             },
             {
-                id: "Clay",
-                text: "Pasta Clay dalla tenuta extra strong per look spettinati e leggermente lucidi. Codice: N.1 pz da 100g BLUPP051",
-                src: "https://blendon-barber-shop.it/assets/images/brands/agiva/3.svg",
+                id: "Gel da rasatura Freshness 1000ml",
+                text: "Shaving gel ad effetto freddo",
+                src: "https://blendon-barber-shop.it/assets/images/brands/agiva/4.svg",
                 price: 20
             }
         ]

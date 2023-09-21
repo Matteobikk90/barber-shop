@@ -35,6 +35,7 @@ const Brands = () => {
                             <div tw="flex items-center justify-between gap-[1rem]">
                                 <h3>Scopri</h3>
                                 <img
+                                    loading="lazy"
                                     width={32}
                                     alt="Arrow"
                                     src="https://blendon-barber-shop.it/assets/images/arrow.svg"

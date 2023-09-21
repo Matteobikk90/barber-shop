@@ -14,12 +14,16 @@ const Thumbnail = () => {
         )?.products;
 
         return activeBrand?.map(({ id, text, price, src }) => (
-            <div tw="w-full h-full bg-white flex items-center justify-between">
+            <div
+                key={id}
+                tw="w-full h-full bg-white flex items-center justify-between"
+            >
                 <div tw="flex flex-col gap-[1rem]">
                     <h3 tw="font-semiBold">{id}</h3>
                     <em tw="text-sm leading-5">{text}</em>
                 </div>
                 <img
+                    loading="lazy"
                     src={src}
                     alt={`Blendon Barber Shop Product - ${selectedBrand} ${id}`}
                 />
