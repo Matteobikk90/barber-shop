@@ -81,7 +81,7 @@ export const gallery: Partial<IdTextPairTypes>[] = [
 
 export const socials: SocialsTypes[] = [
     {
-        url: "blendon_barbershop",
+        url: "https://instagram.com/blendon_barbershop?igshid=MzRlODBiNWFlZA==",
         src: "https://blendon-barber-shop.it/assets/images/socials/instagram.svg",
         id: "Instagram"
     },
