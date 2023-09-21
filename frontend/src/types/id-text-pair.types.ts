@@ -4,4 +4,5 @@ export type IdTextPairTypes = {
     src: string;
     price: number;
     time: number;
+    products: Partial<IdTextPairTypes>[];
 };

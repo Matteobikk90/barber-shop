@@ -1,4 +1,4 @@
-import Items from "components/Main/Product/Items";
+import Brands from "components/Main/Product/Brands";
 import Thumbnail from "components/Main/Product/Thumbnail";
 /** @jsxImportSource @emotion/react */
 import "twin.macro";
@@ -12,7 +12,7 @@ const Product = () => (
                 "url(https://blendon-barber-shop.it/assets/images/wood.png)"
         }}
     >
-        <Items />
+        <Brands />
         <Thumbnail />
     </section>
 );

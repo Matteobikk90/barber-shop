@@ -1,10 +1,10 @@
 import { useBarberShop } from "context/barberShop";
 import { brands } from "utils/items";
 /** @jsxImportSource @emotion/react */
-import "twin.macro";
+import tw from "twin.macro";
 
-const Items = () => {
-    const { setActiveFilter } = useBarberShop();
+const Brands = () => {
+    const { selectedBrand, setActiveFilter } = useBarberShop();
 
     return (
         <article tw="h-full p-[1rem]">
@@ -12,7 +12,10 @@ const Items = () => {
                 {brands.map(({ id, src }) => (
                     <li
                         key={id}
-                        tw="cursor-pointer flex flex-1 p-[1rem] gap-[1rem] justify-between items-center hover:bg-green text-xxl"
+                        css={[
+                            tw`cursor-pointer flex flex-1 p-[1rem] gap-[1rem] justify-between items-center hover:bg-green text-xxl`,
+                            selectedBrand === id && tw`bg-green`
+                        ]}
                     >
                         <button
                             onClick={() =>
@@ -21,22 +24,23 @@ const Items = () => {
                                     value: id
                                 })
                             }
-                            tw="flex items-center gap-[2rem] text-xxl"
+                            tw="flex items-center w-full justify-between gap-[2rem] text-xxl"
                         >
                             <img
                                 loading="lazy"
                                 width={80}
                                 src={src}
-                                alt={`Blendon Barber SHop - Brand ${id}`}
+                                alt={`Blendon Barber Shop - Brand ${id}`}
                             />
+                            <div tw="flex items-center justify-between gap-[1rem]">
+                                <h3>Scopri</h3>
+                                <img
+                                    width={32}
+                                    alt="Arrow"
+                                    src="https://blendon-barber-shop.it/assets/images/arrow.svg"
+                                />
+                            </div>
                         </button>
-                        <div>
-                            <h3>Scopri</h3>
-                            <img
-                                alt="Arrow"
-                                src="https://blendon-barber-shop.it/assets/images/arrow.svg"
-                            />
-                        </div>
                     </li>
                 ))}
             </ul>
@@ -44,4 +48,4 @@ const Items = () => {
     );
 };
 
-export default Items;
+export default Brands;

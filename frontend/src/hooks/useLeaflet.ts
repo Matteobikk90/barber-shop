@@ -9,7 +9,7 @@ const useLeaflet = (mapRef: any) => {
     }, [mapRef?.target]);
 
     const marker = L.icon({
-        iconUrl: "https://blendon-barber-shop.it/assets/images/pin.png",
+        iconUrl: "https://blendon-barber-shop.it/assets/images/pin.svg",
         iconSize: [50, 50],
         popupAnchor: [0, 0]
     });

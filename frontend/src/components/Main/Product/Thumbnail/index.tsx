@@ -1,46 +1,48 @@
+import { useBarberShop } from "context/barberShop";
+import { brands } from "utils/items";
 import { carouselProductConfig } from "utils/carousels";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 /** @jsxImportSource @emotion/react */
 import "twin.macro";
-import { useBarberShop } from "context/barberShop";
 
 const Thumbnail = () => {
     const { selectedBrand } = useBarberShop();
-    const activeBrandSlides = "";
+    const handleActiveBrandSlide = () => {
+        const activeBrand = brands.find(
+            ({ id }) => id === selectedBrand
+        )?.products;
+
+        return activeBrand?.map(({ id, text, price, src }) => (
+            <div tw="w-full h-full bg-white flex items-center justify-between">
+                <div tw="flex flex-col gap-[1rem]">
+                    <h3 tw="font-semiBold">{id}</h3>
+                    <em tw="text-sm leading-5">{text}</em>
+                </div>
+                <img
+                    src={src}
+                    alt={`Blendon Barber Shop Product - ${selectedBrand} ${id}`}
+                />
+            </div>
+        ));
+    };
 
     return (
         <article tw="h-full p-[1rem] bg-cream text-black">
-            <div tw="w-full h-full bg-white flex items-center justify-between p-[1rem]">
-                <div tw="flex flex-col gap-[1rem]">
-                    <h3 tw="font-semiBold">Shampoo Bain Divalent</h3>
-                    <em tw="text-sm leading-5">
-                        Shampoo equilibrante per radici grasse e lunghezze
-                        sensibilizzate. I prodotti essenziali per completare una
-                        perfetta routine per detergere, trattare, texturizzare e
-                        preparare i capelli per la notte.
-                    </em>
-                </div>
-            </div>
             <Carousel
+                showDots={true}
                 responsive={carouselProductConfig}
-                swipeable={false}
-                draggable={false}
+                ssr={true}
                 infinite={true}
-                autoPlay={false}
-                customTransition="all .5"
-                transitionDuration={500}
-                containerClass="carousel-container"
+                autoPlay={true}
+                autoPlaySpeed={5000}
+                customTransition="all 1s"
+                transitionDuration={1000}
                 removeArrowOnDeviceType={["tablet", "mobile"]}
-                dotListClass="custom-dot-list-style"
             >
-                <div>Item 1</div>
-                <div>Item 2</div>
-                <div>Item 3</div>
-                <div>Item 4</div>
+                {handleActiveBrandSlide()}
             </Carousel>
         </article>
     );
 };
-
 export default Thumbnail;
