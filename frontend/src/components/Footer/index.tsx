@@ -16,7 +16,7 @@ const Footer = () => {
                 <a href="mailto:blendon.barbershop@gmail.com">
                     blendon.barbershop@gmail.com
                 </a>
-                <a href="tel:+390110745767">+39 011 07 45 767</a>
+                <a href="tel:+393428012955">+39 342 801 2955</a>
             </div>
             <div tw="flex flex-col">
                 <h3 tw="text-xxl">Orari:</h3>
