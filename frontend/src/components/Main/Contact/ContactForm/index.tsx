@@ -7,16 +7,15 @@ import tw from "twin.macro";
 
 const Form = () => {
     const contactFormRef = useRef<HTMLFormElement | null>(null);
-    const { formData, handleInputChange, handleReset, handleSubmit } =
-        useContactForm(
-            {
-                name: "",
-                phone: null,
-                email: "",
-                message: ""
-            },
-            contactFormRef
-        );
+    const { formData, handleInputChange, handleSubmit } = useContactForm(
+        {
+            name: "",
+            phone: null,
+            email: "",
+            message: ""
+        },
+        contactFormRef
+    );
     const { handleToggleState, toggleState } = useToggle();
 
     return (

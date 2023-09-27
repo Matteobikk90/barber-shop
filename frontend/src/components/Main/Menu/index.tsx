@@ -1,12 +1,11 @@
 import { services } from "utils/items";
 /** @jsxImportSource @emotion/react */
 import "twin.macro";
-import { url } from "inspector";
 
 const Menu = () => (
     <section id="servizi" tw="text-cream">
-        <div tw="h-[calc(50dvh - 2.109rem)] text-xxl bg-black text-center p-[2rem]">
-            <h2>
+        <div tw="h-[calc(50dvh - 2.109rem)] text-xxl bg-black text-center">
+            <h2 tw="text-xxl text-center p-[3rem 2rem] sm:p-[3rem 1rem]">
                 <strong>Servizi</strong>
             </h2>
         </div>

@@ -9,7 +9,7 @@ const Gallery = () => {
     return (
         <section
             id="galleria"
-            tw="p-[2rem] md:p-[1rem] sm:p-[2rem 1rem] bg-green shadow"
+            tw="p-[3rem 2rem] sm:p-[3rem 1rem] bg-green shadow"
         >
             <h2 tw="text-xxl text-cream text-center mb-[3rem]">
                 <strong>Galleria</strong>

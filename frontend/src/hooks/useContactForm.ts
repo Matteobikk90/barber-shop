@@ -37,8 +37,17 @@ const useContactForm = (
                 process.env.REACT_APP_EMAIL_JS_API
             )
             .then(
-                (result: any) => console.log(result.text),
-                (error: any) => console.log(error.text)
+                (result: any) => {
+                    console.log(result.text);
+                    handleReset();
+                    alert(`Grazie per averci contattato.
+                        Ti risponderemo il prima possibile
+                    `);
+                },
+                (error: any) => {
+                    alert("Messaggio non inviato, riprovare più tardi");
+                    console.log(error.text);
+                }
             );
     };
 

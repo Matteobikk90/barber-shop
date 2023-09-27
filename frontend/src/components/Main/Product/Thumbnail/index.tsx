@@ -37,8 +37,7 @@ const Thumbnail = () => {
                 showDots={true}
                 responsive={carouselProductConfig}
                 ssr={true}
-                // infinite={true}
-                // autoPlay={true}
+                infinite={true}
                 autoPlaySpeed={5000}
                 customTransition="all 1s"
                 transitionDuration={1000}

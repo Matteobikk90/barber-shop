@@ -7,7 +7,13 @@ const Brands = () => {
     const { selectedBrand, setActiveFilter } = useBarberShop();
 
     return (
-        <article tw="h-full p-[1rem]">
+        <article
+            tw="h-full p-[1rem] bg-contain bg-center"
+            style={{
+                backgroundImage:
+                    "url(https://blendon-barber-shop.it/assets/images/wood.png)"
+            }}
+        >
             <ul tw="w-full h-full bg-black text-cream flex flex-col justify-between">
                 {brands.map(({ id, src }) => (
                     <li

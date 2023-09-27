@@ -6,7 +6,7 @@ import "twin.macro";
 const Contact = () => (
     <section
         id="contatti"
-        tw="bg-cream text-black p-[2rem] md:p-[1rem] sm:p-[2rem 1rem]"
+        tw="bg-cream text-black p-[3rem 2rem] sm:p-[3rem 1rem]"
     >
         <h2 tw="text-xxl text-center">
             <strong>Contatti</strong>

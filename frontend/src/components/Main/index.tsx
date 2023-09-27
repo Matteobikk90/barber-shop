@@ -25,7 +25,7 @@ const Main = ({ toggleState, handleToggleState }: any) => {
                 ) : (
                     <>
                         {/* <Homepage /> */}
-                        {/* <Product /> */}
+                        <Product />
                         <Menu />
                         <Gallery />
                         <Contact />

@@ -2,10 +2,10 @@ import { IdTextPairTypes } from "types/id-text-pair.types";
 import { SocialsTypes } from "types/social.types";
 
 export const navLinks: Partial<IdTextPairTypes>[] = [
-    // {
-    //     id: "prodotti",
-    //     text: "Prodotti"
-    // },
+    {
+        id: "prodotti",
+        text: "Prodotti"
+    },
     {
         id: "servizi",
         text: "Servizi"
