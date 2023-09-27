@@ -34,7 +34,7 @@ const AdminPanel = () => {
     };
 
     useEffect(() => {
-        getBookings().then((item: any) => setBookedBookings(item));
+        getBookings().then((bookings: any) => setBookedBookings(bookings));
     }, []);
 
     return (

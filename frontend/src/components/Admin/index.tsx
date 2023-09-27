@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getBookings } from "services/getBookings";
 import { BookingTypes } from "types/booking.types";
 /** @jsxImportSource @emotion/react */
-import "twin.macro";
+import tw from "twin.macro";
 
 const AdminPanel = () => {
     const [bookedBookings, setBookedBookings] = useState<any>([]);
@@ -48,6 +48,7 @@ const AdminPanel = () => {
                     {item.bookings.map(
                         ({
                             start_time,
+                            readable_start_time,
                             name,
                             surname,
                             phone,
@@ -58,7 +59,20 @@ const AdminPanel = () => {
                                 tw="w-[13rem] h-[8rem] p-[0.25rem] flex flex-col gap-[0.25rem] border border-black"
                             >
                                 <strong>
-                                    <p>{start_time.split(" ")[1]}</p>
+                                    <p tw="flex items-center">
+                                        {readable_start_time
+                                            ? readable_start_time
+                                            : `${start_time.split(" ")[1]}`}
+                                        <sup
+                                            css={[
+                                                tw`block text-green`,
+                                                readable_start_time &&
+                                                    tw`hidden`
+                                            ]}
+                                        >
+                                            + 15min
+                                        </sup>
+                                    </p>
                                 </strong>
                                 <p>{`${name} ${surname}`}</p>
                                 <p>{service}</p>

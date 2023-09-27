@@ -19,9 +19,20 @@ export const getBookings = () =>
             surname: ord.data.surname,
             phone: ord.data.phone,
             email: ord.data.email,
+            readable_start_time: ord.data.readable_start_time,
             start_time: ord.data.start_time,
             end_time: ord.data.end_time
         }));
+
+        const bookingsFromToday = [...bookings].map((booking) => {
+            const givenDate = new Date(booking.start_time!);
+            const currentDate = new Date();
+            if (givenDate.getTime() < currentDate.getTime() - 86400000) {
+                console.log("past", booking);
+            } else {
+                console.log("future", booking);
+            }
+        });
 
         return bookings;
     });
