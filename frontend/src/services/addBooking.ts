@@ -36,7 +36,9 @@ export const handleSubmitBooking = async (
             myCollection,
             `${surname} ${readable_start_time
                 .split(" ")[0]
-                .replaceAll("/", "-")}`
+                .replaceAll("/", "-")} ${readable_start_time
+                .split(" ")[1]
+                .replaceAll("/", "-")} `
         );
         await setDoc(myDocRef, newBooking);
         next();

@@ -252,7 +252,7 @@ export const services: Partial<IdTextPairTypes>[] = [
         id: "cut&shave",
         text: "Taglio + rifinitura barba",
         price: 25,
-        time: 45
+        time: 30
     },
     {
         id: "barba",

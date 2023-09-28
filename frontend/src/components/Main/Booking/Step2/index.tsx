@@ -2,33 +2,22 @@ import { useEffect, useState, useRef } from "react";
 import BookingFormContainer from "components/Main/Booking/Container";
 import useCalendar from "hooks/useCalendar";
 import { getBookings } from "services/getBookings";
-import {
-    fifteenMinutes,
-    thirtyMinutes,
-    fourtyFiveMinutes,
-    formatOptions
-} from "utils/utilities";
+import { fifteenMinutes, thirtyMinutes, formatOptions } from "utils/utilities";
 import { openHours } from "utils/calendar";
 import TimeCalendar from "react-timecalendar";
 import { BookingTypes } from "types/booking.types";
 /** @jsxImportSource @emotion/react */
 import "twin.macro";
 
-const Step2 = ({ service, handleBookingInfo }: Partial<BookingTypes>) => {
+const Step2 = ({ handleBookingInfo }: Partial<BookingTypes>) => {
     const { goToTimeSelection } = useCalendar();
     const calendarRef = useRef<any>();
 
     const [bookedBookings, setBookedBookings] = useState<any>([]);
 
     const formatDateTime = (bookingDateTime: any) => {
-        let allowBookingBasedOnService: any = new Date(
-            bookingDateTime.getTime() - fifteenMinutes
-        );
         let serviceDuration: any = new Date(
-            bookingDateTime.getTime() +
-                (service === "Taglio + rifinitura barba"
-                    ? fourtyFiveMinutes
-                    : thirtyMinutes)
+            bookingDateTime.getTime() + thirtyMinutes
         );
         const readable_start_time = `${new Intl.DateTimeFormat(
             undefined,
@@ -39,9 +28,9 @@ const Step2 = ({ service, handleBookingInfo }: Partial<BookingTypes>) => {
         const start_time = `${new Intl.DateTimeFormat(
             "fr-CA",
             formatOptions
-        ).format(
-            bookingDateTime
-        )} ${allowBookingBasedOnService.toLocaleTimeString("it-IT")}`;
+        ).format(bookingDateTime)} ${bookingDateTime.toLocaleTimeString(
+            "it-IT"
+        )}`;
         const end_time = `${new Intl.DateTimeFormat(
             "fr-CA",
             formatOptions
@@ -61,7 +50,7 @@ const Step2 = ({ service, handleBookingInfo }: Partial<BookingTypes>) => {
                 <TimeCalendar
                     disableHistory
                     clickable
-                    timeSlot={15}
+                    timeSlot={30}
                     openHours={openHours}
                     onTimeClick={formatDateTime}
                     bookings={bookedBookings}
