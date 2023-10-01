@@ -7,4 +7,6 @@ export const formatOptions: Intl.DateTimeFormatOptions = {
     day: "2-digit"
 };
 
+export const yesterday = 86400000;
+
 export const today = new Date().toISOString().split("T")[0];

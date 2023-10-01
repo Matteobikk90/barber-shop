@@ -1,6 +1,7 @@
 import { BookingTypes } from "types/booking.types";
 import { db } from "db/firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, doc, getDocs, deleteDoc } from "firebase/firestore";
+import { yesterday } from "utils/utilities";
 
 const productsRef = collection(db, "bookings");
 
@@ -24,13 +25,19 @@ export const getBookings = () =>
             end_time: ord.data.end_time
         }));
 
-        const bookingsFromToday = [...bookings].map((booking) => {
+        // Remove past days from db
+        [...bookings].forEach((booking) => {
             const givenDate = new Date(booking.start_time!);
             const currentDate = new Date();
-            if (givenDate.getTime() < currentDate.getTime() - 86400000) {
-                console.log("past", booking);
-            } else {
-                console.log("future", booking);
+            if (givenDate.getTime() < currentDate.getTime() - yesterday) {
+                const docToDelete = booking.id!;
+                deleteDoc(doc(db, "bookings", docToDelete))
+                    .then(() =>
+                        console.log(
+                            "Entire Document has been deleted successfully."
+                        )
+                    )
+                    .catch((error) => console.log(error));
             }
         });
 

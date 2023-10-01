@@ -4,10 +4,12 @@ import { BookingTypes } from "types/booking.types";
 import { today } from "utils/utilities";
 /** @jsxImportSource @emotion/react */
 import "twin.macro";
+import { deleteBooking } from "services/deleteBooking";
 
 const AdminPanel = () => {
     const [bookedBookings, setBookedBookings] = useState<any>([]);
     const [selectedDate, setSelectedDate] = useState(today);
+    const [deleteDocID, setDeleteDocID] = useState("");
 
     const handleBookings = () => {
         const sortedDate = bookedBookings.sort(
@@ -39,6 +41,24 @@ const AdminPanel = () => {
 
     return (
         <section id="calendar" tw="flex flex-col gap-[2rem] m-[2rem 1rem]">
+            <form
+                onSubmit={(e) => deleteBooking(e, deleteDocID)}
+                tw="flex gap-[1rem] items-center"
+            >
+                <label htmlFor="deleteDoc">Cancella prenotazione</label>
+                <input
+                    tw="rounded border border-black"
+                    onChange={(e) => setDeleteDocID(e.target.value)}
+                    id="deleteDoc"
+                    type="text"
+                />
+                <button
+                    tw="bg-green border border-[#D7D7D7] p-[0.25rem 0.75rem] text-cream text-center rounded-[0.25rem]"
+                    type="submit"
+                >
+                    Cancella
+                </button>
+            </form>
             <label htmlFor="bookings">Scegli un giorno:</label>
             <select
                 tw="max-w-[13rem] w-full p-[1rem] rounded border border-black"
