@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import BookingFormContainer from "components/Main/Booking/Container";
 import useCalendar from "hooks/useCalendar";
 import { getBookings } from "services/getBookings";
-import { fifteenMinutes, thirtyMinutes, formatOptions } from "utils/utilities";
+import { thirtyMinutes, formatOptions } from "utils/utilities";
 import { openHours } from "utils/calendar";
 import TimeCalendar from "react-timecalendar";
 import { BookingTypes } from "types/booking.types";

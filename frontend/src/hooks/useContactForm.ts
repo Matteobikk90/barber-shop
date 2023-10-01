@@ -1,5 +1,4 @@
 import { FormEvent, useState } from "react";
-import emailjs from "@emailjs/browser";
 import { FormDataTypes, InputTypes } from "types/contact-form.types";
 
 const useContactForm = (
@@ -8,8 +7,7 @@ const useContactForm = (
         phone: null,
         email: "",
         message: ""
-    },
-    contactFormRef: any
+    }
 ) => {
     const [formData, setFormData] = useState(initialState);
 
@@ -29,26 +27,30 @@ const useContactForm = (
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        emailjs
-            .sendForm(
-                process.env.REACT_APP_EMAIL_JS_SERVICE!,
-                process.env.REACT_APP_EMAIL_JS_CONTACTFORM_TEMPLATE!,
-                contactFormRef.current!,
-                process.env.REACT_APP_EMAIL_JS_API
-            )
-            .then(
-                (result: any) => {
-                    console.log(result.text);
-                    handleReset();
-                    alert(`Grazie per averci contattato.
-                        Ti risponderemo il prima possibile
-                    `);
-                },
-                (error: any) => {
-                    alert("Messaggio non inviato, riprovare più tardi");
-                    console.log(error.text);
-                }
-            );
+        Email.send({
+            SecureToken: "01da71eb-3a31-4daa-b6bd-4b71636bb929",
+            To: "blendon.barbershop@gmail.com",
+            From: "blendon.barbershop@gmail.com",
+            Subject: `Informazioni da ${formData.name}`,
+            Body: `
+                <p>Nome: <strong>${formData.name}</strong>,</p>
+                <p>Telefono: <strong>${formData.phone}</strong></p>
+                <p>Email: <strong>${formData.email}</strong>:</p>
+                <p>Messaggio: <strong>${formData.message}</strong></p>
+            `
+        }).then(
+            (result: any) => {
+                console.log(result.text);
+                handleReset();
+                alert(
+                    `Grazie per averci contattato. Ti risponderemo il prima possibile`
+                );
+            },
+            (error: any) => {
+                alert("Messaggio non inviato, riprovare più tardi");
+                console.log(error.text);
+            }
+        );
     };
 
     return { formData, handleInputChange, handleReset, handleSubmit };

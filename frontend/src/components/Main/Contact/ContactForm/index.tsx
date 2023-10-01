@@ -1,21 +1,16 @@
 /* eslint-disable max-len */
-import { useRef } from "react";
 import useToggle from "hooks/useToggle";
 import useContactForm from "hooks/useContactForm";
 /** @jsxImportSource @emotion/react */
 import tw from "twin.macro";
 
 const Form = () => {
-    const contactFormRef = useRef<HTMLFormElement | null>(null);
-    const { formData, handleInputChange, handleSubmit } = useContactForm(
-        {
-            name: "",
-            phone: null,
-            email: "",
-            message: ""
-        },
-        contactFormRef
-    );
+    const { formData, handleInputChange, handleSubmit } = useContactForm({
+        name: "",
+        phone: null,
+        email: "",
+        message: ""
+    });
     const { handleToggleState, toggleState } = useToggle();
 
     return (
@@ -25,7 +20,6 @@ const Form = () => {
                     handleToggleState("isMessageSent");
                     handleSubmit(e);
                 }}
-                ref={contactFormRef}
             >
                 <div tw="flex items-center justify-between gap-[1rem] mb-[1.5rem]">
                     <div tw="w-full">

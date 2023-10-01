@@ -3,7 +3,6 @@ import { BookingTypes } from "types/booking.types";
 import { db } from "db/firebase";
 import { collection, setDoc, Timestamp, doc } from "firebase/firestore";
 
-/* function to add new booking to firestore */
 export const handleSubmitBooking = async (
     e: FormEvent,
     {
@@ -41,6 +40,27 @@ export const handleSubmitBooking = async (
                 .replaceAll("/", "-")} `
         );
         await setDoc(myDocRef, newBooking);
+        Email.send({
+            SecureToken: "01da71eb-3a31-4daa-b6bd-4b71636bb929",
+            To: email,
+            From: "blendon.barbershop@gmail.com",
+            Subject:
+                "Blendon Barber Shop - Prenotazione effettuata con successo",
+            Body: `
+            <p>Ciao <strong>${name},</strong></p>
+            <p>Di seguito i dettagli della tua prenotazione:</p>
+            <p>&nbsp;</p>
+            <p>Nome: <strong>${name}</strong></p>
+            <p>Cognome: <strong>${surname}</strong></p>
+            <p>Email: <strong>${email}</strong></p>
+            <p>Telefono: <strong>${phone}</strong></p>
+            <p>Data: <strong>${readable_start_time}</strong></p>
+            <p>Servizio: <strong>${service}</strong></p>
+            <p>&nbsp;</p>
+            <p>Saluti,</p>
+            <p>Blendon Barber Shop</p>
+        `
+        }).then((message: string) => console.log(message));
         next();
     } catch (err) {
         console.log(err);

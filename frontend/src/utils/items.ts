@@ -246,42 +246,49 @@ export const services: Partial<IdTextPairTypes>[] = [
         id: "cut",
         text: "Taglio",
         price: 17,
-        time: 30
+        time: 30,
+        src: "https://blendon-barber-shop.it/assets/images/services/electric-razor.svg"
     },
     {
         id: "cut&shave",
         text: "Taglio + rifinitura barba",
         price: 25,
-        time: 30
+        time: 30,
+        src: "https://blendon-barber-shop.it/assets/images/services/razor.svg"
     },
     {
         id: "barba",
         text: "Barba definita",
         price: 10,
-        time: 30
+        time: 30,
+        src: "https://blendon-barber-shop.it/assets/images/services/razor.svg"
     },
     {
         id: "barbaModellata",
         text: "Barba modellata",
         price: 12,
-        time: 30
+        time: 30,
+        src: "https://blendon-barber-shop.it/assets/images/services/mustache.svg"
     },
     {
         id: "barbaCompleta",
         text: "Barba completa",
         price: 15,
-        time: 30
+        time: 30,
+        src: "https://blendon-barber-shop.it/assets/images/services/beard.svg"
     },
     {
         id: "bimbo",
         text: "Taglio bimbo (max 12 anni)",
         price: 12,
-        time: 30
+        time: 30,
+        src: "https://blendon-barber-shop.it/assets/images/services/kid.svg"
     },
     {
         id: "shampoo",
         text: "Shampoo + asciugatura",
         price: 5,
-        time: 30
+        time: 30,
+        src: "https://blendon-barber-shop.it/assets/images/services/dryer.svg"
     }
 ];

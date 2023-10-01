@@ -1,5 +1,4 @@
 import { FormEvent, useState, useRef } from "react";
-import emailjs from "@emailjs/browser";
 import Step1 from "components/Main/Booking/Step1";
 import Step2 from "components/Main/Booking/Step2";
 import Step3 from "components/Main/Booking/Step3";
@@ -34,17 +33,6 @@ const Booking = ({ handleToggleState }: any) => {
     const submitBooking = (e: FormEvent) => {
         e.preventDefault();
         handleSubmitBooking(e, booking, next);
-        emailjs
-            .sendForm(
-                process.env.REACT_APP_EMAIL_JS_SERVICE!,
-                process.env.REACT_APP_EMAIL_JS_BOOKING_TEMPLATE!,
-                bookingFormRef.current!,
-                process.env.REACT_APP_EMAIL_JS_API
-            )
-            .then(
-                (result: any) => console.log(result.text),
-                (error: any) => console.log(error.text)
-            );
     };
 
     const {
