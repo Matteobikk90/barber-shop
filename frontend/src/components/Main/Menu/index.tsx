@@ -18,7 +18,7 @@ const Menu = () => (
                             "url(https://blendon-barber-shop.it/assets/images/prism.png)"
                     }}
                 >
-                    {services.map(({ id, price, text }) => (
+                    {services.map(({ id, price, text, src }) => (
                         <li
                             style={{
                                 backgroundImage:
@@ -28,7 +28,24 @@ const Menu = () => (
                             key={id}
                             tw="font-medium p-[1rem] flex justify-between items-center bg-bottom bg-repeat-x"
                         >
-                            <span>{text}</span>
+                            <div tw="flex items-center gap-[1rem]">
+                                {id === "cut&shave" && (
+                                    <>
+                                        <img
+                                            width={32}
+                                            src={services[0].src}
+                                            alt={`Blendon Barber Shop Services - ${id}`}
+                                        />
+                                        <span>+</span>
+                                    </>
+                                )}
+                                <img
+                                    width={32}
+                                    src={src}
+                                    alt={`Blendon Barber Shop Services - ${id}`}
+                                />
+                                <span>{text}</span>
+                            </div>
                             <span tw="font-bold">€ {price}</span>
                         </li>
                     ))}
