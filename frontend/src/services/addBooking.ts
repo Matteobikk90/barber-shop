@@ -37,7 +37,7 @@ export const handleSubmitBooking = async (
                 .split(" ")[0]
                 .replaceAll("/", "-")} ${readable_start_time
                 .split(" ")[1]
-                .replaceAll("/", "-")} `
+                .replaceAll("/", "-")}`
         );
         await setDoc(myDocRef, newBooking);
         Email.send({

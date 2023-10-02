@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { getBookings } from "services/getBookings";
 import { BookingTypes } from "types/booking.types";
 import { today } from "utils/utilities";
+import { deleteBooking } from "services/deleteBooking";
 /** @jsxImportSource @emotion/react */
 import "twin.macro";
-import { deleteBooking } from "services/deleteBooking";
 
 const AdminPanel = () => {
-    const [bookedBookings, setBookedBookings] = useState<any>([]);
+    const [bookedBookings, setBookedBookings] = useState<BookingTypes[]>([]);
     const [selectedDate, setSelectedDate] = useState(today);
     const [deleteDocID, setDeleteDocID] = useState("");
 
@@ -42,7 +42,7 @@ const AdminPanel = () => {
     return (
         <section id="calendar" tw="flex flex-col gap-[2rem] m-[2rem 1rem]">
             <form
-                onSubmit={(e) => deleteBooking(e, deleteDocID)}
+                onSubmit={(e) => deleteBooking(e, bookedBookings, deleteDocID)}
                 tw="flex gap-[1rem] items-center"
             >
                 <label htmlFor="deleteDoc">Cancella prenotazione</label>

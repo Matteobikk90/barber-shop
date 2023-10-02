@@ -15,10 +15,6 @@ export const routers = createBrowserRouter([
             {
                 path: "/calendario2",
                 Component: lazy(() => import("components/Admin/Calendario2"))
-            },
-            {
-                path: "/calendario3",
-                Component: lazy(() => import("components/Admin/Calendario3"))
             }
         ]
     }
