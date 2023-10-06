@@ -40,7 +40,7 @@ export const handleSubmitBooking = async (
                 .replaceAll("/", "-")}`
         );
         await setDoc(myDocRef, newBooking);
-        const templateBody = `
+        const emailTemplateBody = `
             <p>Ciao <strong>${name},</strong></p>
             <p>Di seguito i dettagli della tua prenotazione:</p>
             <p>&nbsp;</p>
@@ -61,7 +61,7 @@ export const handleSubmitBooking = async (
             From: "blendon.barbershop@gmail.com",
             Subject:
                 "Blendon Barber Shop - Prenotazione effettuata con successo",
-            Body: templateBody
+            Body: emailTemplateBody
         }).then((message: string) => console.log(message));
         next();
     } catch (err) {
