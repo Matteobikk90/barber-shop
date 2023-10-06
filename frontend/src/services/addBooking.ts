@@ -40,13 +40,7 @@ export const handleSubmitBooking = async (
                 .replaceAll("/", "-")}`
         );
         await setDoc(myDocRef, newBooking);
-        Email.send({
-            SecureToken: "01da71eb-3a31-4daa-b6bd-4b71636bb929",
-            To: email,
-            From: "blendon.barbershop@gmail.com",
-            Subject:
-                "Blendon Barber Shop - Prenotazione effettuata con successo",
-            Body: `
+        const templateBody = `
             <p>Ciao <strong>${name},</strong></p>
             <p>Di seguito i dettagli della tua prenotazione:</p>
             <p>&nbsp;</p>
@@ -59,7 +53,15 @@ export const handleSubmitBooking = async (
             <p>&nbsp;</p>
             <p>Saluti,</p>
             <p>Blendon Barber Shop</p>
-        `
+        `;
+        Email.send({
+            SecureToken: "01da71eb-3a31-4daa-b6bd-4b71636bb929",
+            To: email,
+            Host: "smtp.elasticemail.com",
+            From: "blendon.barbershop@gmail.com",
+            Subject:
+                "Blendon Barber Shop - Prenotazione effettuata con successo",
+            Body: templateBody
         }).then((message: string) => console.log(message));
         next();
     } catch (err) {
