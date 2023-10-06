@@ -13,7 +13,7 @@ const Success = ({
 }: Partial<BookingTypes>) => (
     <BookingFormContainer
         title="Ci vediamo presto"
-        message="Riceverai a breve una email di conferma"
+        message="Riceverai a breve una email di conferma. (Se non la vedi, controlla anche la posta indesiderata)"
     >
         <div tw="flex flex-col gap-[1.5rem] text-xxl sm:w-full max-w-[28.125rem] sm:max-w-none m-[4rem auto] sm:m-[3rem 0 0]">
             <div tw="flex gap-[4rem] sm:flex-wrap sm:gap-[2rem]">
