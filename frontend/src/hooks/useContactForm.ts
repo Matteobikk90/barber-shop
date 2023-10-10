@@ -28,7 +28,9 @@ const useContactForm = (
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         Email.send({
-            SecureToken: "01da71eb-3a31-4daa-b6bd-4b71636bb929",
+            SecureToken: "5bb75e10-e0c5-4be2-b61f-0f1fdd62b9a1",
+            Username: "blendon.barbershop@gmail.com",
+            Password: process.env.REACT_APP_SMTP_PASS!,
             To: "blendon.barbershop@gmail.com",
             From: "blendon.barbershop@gmail.com",
             Subject: `Informazioni da ${formData.name}`,

@@ -19,6 +19,8 @@ declare namespace Email {
 
     interface EmailData {
         Host?: string;
+        Username: string;
+        Password: string;
         SecureToken: string;
         To: string | string[];
         From: string;

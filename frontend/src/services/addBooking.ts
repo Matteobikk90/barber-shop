@@ -54,8 +54,10 @@ export const handleSubmitBooking = async (
             <p>Saluti,</p>
             <p>Blendon Barber Shop</p>
         `;
-        Email.send({
-            SecureToken: "01da71eb-3a31-4daa-b6bd-4b71636bb929",
+        await Email.send({
+            SecureToken: "5bb75e10-e0c5-4be2-b61f-0f1fdd62b9a1",
+            Username: "blendon.barbershop@gmail.com",
+            Password: process.env.REACT_APP_SMTP_PASS!,
             To: email,
             Host: "smtp.elasticemail.com",
             From: "blendon.barbershop@gmail.com",
