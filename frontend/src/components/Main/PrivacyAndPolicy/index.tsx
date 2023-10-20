@@ -110,11 +110,11 @@ const PrivacyAndPolicy = () => (
                 <p>
                     Se avete domande o richieste riguardo a questa Informativa
                     sulla Privacy o al trattamento dei vostri dati personali,
-                    potete contattarci tramite email:
+                    potete contattarci tramite email:{" "}
                     <a href="mailto:blendon.barbershop@gmail.com">
                         blendon.barbershop@gmail.com
-                    </a>
-                    o tramite il modulo di contatto presente qui:
+                    </a>{" "}
+                    o tramite il modulo di contatto presente qui:{" "}
                     <a href="https://blendon-barber-shop.it/#contatti">
                         https://blendon-barber-shop.it/#contatti
                     </a>

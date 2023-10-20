@@ -34,14 +34,14 @@ const TermsAndConditions = () => (
                 </h2>
                 <p>
                     Se desideri modificare o cancellare una prenotazione, ti
-                    preghiamo di contattarci contattarci tramite email:
+                    preghiamo di contattarci contattarci tramite email:{" "}
                     <a href="mailto:blendon.barbershop@gmail.com">
                         blendon.barbershop@gmail.com
                     </a>
-                    , tramite il modulo di contatto presente qui:
+                    , tramite il modulo di contatto presente qui:{" "}
                     <a href="https://blendon-barber-shop.it/#contatti">
                         https://blendon-barber-shop.it/#contatti
-                    </a>
+                    </a>{" "}
                     oppure al numero di telefono: +39 342 801 2955
                 </p>
                 <h2>
