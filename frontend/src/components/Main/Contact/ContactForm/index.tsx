@@ -1,5 +1,5 @@
+import { NavLink } from "react-router-dom";
 /* eslint-disable max-len */
-import useToggle from "hooks/useToggle";
 import useContactForm from "hooks/useContactForm";
 /** @jsxImportSource @emotion/react */
 import tw from "twin.macro";
@@ -9,18 +9,13 @@ const Form = () => {
         name: "",
         phone: null,
         email: "",
-        message: ""
+        message: "",
+        confirmation: false
     });
-    const { handleToggleState, toggleState } = useToggle();
 
     return (
         <>
-            <form
-                onSubmit={(e) => {
-                    handleToggleState("isMessageSent");
-                    handleSubmit(e);
-                }}
-            >
+            <form onSubmit={(e) => handleSubmit(e)}>
                 <div tw="flex items-center justify-between gap-[1rem] mb-[1.5rem]">
                     <div tw="w-full">
                         <label
@@ -98,29 +93,41 @@ const Form = () => {
                     value={formData.message}
                     onChange={(e) => handleInputChange(e.target)}
                 ></textarea>
-                {/* <div tw="flex">
+                <div tw="flex items-center gap-[0.5rem]">
                     <input
-                        id="joinList"
-                        tw="mr-[0.5rem] w-[1.5rem] h-[1.5rem]"
+                        id="confirmation"
+                        tw="w-[1rem] h-[1rem]"
                         type="checkbox"
-                        name="joinMailingList"
-                        checked={formData.joinMailingList}
+                        name="confirmation"
+                        checked={formData.confirmation}
                         onChange={(e) => handleInputChange(e.target)}
                     />
-                    <label
-                        tw="font-light text-xs text-black"
-                        htmlFor="joinList"
-                    >
-                        {t("form_agreements")}
+                    <label tw="text-xs text-black" htmlFor="confirmation">
+                        Ho letto e accetto i{" "}
+                        <NavLink
+                            tw="text-green font-bold"
+                            to="/terms-and-conditions"
+                        >
+                            Termini e Condizioni
+                        </NavLink>{" "}
+                        e{" "}
+                        <NavLink
+                            tw="text-green font-bold"
+                            to="/privacy-and-policy"
+                        >
+                            l'Informativa sulla Privacy
+                        </NavLink>
+                        .
                     </label>
-                </div> */}
+                </div>
                 <button
                     type="submit"
                     disabled={
                         !formData.name ||
                         !formData.phone ||
                         !formData.email ||
-                        !formData.message
+                        !formData.message ||
+                        !formData.confirmation
                     }
                     css={[
                         tw`opacity-30 bg-green border border-[#D7D7D7] p-[0.75rem] text-cream w-full text-center rounded-[0.25rem] mb-[0.5rem] mt-[1.5rem] cursor-not-allowed max-w-[9rem] transition-opacity duration-500`,
@@ -128,6 +135,7 @@ const Form = () => {
                             formData.phone &&
                             formData.email &&
                             formData.message &&
+                            formData.confirmation &&
                             tw`opacity-90 hover:opacity-100 cursor-pointer`
                     ]}
                     value="Send"

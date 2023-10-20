@@ -3,6 +3,7 @@ export type FormDataTypes = {
     email: string;
     phone: number | null;
     message: string;
+    confirmation: boolean;
 };
 
 export type InputTypes = {

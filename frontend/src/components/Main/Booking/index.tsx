@@ -18,7 +18,9 @@ const INITIAL_DATA: BookingTypes = {
     start_time: "",
     readable_start_time: "",
     end_time: "",
-    handleBookingInfo: () => {}
+    confirmation: false,
+    handleBookingInfo: () => {},
+    handleInputChange: () => {}
 };
 
 const Booking = ({ handleToggleState }: any) => {
@@ -30,7 +32,13 @@ const Booking = ({ handleToggleState }: any) => {
         !isSecondLastStep && next();
     };
 
-    const submitBooking = (e: FormEvent) => {
+    const handleInputChange = ({ checked }: any) =>
+        setBooking({
+            ...booking,
+            confirmation: checked
+        });
+
+    const submitBooking = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         handleSubmitBooking(e, booking, next);
     };
@@ -47,7 +55,11 @@ const Booking = ({ handleToggleState }: any) => {
     } = useMultiStepForm([
         <Step1 handleBookingInfo={handleBookingInfo} />,
         <Step2 {...booking} handleBookingInfo={handleBookingInfo} />,
-        <Step3 {...booking} handleBookingInfo={handleBookingInfo} />,
+        <Step3
+            {...booking}
+            handleInputChange={handleInputChange}
+            handleBookingInfo={handleBookingInfo}
+        />,
         <Success {...booking} />
     ]);
 
@@ -81,7 +93,8 @@ const Booking = ({ handleToggleState }: any) => {
                 booking.name &&
                 booking.surname &&
                 booking.phone &&
-                booking.email ? (
+                booking.email &&
+                booking.confirmation ? (
                     <button type="submit" value="Send">
                         Prenota
                     </button>

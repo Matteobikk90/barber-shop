@@ -6,7 +6,8 @@ const useContactForm = (
         name: "",
         phone: null,
         email: "",
-        message: ""
+        message: "",
+        confirmation: false
     }
 ) => {
     const [formData, setFormData] = useState(initialState);
@@ -22,7 +23,8 @@ const useContactForm = (
             name: "",
             phone: null,
             email: "",
-            message: ""
+            message: "",
+            confirmation: false
         });
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
