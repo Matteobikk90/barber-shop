@@ -1,8 +1,8 @@
 import BookingFormContainer from "components/Main/Booking/Container";
 import { BookingTypes } from "types/booking.types";
+import { NavLink } from "react-router-dom";
 /** @jsxImportSource @emotion/react */
 import "twin.macro";
-import { NavLink } from "react-router-dom";
 
 const Step3 = ({
     service,

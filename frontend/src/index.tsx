@@ -20,11 +20,7 @@ root.render(
                     content="Blendon Barber Shop è un barbiere di Rivoli, (To) gestito da Luca Frasca"
                 />
                 <link
-                    rel="apple-touch-icon"
-                    href="https://blendon-barber-shop.it/favicon.svg"
-                />
-                <link
-                    rel="manifest"
+                    rel="webmanifest"
                     href="https://blendon-barber-shop.it/manifest.json"
                 />
                 <meta name="robots" content="index, follow" />

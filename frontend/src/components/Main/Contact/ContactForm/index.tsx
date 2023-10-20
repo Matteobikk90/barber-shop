@@ -102,7 +102,7 @@ const Form = () => {
                         checked={formData.confirmation}
                         onChange={(e) => handleInputChange(e.target)}
                     />
-                    <label tw="text-xs text-black" htmlFor="confirmation">
+                    <label tw="text-lg text-black" htmlFor="confirmation">
                         Ho letto e accetto i{" "}
                         <NavLink
                             tw="text-green font-bold"

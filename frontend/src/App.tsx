@@ -5,7 +5,7 @@ import { routers } from "routes";
 
 const App = () => (
     <BarberShopionContextProvider>
-        <Suspense fallback={<>...</>}>
+        <Suspense fallback={<>Caricando...</>}>
             <RouterProvider router={routers} />
         </Suspense>
     </BarberShopionContextProvider>
