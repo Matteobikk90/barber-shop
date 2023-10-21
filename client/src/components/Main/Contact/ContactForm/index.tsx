@@ -143,33 +143,6 @@ const Form = () => {
                     Invia
                 </button>
             </form>
-            {/* {(status === "success" || status === "error") &&
-                toggleState.isMessageSent && (
-                    <div tw="fixed left-0 top-0 bottom-0 right-0 flex items-center justify-center bg-white rounded-[0.5rem] text-center p-[2rem 2.5rem 1.5rem 2.5rem]">
-                        <div tw="bg-blue-100 p-[2rem 4rem] rounded-[1rem] shadow-[0.18rem 0.5rem 1.5rem rgba(0, 0, 0, 0.07)]">
-                            <img
-                                alt="Thumbs up"
-                                src={thumbs}
-                                tw="m-[2rem auto]"
-                            />
-                            <h2 tw="text-blue-600 font-semiBold text-[2.25rem] mb-[1.5rem]">
-                                {t("form_received")}
-                            </h2>
-                            <p tw="max-w-[33.188rem] text-[1.125rem] w-full font-light text-black mb-[3rem]">
-                                {t("form_received_message")}
-                            </p>
-                            <button
-                                onClick={() => {
-                                    handleToggleState("isMessageSent");
-                                    handleReset();
-                                }}
-                                tw="max-w-[11.625rem] w-full rounded-[3.813rem] mb-[3rem] p-[0.5rem 0.75rem] text-cream bg-blue-800 hover:bg-blue-600"
-                            >
-                                {t("form_close")}
-                            </button>
-                        </div>
-                    </div>
-                )} */}
         </>
     );
 };

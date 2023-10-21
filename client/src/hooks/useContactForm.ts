@@ -27,37 +27,30 @@ const useContactForm = (
             confirmation: false
         });
 
-    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        Email.send({
-            SecureToken: "5bb75e10-e0c5-4be2-b61f-0f1fdd62b9a1",
-            Username: "blendon.barbershop@gmail.com",
-            Password: process.env.REACT_APP_SMTP_PASS!,
-            To: "blendon.barbershop@gmail.com",
-            From: "blendon.barbershop@gmail.com",
-            Subject: `Informazioni da ${formData.name}`,
-            Body: `
-                <p>Nome: <strong>${formData.name}</strong>,</p>
-                <p>Telefono: <strong>${formData.phone}</strong></p>
-                <p>Email: <strong>${formData.email}</strong>:</p>
-                <p>Messaggio: <strong>${formData.message}</strong></p>
-            `
-        }).then(
-            (result: any) => {
-                console.log(result.text);
-                handleReset();
+        const emailBody = {
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            message: formData.message
+        };
+        await fetch("http://localhost:8080/send_contact_email", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            mode: "cors",
+            body: JSON.stringify(emailBody)
+        })
+            .then(() => {
                 alert(
-                    `Grazie per averci contattato. Ti risponderemo il prima possibile`
+                    "Grazie per averci contattato. Ti risponderemo il prima possibile"
                 );
-            },
-            (error: any) => {
-                alert("Messaggio non inviato, riprovare più tardi");
-                console.log(error.text);
-            }
-        );
+                handleReset();
+            })
+            .catch(() => alert("Messaggio non inviato, riprovare più tardi"));
     };
 
-    return { formData, handleInputChange, handleReset, handleSubmit };
+    return { formData, handleInputChange, handleSubmit };
 };
 
 export default useContactForm;

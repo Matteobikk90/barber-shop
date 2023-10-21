@@ -12,7 +12,7 @@ app.use((_, res, next) => {
     next();
 });
 
-const sendEmail = async ({
+const sendEmailBooking = async ({
     name,
     surname,
     email,
@@ -57,10 +57,48 @@ const sendEmail = async ({
         .catch(() => "Email not sent");
 };
 
+const sendContactEmail = async ({ name, email, phone, message }) => {
+    const emailTemplateBody = `
+            <p>Nome: <strong>${name}</strong>,</p>
+            <p>Telefono: <strong>${phone}</strong></p>
+            <p>Email: <strong>${email}</strong>:</p>
+            <p>Messaggio: <strong>${message}</strong></p>
+        `;
+    const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: process.env.EMAIL,
+            pass: process.env.PASSWORD
+        },
+        from: process.env.EMAIL,
+        port: 587,
+        secure: false,
+        requireTLS: true
+    });
+    const mail_configs = {
+        from: process.env.EMAIL,
+        to: email,
+        subject: `Informazioni da ${name}`,
+        html: emailTemplateBody
+    };
+    return await transporter
+        .sendMail(mail_configs)
+        .then(() => "Email correctly sent")
+        .catch(() => "Email not sent");
+};
+
 app.post(
-    "/send_email",
+    "/send_email_booking",
     async (req, res) =>
-        await sendEmail(req.body)
+        await sendEmailBooking(req.body)
+            .then((response) => res.send(response))
+            .catch((error) => res.status(500).send(error))
+);
+
+app.post(
+    "/send_contact_email",
+    async (req, res) =>
+        await sendContactEmail(req.body)
             .then((response) => res.send(response))
             .catch((error) => res.status(500).send(error))
 );
