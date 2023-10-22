@@ -35,7 +35,7 @@ const useContactForm = (
             phone: formData.phone,
             message: formData.message
         };
-        await fetch("http://localhost:8080/send_contact_email", {
+        await fetch("https://slip-butterfly.cyclic.app/send_contact_email", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             mode: "cors",

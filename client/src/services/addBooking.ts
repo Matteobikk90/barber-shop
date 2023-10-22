@@ -48,7 +48,7 @@ export const handleSubmitBooking = async (
                 .replaceAll("/", "-")}`
         );
         await setDoc(myDocRef, newBooking);
-        await fetch("http://localhost:8080/send_email", {
+        await fetch("https://slip-butterfly.cyclic.app/send_email_booking", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             mode: "cors",
