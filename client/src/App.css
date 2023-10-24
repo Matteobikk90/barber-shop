@@ -128,7 +128,14 @@ body {
 .t13-30,
 .t13-45,
 .t20-15,
-.t01-11 {
+.t01-11,
+.t02-01,
+.t03-01,
+.t04-01,
+.t05-01,
+.t06-01,
+.t07-01,
+.t08-01 {
     cursor: not-allowed !important;
     color: #e52b50 !important;
     pointer-events: none;
