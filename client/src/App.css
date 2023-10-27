@@ -141,6 +141,17 @@ body {
     pointer-events: none;
 }
 
+.timeSelector.t01-11 .body,
+.timeSelector.t02-01 .body,
+.timeSelector.t03-01 .body,
+.timeSelector.t04-01 .body,
+.timeSelector.t05-01 .body,
+.timeSelector.t06-01 .body,
+.timeSelector.t07-01 .body,
+.timeSelector.t08-01 .body {
+    display: none;
+}
+
 .calendar .body + .timeSelector {
     display: none !important;
 }
