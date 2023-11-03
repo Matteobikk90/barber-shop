@@ -8,8 +8,9 @@ export const deleteBooking = (
     docToDelete: string
 ) => {
     e.preventDefault();
+    console.log(docToDelete);
     const findDocToDelete = bookedBookings?.find(
-        ({ id }) => id?.toLowerCase() === docToDelete
+        ({ id }) => id?.toLowerCase() === docToDelete.toLowerCase()
     )?.id;
     if (findDocToDelete) {
         const confirmation = window.confirm(
