@@ -8,7 +8,6 @@ export const deleteBooking = (
     docToDelete: string
 ) => {
     e.preventDefault();
-    console.log(docToDelete);
     const findDocToDelete = bookedBookings?.find(
         ({ id }) => id?.toLowerCase() === docToDelete.toLowerCase()
     )?.id;
