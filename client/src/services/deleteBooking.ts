@@ -9,7 +9,9 @@ export const deleteBooking = (
 ) => {
     e.preventDefault();
     const findDocToDelete = bookedBookings?.find(
-        ({ id }) => id?.toLowerCase() === docToDelete.toLowerCase()
+        ({ id }) =>
+            id?.toLowerCase().normalize() ===
+            docToDelete.toLowerCase().normalize()
     )?.id;
     if (findDocToDelete) {
         const confirmation = window.confirm(
