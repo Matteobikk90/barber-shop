@@ -129,6 +129,7 @@ body {
 .t13-45,
 .t20-15,
 .t01-11,
+.t26-12,
 .t02-01,
 .t03-01,
 .t04-01,
@@ -141,20 +142,7 @@ body {
     pointer-events: none;
 }
 
-.timeSelector.t28-10 .t09-00,
-.timeSelector.t28-10 .t09-30,
-.timeSelector.t28-10 .t11-30,
-.timeSelector.t28-10 .t12-00,
-.timeSelector.t28-10 .t14-00,
-.timeSelector.t28-10 .t14-30,
-.timeSelector.t28-10 .t16-00,
-.timeSelector.t28-10 .t18-00,
-.timeSelector.t28-10 .t18-30 {
-    cursor: not-allowed !important;
-    color: #e52b50 !important;
-    pointer-events: none;
-}
-
+.timeSelector.t26-12 .body,
 .timeSelector.t01-11 .body,
 .timeSelector.t02-01 .body,
 .timeSelector.t03-01 .body,
