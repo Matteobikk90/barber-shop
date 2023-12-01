@@ -129,6 +129,7 @@ body {
 .t13-45,
 .t20-15,
 .t01-11,
+.t08-12,
 .t26-12,
 .t02-01,
 .t03-01,
@@ -142,6 +143,7 @@ body {
     pointer-events: none;
 }
 
+.timeSelector.t08-12 .body,
 .timeSelector.t26-12 .body,
 .timeSelector.t01-11 .body,
 .timeSelector.t02-01 .body,
