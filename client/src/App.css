@@ -114,9 +114,13 @@ body {
 
 .calendar .body .disabled {
     opacity: 0.75;
+    pointer-events: none;
+    cursor: not-allowed !important;
 }
 
 .disabled {
+    cursor: not-allowed !important;
+    pointer-events: none;
     cursor: not-allowed !important;
 }
 
@@ -137,6 +141,24 @@ body {
 .t05-01,
 .t06-01,
 .t07-01,
+.t08-01,
+.Sun p,
+.Mon p,
+.t12-45 p,
+.t13-00 p,
+.t13-15 p,
+.t13-30 p,
+.t13-45 p,
+.t20-15 p,
+.t01-11 p,
+.t08-12 p,
+.t26-12 p,
+.t02-01 p,
+.t03-01 p,
+.t04-01 p,
+.t05-01 p,
+.t06-01 p,
+.t07-01 p,
 .t08-01 {
     cursor: not-allowed !important;
     color: #e52b50 !important;
@@ -166,6 +188,8 @@ body {
 
 .calendar .timeSelector .disabled {
     color: #e52b50 !important;
+    pointer-events: none;
+    cursor: not-allowed !important;
 }
 
 .calendar .body .row .selected {

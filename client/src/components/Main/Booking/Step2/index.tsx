@@ -45,6 +45,16 @@ const Step2 = ({ handleBookingInfo }: Partial<BookingTypes>) => {
 
     return (
         <BookingFormContainer title="Seleziona una data e un orario">
+            <div tw="flex gap-[1rem] justify-between max-w-[14rem] m-auto text-xl mb-[1rem]">
+                <div tw="flex justify-between gap-[0.5rem] items-center">
+                    <span tw="h-[0.5rem] w-[0.5rem] rounded bg-red"></span>
+                    <h3>Non disponibili</h3>
+                </div>
+                <div tw="flex justify-between gap-[0.5rem] items-center">
+                    <span tw="h-[0.5rem] w-[0.5rem] rounded bg-black"></span>
+                    <h3>Disponibili</h3>
+                </div>
+            </div>
             <article>
                 {bookedBookings && (
                     <TimeCalendar

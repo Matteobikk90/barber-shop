@@ -14,7 +14,8 @@ module.exports = {
             cream: "#efece8",
             black: "#160f0f",
             green: "#334a3b",
-            brown: "#6a4f31"
+            brown: "#6a4f31",
+            red: "#e52b50"
         },
         fontSize: {
             xs: ["0.75rem", "0.75rem"],
