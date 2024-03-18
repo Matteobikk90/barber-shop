@@ -1,6 +1,6 @@
 import { services } from "utils/items";
 /** @jsxImportSource @emotion/react */
-import "twin.macro";
+import tw from "twin.macro";
 
 const Menu = () => (
     <section id="servizi" tw="text-cream">
@@ -26,9 +26,14 @@ const Menu = () => (
                                 backgroundSize: "5px 3px"
                             }}
                             key={id}
-                            tw="font-medium p-[1rem] flex justify-between items-center bg-bottom bg-repeat-x"
+                            tw="font-medium sm:p-[1rem 0.5rem] p-[1rem] flex justify-between items-center bg-bottom bg-repeat-x"
                         >
-                            <div tw="flex items-center gap-[1rem]">
+                            <div
+                                css={[
+                                    tw`flex items-center gap-[1rem]`,
+                                    id === "cut&shave" && tw`gap-[0.25rem]`
+                                ]}
+                            >
                                 {id === "cut&shave" && (
                                     <>
                                         <img
