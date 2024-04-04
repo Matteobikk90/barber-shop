@@ -141,6 +141,9 @@ body {
 .t05-01,
 .t06-01,
 .t07-01,
+.t25-04,
+.t01-05,
+.t02-06,
 .t08-01,
 .Sun p,
 .Mon p,
@@ -159,6 +162,9 @@ body {
 .t05-01 p,
 .t06-01 p,
 .t07-01 p,
+.t25-04 p,
+.t01-05 p,
+.t02-06 p,
 .t08-01 {
     cursor: not-allowed !important;
     color: #e52b50 !important;
@@ -174,6 +180,9 @@ body {
 .timeSelector.t05-01 .body,
 .timeSelector.t06-01 .body,
 .timeSelector.t07-01 .body,
+.timeSelector.t25-04 body,
+.timeSelector.t01-05 body,
+.timeSelector.t02-06 body,
 .timeSelector.t08-01 .body {
     display: none;
 }
