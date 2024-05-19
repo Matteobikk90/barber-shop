@@ -48,12 +48,15 @@ export const handleSubmitBooking = async (
                 .replaceAll("/", "-")}`
         );
         await setDoc(myDocRef, newBooking);
-        await fetch("https://slip-butterfly.cyclic.app/send_email_booking", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            mode: "cors",
-            body: JSON.stringify(emailBody)
-        })
+        await fetch(
+            "https://barber-shop-backend-efc4.onrender.com/send_email_booking",
+            {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                mode: "cors",
+                body: JSON.stringify(emailBody)
+            }
+        )
             .then(() => next())
             .catch(() =>
                 alert(

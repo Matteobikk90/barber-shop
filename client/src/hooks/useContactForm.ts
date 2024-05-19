@@ -35,12 +35,15 @@ const useContactForm = (
             phone: formData.phone,
             message: formData.message
         };
-        await fetch("https://slip-butterfly.cyclic.app/send_contact_email", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            mode: "cors",
-            body: JSON.stringify(emailBody)
-        })
+        await fetch(
+            "https://barber-shop-backend-efc4.onrender.com/send_contact_email",
+            {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                mode: "cors",
+                body: JSON.stringify(emailBody)
+            }
+        )
             .then(() => {
                 alert(
                     "Grazie per averci contattato. Ti risponderemo il prima possibile"
