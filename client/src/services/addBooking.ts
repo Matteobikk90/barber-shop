@@ -1,10 +1,8 @@
-import { FormEvent } from "react";
 import { BookingTypes } from "types/booking.types";
 import { db } from "db/firebase";
 import { collection, setDoc, Timestamp, doc } from "firebase/firestore";
 
 export const handleSubmitBooking = async (
-    e: FormEvent,
     {
         service,
         name,
@@ -17,7 +15,6 @@ export const handleSubmitBooking = async (
     }: BookingTypes,
     next: () => void
 ) => {
-    e.preventDefault();
     try {
         const myCollection = collection(db, "bookings");
         const newBooking = {

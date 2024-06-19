@@ -40,7 +40,7 @@ const Booking = ({ handleToggleState }: any) => {
 
     const submitBooking = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        handleSubmitBooking(e, booking, next);
+        handleSubmitBooking(booking, next);
     };
 
     const {
