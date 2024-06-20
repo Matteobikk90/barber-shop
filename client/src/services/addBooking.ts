@@ -1,6 +1,7 @@
 import { BookingTypes } from "types/booking.types";
 import { db } from "db/firebase";
 import { collection, setDoc, Timestamp, doc } from "firebase/firestore";
+import { Dispatch, SetStateAction } from "react";
 
 export const handleSubmitBooking = async (
     {
@@ -13,7 +14,8 @@ export const handleSubmitBooking = async (
         email,
         readable_start_time
     }: BookingTypes,
-    next: () => void
+    next: () => void,
+    setIsLoading: Dispatch<SetStateAction<boolean>>
 ) => {
     try {
         const myCollection = collection(db, "bookings");
@@ -62,5 +64,7 @@ export const handleSubmitBooking = async (
             );
     } catch (_) {
         alert("Qualcosa è andato storto, per favore riprova");
+    } finally {
+        setIsLoading(false);
     }
 };

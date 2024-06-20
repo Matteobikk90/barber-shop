@@ -6,6 +6,7 @@ import Success from "components/Main/Booking/Success";
 import { handleSubmitBooking } from "services/addBooking";
 import { BookingTypes } from "types/booking.types";
 import useMultiStepForm from "hooks/useMultiStepForm";
+import Loader from "components/Loader";
 /** @jsxImportSource @emotion/react */
 import tw from "twin.macro";
 
@@ -26,6 +27,7 @@ const INITIAL_DATA: BookingTypes = {
 const Booking = ({ handleToggleState }: any) => {
     const [booking, setBooking] = useState(INITIAL_DATA);
     const bookingFormRef = useRef<HTMLFormElement | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleBookingInfo = (bookinfInfo: Partial<BookingTypes>) => {
         setBooking((prev) => ({ ...prev, ...bookinfInfo }));
@@ -40,7 +42,8 @@ const Booking = ({ handleToggleState }: any) => {
 
     const submitBooking = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        handleSubmitBooking(booking, next);
+        setIsLoading(true);
+        handleSubmitBooking(booking, next, setIsLoading);
     };
 
     const {
@@ -84,7 +87,7 @@ const Booking = ({ handleToggleState }: any) => {
             </div>
             {step}
             <div tw="text-xxl flex gap-[1rem] absolute bottom-[1rem] right-[1rem] mt-[1rem]">
-                {!isFirstStep && !isLastStep && (
+                {!isFirstStep && !isLastStep && !isLoading && (
                     <button type="button" onClick={back}>
                         Indietro
                     </button>
@@ -96,7 +99,9 @@ const Booking = ({ handleToggleState }: any) => {
                 booking.email &&
                 booking.confirmation ? (
                     <button type="submit" value="Send">
-                        Prenota
+                        {isLoading
+                            ? "Prenotazione in corso, attendi"
+                            : "Prenota"}
                     </button>
                 ) : null}
             </div>
