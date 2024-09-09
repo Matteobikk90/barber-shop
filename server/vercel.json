@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/*.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/send_email_booking",
+      "dest": "/api/send_email_booking"
+    },
+    {
+      "src": "/send_contact_email",
+      "dest": "/api/send_contact_email"
+    }
+  ]
+}
