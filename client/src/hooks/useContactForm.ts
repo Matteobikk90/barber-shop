@@ -35,7 +35,6 @@ const useContactForm = (
       phone: formData.phone,
       message: formData.message,
     };
-    // https://barber-shop-backend-efc4.onrender.com
     await fetch(`${process.env.REACT_APP_NEW_URL_EMAIL}send_contact_email`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },

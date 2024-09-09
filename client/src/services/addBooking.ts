@@ -46,12 +46,11 @@ export const handleSubmitBooking = async (
         .split(" ")[1]
         .replaceAll("/", "-")}`
     );
-    // https://barber-shop-backend-efc4.onrender.com
     await setDoc(myDocRef, newBooking);
     await fetch(`${process.env.REACT_APP_NEW_URL_EMAIL}send_email_booking`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      mode: "no-cors",
+      mode: "cors",
       body: JSON.stringify(emailBody),
     })
       .then(() => next())
