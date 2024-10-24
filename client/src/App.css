@@ -6,122 +6,122 @@
 @tailwind utilities;
 
 html {
-    /* font-family: "Work Sans", sans-serif !important; */
-    font-family: "Tulpen One", cursive !important;
-    scroll-behavior: smooth;
-    scroll-padding-top: 7.875rem;
+  /* font-family: "Work Sans", sans-serif !important; */
+  font-family: "Tulpen One", cursive !important;
+  scroll-behavior: smooth;
+  scroll-padding-top: 7.875rem;
 }
 
 @media (max-width: 768px) {
-    html {
-        scroll-padding-top: 3.65rem;
-    }
+  html {
+    scroll-padding-top: 3.65rem;
+  }
 }
 
 .react-multi-carousel-list {
-    border-radius: 0.25rem;
-    box-shadow: 0 0.25rem 0.25rem rgba(0, 0, 0, 0.1);
+  border-radius: 0.25rem;
+  box-shadow: 0 0.25rem 0.25rem rgba(0, 0, 0, 0.1);
 }
 
 .react-multi-carousel-dot-list {
-    background-color: #efece8;
-    gap: 1rem;
-    opacity: 0.7;
+  background-color: #efece8;
+  gap: 1rem;
+  opacity: 0.7;
 }
 
 .react-multi-carousel-dot--active button {
-    background: #334a3b !important;
+  background: #334a3b !important;
 }
 
 .react-multi-carousel-item {
-    height: 100%;
+  height: 100%;
 }
 
 .react-multi-carousel-item img {
-    width: 100%;
-    height: 22.5rem;
-    object-fit: cover;
+  width: 100%;
+  height: 22.5rem;
+  object-fit: cover;
 }
 
 #home .react-multi-carousel-item img {
-    object-fit: contain;
-    height: 100%;
+  object-fit: contain;
+  height: 100%;
 }
 
 #prodotti .react-multi-carousel-item img {
-    height: 20rem;
-    object-fit: contain;
+  height: 20rem;
+  object-fit: contain;
 }
 
 #prodotti .react-multiple-carousel__arrow {
-    bottom: 2rem;
+  bottom: 2rem;
 }
 
 #prodotti .react-multi-carousel-dot-list {
-    gap: 0.5rem;
+  gap: 0.5rem;
 }
 
 #calendar {
-    font-family: "Work Sans", sans-serif !important;
+  font-family: "Work Sans", sans-serif !important;
 }
 
 body {
-    margin: 0;
-    letter-spacing: 0.25px;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  letter-spacing: 0.25px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .calendar {
-    font-family: "Tulpen One", cursive !important;
-    font-size: 1.5rem !important;
-    height: 100%;
-    overflow: hidden;
-    border-radius: 0.5rem;
-    color: #160f0f !important;
-    max-width: 42rem;
-    margin: auto;
+  font-family: "Tulpen One", cursive !important;
+  font-size: 1.5rem !important;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  color: #160f0f !important;
+  max-width: 42rem;
+  margin: auto;
 }
 
 .calendar .body .row .cell .number {
-    font-size: 100% !important;
-    top: 50% !important;
-    left: 50%;
-    right: unset !important;
-    transform: translate(-50%, -50%);
+  font-size: 100% !important;
+  top: 50% !important;
+  left: 50%;
+  right: unset !important;
+  transform: translate(-50%, -50%);
 }
 
 .calendar .days {
-    color: #160f0f !important;
+  color: #160f0f !important;
 }
 
 .calendar .header {
-    padding: 0.5rem !important;
+  padding: 0.5rem !important;
 }
 
 .calendar .timeSelector {
-    font-family: "Tulpen One", cursive !important;
+  font-family: "Tulpen One", cursive !important;
 }
 
 .calendar .body .row .cell {
-    height: 2.8em !important;
-    transition: none !important;
+  height: 2.8em !important;
+  transition: none !important;
 }
 
 .calendar .timeSelector .cell {
-    height: auto !important;
+  height: auto !important;
 }
 
 .calendar .body .disabled {
-    opacity: 0.75;
-    pointer-events: none;
-    cursor: not-allowed !important;
+  opacity: 0.75;
+  pointer-events: none;
+  cursor: not-allowed !important;
 }
 
 .disabled {
-    cursor: not-allowed !important;
-    pointer-events: none;
-    cursor: not-allowed !important;
+  cursor: not-allowed !important;
+  pointer-events: none;
+  cursor: not-allowed !important;
 }
 
 .Sun,
@@ -160,6 +160,7 @@ body {
 .t26-08,
 .t27-08,
 .t28-08,
+.t26-10,
 .t08-01,
 .Sun p,
 .Mon p,
@@ -197,10 +198,11 @@ body {
 .t26-08 p,
 .t27-08 p,
 .t28-08 p,
+.t26-10 p,
 .t08-01 {
-    cursor: not-allowed !important;
-    color: #e52b50 !important;
-    pointer-events: none;
+  cursor: not-allowed !important;
+  color: #e52b50 !important;
+  pointer-events: none;
 }
 
 .timeSelector.t08-12 .body,
@@ -231,48 +233,49 @@ body {
 .timeSelector.t25-04 body,
 .timeSelector.t01-05 body,
 .timeSelector.t02-06 body,
+.timeSelector.t26-10 body,
 .timeSelector.t08-01 .body {
-    display: none;
+  display: none;
 }
 
 .calendar .body + .timeSelector {
-    display: none !important;
+  display: none !important;
 }
 
 .calendar .timeSelector + .timeSelector {
-    display: block !important;
+  display: block !important;
 }
 
 .calendar .timeSelector .disabled {
-    color: #e52b50 !important;
-    pointer-events: none;
-    cursor: not-allowed !important;
+  color: #e52b50 !important;
+  pointer-events: none;
+  cursor: not-allowed !important;
 }
 
 .calendar .body .row .selected {
-    border: 0 !important;
-    border-right: 1px solid #eee !important;
+  border: 0 !important;
+  border-right: 1px solid #eee !important;
 }
 
 .calendar .body .selected .bg {
-    opacity: 0 !important;
+  opacity: 0 !important;
 }
 
 .calendar .body .cell .bg {
-    font-size: 3rem !important;
-    left: 0rem;
-    top: 0 !important;
-    right: unset !important;
+  font-size: 3rem !important;
+  left: 0rem;
+  top: 0 !important;
+  right: unset !important;
 }
 
 /* map */
 .leaflet-control-attribution {
-    display: none;
+  display: none;
 }
 
 .leaflet-layer,
 .leaflet-control-zoom-in,
 .leaflet-control-zoom-out,
 .leaflet-control-attribution {
-    filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+  filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
 }
