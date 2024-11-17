@@ -158,6 +158,7 @@ body {
 .t03-01,
 .t04-01,
 .t05-01,
+.t22-01,
 .t06-01,
 .t22-08,
 .t23-08,
@@ -176,6 +177,7 @@ body {
 .t12-45 p,
 .t13-00 p,
 .t08-12 p,
+.t22-01 p,
 .t01-01 p,
 .t02-01 p,
 .t03-01 p,
@@ -259,6 +261,7 @@ body {
 .timeSelector.t28-08 .tbody,
 .timeSelector.t25-04 body,
 .timeSelector.t01-05 body,
+.timeSelector.t22-01 body,
 .timeSelector.t02-06 body,
 .timeSelector.t26-10 body,
 .timeSelector.t08-01 .body {
