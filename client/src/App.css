@@ -234,6 +234,11 @@ body {
   pointer-events: auto;
 }
 
+t30-12.disabled,
+t30-12.disabled p {
+  color: #ccc !important;
+}
+
 .timeSelector.t08-12 .body,
 .timeSelector.t08-12 .body,
 .timeSelector.t25-12 .body,
