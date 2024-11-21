@@ -225,6 +225,15 @@ body {
   pointer-events: none;
 }
 
+.t23-12,
+.t30-12,
+.t23-12 p,
+.t30-12 p {
+  cursor: pointer !important;
+  color: #160f0f !important;
+  pointer-events: auto;
+}
+
 .timeSelector.t08-12 .body,
 .timeSelector.t08-12 .body,
 .timeSelector.t25-12 .body,
@@ -266,6 +275,11 @@ body {
 .timeSelector.t26-10 body,
 .timeSelector.t08-01 .body {
   display: none;
+}
+
+.timeSelector.t23-12 .body,
+.timeSelector.t30-12 .body {
+  display: flex;
 }
 
 .calendar .body + .timeSelector {

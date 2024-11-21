@@ -7123,7 +7123,7 @@ var TimeSelect = /** @class */ (function (_super) {
     TimeSelect.prototype.selectorClick = function () {
         var selectorClass = this.state.selectorClass;
         this.setState({
-            selectorClass: selectorClass === "inactive" ? "active" : "inactive"
+            selectorClass: selectorClass === "inactive" ? "active" : "inactive",
         });
     };
     TimeSelect.prototype.generateOpenHours = function () {
@@ -7131,6 +7131,18 @@ var TimeSelect = /** @class */ (function (_super) {
         var _a = this.props, openHours = _a.openHours, selectedDate = _a.selectedDate;
         var dayStart = dateFns.startOfDay(selectedDate);
         var dayNum = parseInt(dateFns.format(selectedDate, "d"), 10);
+        // Define override dates and their custom open hours
+        var overrideDates = {
+            "2024-12-23": [9, 18],
+            "2024-12-30": [9, 18],
+        };
+        var formattedDate = dateFns.format(selectedDate, "yyyy-MM-dd");
+        if (overrideDates[formattedDate]) {
+            openTimes[0] = dateFns.addHours(dayStart, overrideDates[formattedDate][0]);
+            openTimes[1] = dateFns.addHours(dayStart, overrideDates[formattedDate][1]);
+            return openTimes;
+        }
+        // Default behavior
         if (openHours.length === 1) {
             openTimes[0] = dateFns.addHours(dayStart, openHours[0][0]);
             openTimes[1] = dateFns.addHours(dayStart, openHours[0][1]);
@@ -7167,14 +7179,13 @@ var TimeSelect = /** @class */ (function (_super) {
         var _a = this.props, timeSlot = _a.timeSlot, selectedTime = _a.selectedTime, onTimeClick = _a.onTimeClick;
         var selectorClass = this.state.selectorClass;
         var openHours = this.generateOpenHours();
+        console.log(openHours);
         var dateFormat = "HH-mm";
         var rows = [];
         var timeSlots = [];
         var timePick = openHours[0];
         // eslint-disable-next-line no-mixed-operators
-        var difference = (dateFns.differenceInMinutes(openHours[1], openHours[0]) /
-            timeSlot) %
-            4;
+        var difference = (dateFns.differenceInMinutes(openHours[1], openHours[0]) / timeSlot) % 4;
         while (timePick < dateFns.addMinutes(openHours[1], timeSlot * difference)) {
             var _loop_1 = function (i) {
                 var classSet = "";
