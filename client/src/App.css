@@ -234,8 +234,8 @@ body {
   pointer-events: auto;
 }
 
-t30-12.disabled,
-t30-12.disabled p {
+.t30-12.disabled,
+.t30-12.disabled p {
   color: #ccc !important;
 }
 
