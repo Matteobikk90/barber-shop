@@ -7129,37 +7129,54 @@ var TimeSelect = /** @class */ (function (_super) {
     TimeSelect.prototype.generateOpenHours = function () {
         var openTimes = [];
         var _a = this.props, openHours = _a.openHours, selectedDate = _a.selectedDate;
-        var dayStart = dateFns.startOfDay(selectedDate);
-        var dayNum = parseInt(dateFns.format(selectedDate, "d"), 10);
+        // Start of the day (local timezone)
+        var dayStart = new Date(selectedDate);
+        dayStart.setHours(0, 0, 0, 0);
+        // Format date as "yyyy-MM-dd"
+        var formattedDate = dayStart.getFullYear() + "-" + String(dayStart.getMonth() + 1).padStart(2, "0") + "-" + String(dayStart.getDate()).padStart(2, "0");
         // Define override dates and their custom open hours
         var overrideDates = {
-            "2024-12-23": [9, 18],
-            "2024-12-30": [9, 18],
+            "2024-12-23": [9, 18.59],
+            "2024-12-30": [9, 18.59],
         };
-        var formattedDate = dateFns.format(selectedDate, "yyyy-MM-dd");
+        // Check if the selected date matches the override dates
         if (overrideDates[formattedDate]) {
-            openTimes[0] = dateFns.addHours(dayStart, overrideDates[formattedDate][0]);
-            openTimes[1] = dateFns.addHours(dayStart, overrideDates[formattedDate][1]);
+            openTimes[0] = new Date(dayStart);
+            openTimes[0].setHours(overrideDates[formattedDate][0]); // Start time
+            openTimes[1] = new Date(dayStart);
+            openTimes[1].setHours(overrideDates[formattedDate][1]); // End time
             return openTimes;
         }
-        // Default behavior
-        if (openHours.length === 1) {
-            openTimes[0] = dateFns.addHours(dayStart, openHours[0][0]);
-            openTimes[1] = dateFns.addHours(dayStart, openHours[0][1]);
+        // Default behavior using `openHours`
+        var dayNum = dayStart.getDay(); // 0 (Sunday) - 6 (Saturday)
+        if (openHours.length === 7) {
+            var dayOpenHours = openHours[dayNum];
+            if (!dayOpenHours || dayOpenHours.length < 2) {
+                return [dayStart, dayStart]; // Return start of day if invalid
+            }
+            openTimes[0] = new Date(dayStart);
+            openTimes[0].setHours(dayOpenHours[0]); // Start time
+            openTimes[1] = new Date(dayStart);
+            openTimes[1].setHours(dayOpenHours[1]); // End time
         }
         else if (openHours.length === 2) {
             if (dayNum === 0 || dayNum === 6) {
-                openTimes[0] = dateFns.addHours(dayStart, openHours[1][0]);
-                openTimes[1] = dateFns.addHours(dayStart, openHours[1][1]);
+                // Weekend hours
+                openTimes[0] = new Date(dayStart);
+                openTimes[0].setHours(openHours[1][0]);
+                openTimes[1] = new Date(dayStart);
+                openTimes[1].setHours(openHours[1][1]);
             }
             else {
-                openTimes[0] = dateFns.addHours(dayStart, openHours[0][0]);
-                openTimes[1] = dateFns.addHours(dayStart, openHours[0][1]);
+                // Weekday hours
+                openTimes[0] = new Date(dayStart);
+                openTimes[0].setHours(openHours[0][0]);
+                openTimes[1] = new Date(dayStart);
+                openTimes[1].setHours(openHours[0][1]);
             }
         }
-        else if (openHours.length === 7) {
-            openTimes[0] = dateFns.addHours(dayStart, openHours[dayNum][0]);
-            openTimes[1] = dateFns.addHours(dayStart, openHours[dayNum][1]);
+        else {
+            return [dayStart, dayStart]; // Return start of day if invalid
         }
         return openTimes;
     };
@@ -7252,7 +7269,7 @@ var TimeCalendar = /** @class */ (function (_super) {
         var _this = _super.call(this, props) || this;
         _this.state = {
             selectedDate: new Date(),
-            timeSelect: false
+            timeSelect: false,
         };
         _this.onDateClick = _this.onDateClick.bind(_this);
         _this.nextTime = _this.nextTime.bind(_this);
@@ -7263,7 +7280,7 @@ var TimeCalendar = /** @class */ (function (_super) {
     TimeCalendar.prototype.onDateClick = function (day) {
         var onDateFunction = this.props.onDateFunction;
         this.setState({
-            selectedDate: day
+            selectedDate: day,
         });
         if (onDateFunction)
             onDateFunction(day);
@@ -7273,28 +7290,26 @@ var TimeCalendar = /** @class */ (function (_super) {
         this.setState({
             selectedDate: timeSelect
                 ? dateFns.addDays(selectedDate, 1)
-                : dateFns.addMonths(selectedDate, 1)
+                : dateFns.addMonths(selectedDate, 1),
         });
     };
     TimeCalendar.prototype.prevTime = function () {
         var _a = this.state, selectedDate = _a.selectedDate, timeSelect = _a.timeSelect;
         var disableHistory = this.props.disableHistory;
         if (disableHistory &&
-            ((dateFns.isPast(dateFns.startOfMonth(selectedDate)) &&
-                !timeSelect) ||
-                (dateFns.isPast(dateFns.startOfDay(selectedDate)) &&
-                    timeSelect)))
+            ((dateFns.isPast(dateFns.startOfMonth(selectedDate)) && !timeSelect) ||
+                (dateFns.isPast(dateFns.startOfDay(selectedDate)) && timeSelect)))
             return;
         this.setState({
             selectedDate: timeSelect
                 ? dateFns.subDays(selectedDate, 1)
-                : dateFns.subMonths(selectedDate, 1)
+                : dateFns.subMonths(selectedDate, 1),
         });
     };
     TimeCalendar.prototype.timeSelectToggle = function () {
         var timeSelect = this.state.timeSelect;
         this.setState({
-            timeSelect: !timeSelect
+            timeSelect: !timeSelect,
         });
     };
     TimeCalendar.prototype.render = function () {
@@ -7303,18 +7318,16 @@ var TimeCalendar = /** @class */ (function (_super) {
         return (React__default["default"].createElement("div", { className: "calendar" },
             React__default["default"].createElement(Header, { selectedDate: !timeSelect
                     ? dateFns.format(selectedDate, "MMMM YYYY", {
-                        locale: it
+                        locale: it,
                     })
-                    : dateFns.format(selectedDate, "dddd Do MMMM", {
-                        locale: it
+                    : dateFns.format(selectedDate, "dddd D MMMM", {
+                        locale: it,
                     }), nextTime: this.nextTime, prevTime: this.prevTime, timeSelect: timeSelect }),
             timeSelect ? (React__default["default"].createElement(React__default["default"].Fragment, null,
                 React__default["default"].createElement(TimeSelect, { selectedDate: selectedDate, disableHistory: disableHistory, timeSlot: timeSlot, openHours: openHours, onTimeClick: onTimeClick, bookings: bookings, selectedTime: { start: startTime, end: endTime }, day: dateFns.format(this.state.selectedDate, "DD/MM") }))) : (React__default["default"].createElement(React__default["default"].Fragment, null,
                 React__default["default"].createElement(Weeks, { selectedDate: selectedDate, disableHistory: disableHistory, onDateClick: this.onDateClick, bookings: bookings, timeSlot: timeSlot, clickable: clickable, selectedTime: { start: startTime, end: endTime } }))),
             timeSlot && openHours && (React__default["default"].createElement("button", { className: "timeSelector", onClick: this.timeSelectToggle, type: "button" },
-                React__default["default"].createElement("p", null, timeSelect
-                    ? "Scegli un'altra data"
-                    : "Select Time")))));
+                React__default["default"].createElement("p", null, timeSelect ? "Scegli un'altra data" : "Select Time")))));
     };
     return TimeCalendar;
 }(React.PureComponent));

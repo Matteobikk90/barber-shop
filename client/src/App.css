@@ -225,6 +225,13 @@ body {
   pointer-events: none;
 }
 
+.Mon.t23-12,
+.Mon.t30-12 {
+  cursor: pointer !important;
+  color: black !important;
+  pointer-events: all;
+}
+
 .t30-12.disabled,
 .t30-12.disabled p {
   color: #ccc !important;
