@@ -168,7 +168,6 @@ body {
 .t27-08,
 .t28-08,
 .t26-10,
-.t08-01,
 .t08-12,
 .t25-12,
 .t26-12,
@@ -218,8 +217,7 @@ body {
 .t26-08 p,
 .t27-08 p,
 .t28-08 p,
-.t26-10 p,
-.t08-01 {
+.t26-10 p {
   cursor: not-allowed !important;
   color: #e52b50 !important;
   pointer-events: none;
@@ -275,8 +273,7 @@ body {
 .timeSelector.t01-05 body,
 .timeSelector.t22-01 body,
 .timeSelector.t02-06 body,
-.timeSelector.t26-10 body,
-.timeSelector.t08-01 .body {
+.timeSelector.t26-10 body {
   display: none;
 }
 
