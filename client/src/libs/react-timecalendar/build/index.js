@@ -1,10 +1,10 @@
-'use strict';
+var React = require("react");
 
-var React = require('react');
+function _interopDefaultLegacy(e) {
+  return e && typeof e === "object" && "default" in e ? e : { default: e };
+}
 
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
-
-var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
+var React__default = /*#__PURE__*/ _interopDefaultLegacy(React);
 
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -22,17 +22,27 @@ PERFORMANCE OF THIS SOFTWARE.
 ***************************************************************************** */
 /* global Reflect, Promise */
 
-var extendStatics = function(d, b) {
-    extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||x
-        function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-    return extendStatics(d, b);
+var extendStatics = function (d, b) {
+  extendStatics =
+    Object.setPrototypeOf ||
+    ({ __proto__: [] } instanceof Array &&
+      function (d, b) {
+        d.__proto__ = b;
+      }) ||
+    function (d, b) {
+      for (var p in b)
+        if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
+    };
+  return extendStatics(d, b);
 };
 
 function __extends(d, b) {
-    extendStatics(d, b);
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  extendStatics(d, b);
+  function __() {
+    this.constructor = d;
+  }
+  d.prototype =
+    b === null ? Object.create(b) : ((__.prototype = b.prototype), new __());
 }
 
 var MILLISECONDS_IN_MINUTE$6 = 60000;
@@ -48,13 +58,19 @@ var MILLISECONDS_IN_MINUTE$6 = 60000;
  *
  * This function returns the timezone offset in milliseconds that takes seconds in account.
  */
-var getTimezoneOffsetInMilliseconds = function getTimezoneOffsetInMilliseconds (dirtyDate) {
+var getTimezoneOffsetInMilliseconds = function getTimezoneOffsetInMilliseconds(
+  dirtyDate
+) {
   var date = new Date(dirtyDate.getTime());
   var baseTimezoneOffset = date.getTimezoneOffset();
   date.setSeconds(0, 0);
-  var millisecondsPartOfTimezoneOffset = date.getTime() % MILLISECONDS_IN_MINUTE$6;
+  var millisecondsPartOfTimezoneOffset =
+    date.getTime() % MILLISECONDS_IN_MINUTE$6;
 
-  return baseTimezoneOffset * MILLISECONDS_IN_MINUTE$6 + millisecondsPartOfTimezoneOffset
+  return (
+    baseTimezoneOffset * MILLISECONDS_IN_MINUTE$6 +
+    millisecondsPartOfTimezoneOffset
+  );
 };
 
 /**
@@ -72,8 +88,8 @@ var getTimezoneOffsetInMilliseconds = function getTimezoneOffsetInMilliseconds (
  * var result = isDate('mayonnaise')
  * //=> false
  */
-function isDate (argument) {
-  return argument instanceof Date
+function isDate(argument) {
+  return argument instanceof Date;
 }
 
 var is_date = isDate;
@@ -90,14 +106,14 @@ var parseTokenYY = /^(\d{2})$/;
 var parseTokensYYY = [
   /^([+-]\d{2})$/, // 0 additional digits
   /^([+-]\d{3})$/, // 1 additional digit
-  /^([+-]\d{4})$/ // 2 additional digits
+  /^([+-]\d{4})$/, // 2 additional digits
 ];
 
 var parseTokenYYYY = /^(\d{4})/;
 var parseTokensYYYYY = [
   /^([+-]\d{4})/, // 0 additional digits
   /^([+-]\d{5})/, // 1 additional digit
-  /^([+-]\d{6})/ // 2 additional digits
+  /^([+-]\d{6})/, // 2 additional digits
 ];
 
 // date tokens
@@ -151,12 +167,12 @@ var parseTokenTimezoneHHMM = /^([+-])(\d{2}):?(\d{2})$/;
  * var result = parse('+02014101', {additionalDigits: 1})
  * //=> Fri Apr 11 2014 00:00:00
  */
-function parse (argument, dirtyOptions) {
+function parse(argument, dirtyOptions) {
   if (is_date(argument)) {
     // Prevent the date to lose the milliseconds when passed to new Date() in IE10
-    return new Date(argument.getTime())
-  } else if (typeof argument !== 'string') {
-    return new Date(argument)
+    return new Date(argument.getTime());
+  } else if (typeof argument !== "string") {
+    return new Date(argument);
   }
 
   var options = dirtyOptions || {};
@@ -203,13 +219,13 @@ function parse (argument, dirtyOptions) {
       }
     }
 
-    return new Date(timestamp + time + offset)
+    return new Date(timestamp + time + offset);
   } else {
-    return new Date(argument)
+    return new Date(argument);
   }
 }
 
-function splitDateString (dateString) {
+function splitDateString(dateString) {
   var dateStrings = {};
   var array = dateString.split(parseTokenDateTimeDelimeter);
   var timeString;
@@ -225,17 +241,17 @@ function splitDateString (dateString) {
   if (timeString) {
     var token = parseTokenTimezone.exec(timeString);
     if (token) {
-      dateStrings.time = timeString.replace(token[1], '');
+      dateStrings.time = timeString.replace(token[1], "");
       dateStrings.timezone = token[1];
     } else {
       dateStrings.time = timeString;
     }
   }
 
-  return dateStrings
+  return dateStrings;
 }
 
-function parseYear (dateString, additionalDigits) {
+function parseYear(dateString, additionalDigits) {
   var parseTokenYYY = parseTokensYYY[additionalDigits];
   var parseTokenYYYYY = parseTokensYYYYY[additionalDigits];
 
@@ -247,8 +263,8 @@ function parseYear (dateString, additionalDigits) {
     var yearString = token[1];
     return {
       year: parseInt(yearString, 10),
-      restDateString: dateString.slice(yearString.length)
-    }
+      restDateString: dateString.slice(yearString.length),
+    };
   }
 
   // YY or ±YYY
@@ -257,20 +273,20 @@ function parseYear (dateString, additionalDigits) {
     var centuryString = token[1];
     return {
       year: parseInt(centuryString, 10) * 100,
-      restDateString: dateString.slice(centuryString.length)
-    }
+      restDateString: dateString.slice(centuryString.length),
+    };
   }
 
   // Invalid ISO-formatted year
   return {
-    year: null
-  }
+    year: null,
+  };
 }
 
-function parseDate (dateString, year) {
+function parseDate(dateString, year) {
   // Invalid ISO-formatted year
   if (year === null) {
-    return null
+    return null;
   }
 
   var token;
@@ -282,7 +298,7 @@ function parseDate (dateString, year) {
   if (dateString.length === 0) {
     date = new Date(0);
     date.setUTCFullYear(year);
-    return date
+    return date;
   }
 
   // YYYY-MM
@@ -291,7 +307,7 @@ function parseDate (dateString, year) {
     date = new Date(0);
     month = parseInt(token[1], 10) - 1;
     date.setUTCFullYear(year, month);
-    return date
+    return date;
   }
 
   // YYYY-DDD or YYYYDDD
@@ -300,7 +316,7 @@ function parseDate (dateString, year) {
     date = new Date(0);
     var dayOfYear = parseInt(token[1], 10);
     date.setUTCFullYear(year, 0, dayOfYear);
-    return date
+    return date;
   }
 
   // YYYY-MM-DD or YYYYMMDD
@@ -310,14 +326,14 @@ function parseDate (dateString, year) {
     month = parseInt(token[1], 10) - 1;
     var day = parseInt(token[2], 10);
     date.setUTCFullYear(year, month, day);
-    return date
+    return date;
   }
 
   // YYYY-Www or YYYYWww
   token = parseTokenWww.exec(dateString);
   if (token) {
     week = parseInt(token[1], 10) - 1;
-    return dayOfISOYear(year, week)
+    return dayOfISOYear(year, week);
   }
 
   // YYYY-Www-D or YYYYWwwD
@@ -325,14 +341,14 @@ function parseDate (dateString, year) {
   if (token) {
     week = parseInt(token[1], 10) - 1;
     var dayOfWeek = parseInt(token[2], 10) - 1;
-    return dayOfISOYear(year, week, dayOfWeek)
+    return dayOfISOYear(year, week, dayOfWeek);
   }
 
   // Invalid ISO-formatted date
-  return null
+  return null;
 }
 
-function parseTime (timeString) {
+function parseTime(timeString) {
   var token;
   var hours;
   var minutes;
@@ -340,17 +356,18 @@ function parseTime (timeString) {
   // hh
   token = parseTokenHH.exec(timeString);
   if (token) {
-    hours = parseFloat(token[1].replace(',', '.'));
-    return (hours % 24) * MILLISECONDS_IN_HOUR$2
+    hours = parseFloat(token[1].replace(",", "."));
+    return (hours % 24) * MILLISECONDS_IN_HOUR$2;
   }
 
   // hh:mm or hhmm
   token = parseTokenHHMM.exec(timeString);
   if (token) {
     hours = parseInt(token[1], 10);
-    minutes = parseFloat(token[2].replace(',', '.'));
-    return (hours % 24) * MILLISECONDS_IN_HOUR$2 +
-      minutes * MILLISECONDS_IN_MINUTE$5
+    minutes = parseFloat(token[2].replace(",", "."));
+    return (
+      (hours % 24) * MILLISECONDS_IN_HOUR$2 + minutes * MILLISECONDS_IN_MINUTE$5
+    );
   }
 
   // hh:mm:ss or hhmmss
@@ -358,44 +375,46 @@ function parseTime (timeString) {
   if (token) {
     hours = parseInt(token[1], 10);
     minutes = parseInt(token[2], 10);
-    var seconds = parseFloat(token[3].replace(',', '.'));
-    return (hours % 24) * MILLISECONDS_IN_HOUR$2 +
+    var seconds = parseFloat(token[3].replace(",", "."));
+    return (
+      (hours % 24) * MILLISECONDS_IN_HOUR$2 +
       minutes * MILLISECONDS_IN_MINUTE$5 +
       seconds * 1000
+    );
   }
 
   // Invalid ISO-formatted time
-  return null
+  return null;
 }
 
-function parseTimezone (timezoneString) {
+function parseTimezone(timezoneString) {
   var token;
   var absoluteOffset;
 
   // Z
   token = parseTokenTimezoneZ.exec(timezoneString);
   if (token) {
-    return 0
+    return 0;
   }
 
   // ±hh
   token = parseTokenTimezoneHH.exec(timezoneString);
   if (token) {
     absoluteOffset = parseInt(token[2], 10) * 60;
-    return (token[1] === '+') ? -absoluteOffset : absoluteOffset
+    return token[1] === "+" ? -absoluteOffset : absoluteOffset;
   }
 
   // ±hh:mm or ±hhmm
   token = parseTokenTimezoneHHMM.exec(timezoneString);
   if (token) {
     absoluteOffset = parseInt(token[2], 10) * 60 + parseInt(token[3], 10);
-    return (token[1] === '+') ? -absoluteOffset : absoluteOffset
+    return token[1] === "+" ? -absoluteOffset : absoluteOffset;
   }
 
-  return 0
+  return 0;
 }
 
-function dayOfISOYear (isoYear, week, day) {
+function dayOfISOYear(isoYear, week, day) {
   week = week || 0;
   day = day || 0;
   var date = new Date(0);
@@ -403,7 +422,7 @@ function dayOfISOYear (isoYear, week, day) {
   var fourthOfJanuaryDay = date.getUTCDay() || 7;
   var diff = week * 7 + day + 1 - fourthOfJanuaryDay;
   date.setUTCDate(date.getUTCDate() + diff);
-  return date
+  return date;
 }
 
 var parse_1 = parse;
@@ -424,11 +443,11 @@ var parse_1 = parse;
  * var result = addDays(new Date(2014, 8, 1), 10)
  * //=> Thu Sep 11 2014 00:00:00
  */
-function addDays (dirtyDate, dirtyAmount) {
+function addDays(dirtyDate, dirtyAmount) {
   var date = parse_1(dirtyDate);
   var amount = Number(dirtyAmount);
   date.setDate(date.getDate() + amount);
-  return date
+  return date;
 }
 
 var add_days = addDays;
@@ -449,10 +468,10 @@ var add_days = addDays;
  * var result = addMilliseconds(new Date(2014, 6, 10, 12, 45, 30, 0), 750)
  * //=> Thu Jul 10 2014 12:45:30.750
  */
-function addMilliseconds (dirtyDate, dirtyAmount) {
+function addMilliseconds(dirtyDate, dirtyAmount) {
   var timestamp = parse_1(dirtyDate).getTime();
   var amount = Number(dirtyAmount);
-  return new Date(timestamp + amount)
+  return new Date(timestamp + amount);
 }
 
 var add_milliseconds = addMilliseconds;
@@ -475,9 +494,9 @@ var MILLISECONDS_IN_HOUR$1 = 3600000;
  * var result = addHours(new Date(2014, 6, 10, 23, 0), 2)
  * //=> Fri Jul 11 2014 01:00:00
  */
-function addHours (dirtyDate, dirtyAmount) {
+function addHours(dirtyDate, dirtyAmount) {
   var amount = Number(dirtyAmount);
-  return add_milliseconds(dirtyDate, amount * MILLISECONDS_IN_HOUR$1)
+  return add_milliseconds(dirtyDate, amount * MILLISECONDS_IN_HOUR$1);
 }
 
 var add_hours = addHours;
@@ -505,8 +524,8 @@ var add_hours = addHours;
  * var result = startOfWeek(new Date(2014, 8, 2, 11, 55, 0), {weekStartsOn: 1})
  * //=> Mon Sep 01 2014 00:00:00
  */
-function startOfWeek (dirtyDate, dirtyOptions) {
-  var weekStartsOn = dirtyOptions ? (Number(dirtyOptions.weekStartsOn) || 0) : 0;
+function startOfWeek(dirtyDate, dirtyOptions) {
+  var weekStartsOn = dirtyOptions ? Number(dirtyOptions.weekStartsOn) || 0 : 0;
 
   var date = parse_1(dirtyDate);
   var day = date.getDay();
@@ -514,7 +533,7 @@ function startOfWeek (dirtyDate, dirtyOptions) {
 
   date.setDate(date.getDate() - diff);
   date.setHours(0, 0, 0, 0);
-  return date
+  return date;
 }
 
 var start_of_week = startOfWeek;
@@ -537,8 +556,8 @@ var start_of_week = startOfWeek;
  * var result = startOfISOWeek(new Date(2014, 8, 2, 11, 55, 0))
  * //=> Mon Sep 01 2014 00:00:00
  */
-function startOfISOWeek (dirtyDate) {
-  return start_of_week(dirtyDate, {weekStartsOn: 1})
+function startOfISOWeek(dirtyDate) {
+  return start_of_week(dirtyDate, { weekStartsOn: 1 });
 }
 
 var start_of_iso_week = startOfISOWeek;
@@ -561,7 +580,7 @@ var start_of_iso_week = startOfISOWeek;
  * var result = getISOYear(new Date(2005, 0, 2))
  * //=> 2004
  */
-function getISOYear (dirtyDate) {
+function getISOYear(dirtyDate) {
   var date = parse_1(dirtyDate);
   var year = date.getFullYear();
 
@@ -576,11 +595,11 @@ function getISOYear (dirtyDate) {
   var startOfThisYear = start_of_iso_week(fourthOfJanuaryOfThisYear);
 
   if (date.getTime() >= startOfNextYear.getTime()) {
-    return year + 1
+    return year + 1;
   } else if (date.getTime() >= startOfThisYear.getTime()) {
-    return year
+    return year;
   } else {
-    return year - 1
+    return year - 1;
   }
 }
 
@@ -605,13 +624,13 @@ var get_iso_year = getISOYear;
  * var result = startOfISOYear(new Date(2005, 6, 2))
  * //=> Mon Jan 03 2005 00:00:00
  */
-function startOfISOYear (dirtyDate) {
+function startOfISOYear(dirtyDate) {
   var year = get_iso_year(dirtyDate);
   var fourthOfJanuary = new Date(0);
   fourthOfJanuary.setFullYear(year, 0, 4);
   fourthOfJanuary.setHours(0, 0, 0, 0);
   var date = start_of_iso_week(fourthOfJanuary);
-  return date
+  return date;
 }
 
 var start_of_iso_year = startOfISOYear;
@@ -632,10 +651,10 @@ var start_of_iso_year = startOfISOYear;
  * var result = startOfDay(new Date(2014, 8, 2, 11, 55, 0))
  * //=> Tue Sep 02 2014 00:00:00
  */
-function startOfDay (dirtyDate) {
+function startOfDay(dirtyDate) {
   var date = parse_1(dirtyDate);
   date.setHours(0, 0, 0, 0);
-  return date
+  return date;
 }
 
 var start_of_day = startOfDay;
@@ -663,19 +682,21 @@ var MILLISECONDS_IN_DAY$1 = 86400000;
  * )
  * //=> 366
  */
-function differenceInCalendarDays (dirtyDateLeft, dirtyDateRight) {
+function differenceInCalendarDays(dirtyDateLeft, dirtyDateRight) {
   var startOfDayLeft = start_of_day(dirtyDateLeft);
   var startOfDayRight = start_of_day(dirtyDateRight);
 
-  var timestampLeft = startOfDayLeft.getTime() -
+  var timestampLeft =
+    startOfDayLeft.getTime() -
     startOfDayLeft.getTimezoneOffset() * MILLISECONDS_IN_MINUTE$4;
-  var timestampRight = startOfDayRight.getTime() -
+  var timestampRight =
+    startOfDayRight.getTime() -
     startOfDayRight.getTimezoneOffset() * MILLISECONDS_IN_MINUTE$4;
 
   // Round the number of days to the nearest integer
   // because the number of milliseconds in a day is not constant
   // (e.g. it's different in the day of the daylight saving time clock shift)
-  return Math.round((timestampLeft - timestampRight) / MILLISECONDS_IN_DAY$1)
+  return Math.round((timestampLeft - timestampRight) / MILLISECONDS_IN_DAY$1);
 }
 
 var difference_in_calendar_days = differenceInCalendarDays;
@@ -699,7 +720,7 @@ var difference_in_calendar_days = differenceInCalendarDays;
  * var result = setISOYear(new Date(2008, 11, 29), 2007)
  * //=> Mon Jan 01 2007 00:00:00
  */
-function setISOYear (dirtyDate, dirtyISOYear) {
+function setISOYear(dirtyDate, dirtyISOYear) {
   var date = parse_1(dirtyDate);
   var isoYear = Number(dirtyISOYear);
   var diff = difference_in_calendar_days(date, start_of_iso_year(date));
@@ -708,7 +729,7 @@ function setISOYear (dirtyDate, dirtyISOYear) {
   fourthOfJanuary.setHours(0, 0, 0, 0);
   date = start_of_iso_year(fourthOfJanuary);
   date.setDate(date.getDate() + diff);
-  return date
+  return date;
 }
 
 var set_iso_year = setISOYear;
@@ -731,9 +752,9 @@ var set_iso_year = setISOYear;
  * var result = addISOYears(new Date(2010, 6, 2), 5)
  * //=> Fri Jun 26 2015 00:00:00
  */
-function addISOYears (dirtyDate, dirtyAmount) {
+function addISOYears(dirtyDate, dirtyAmount) {
   var amount = Number(dirtyAmount);
-  return set_iso_year(dirtyDate, get_iso_year(dirtyDate) + amount)
+  return set_iso_year(dirtyDate, get_iso_year(dirtyDate) + amount);
 }
 
 var add_iso_years = addISOYears;
@@ -756,9 +777,9 @@ var MILLISECONDS_IN_MINUTE$3 = 60000;
  * var result = addMinutes(new Date(2014, 6, 10, 12, 0), 30)
  * //=> Thu Jul 10 2014 12:30:00
  */
-function addMinutes (dirtyDate, dirtyAmount) {
+function addMinutes(dirtyDate, dirtyAmount) {
   var amount = Number(dirtyAmount);
-  return add_milliseconds(dirtyDate, amount * MILLISECONDS_IN_MINUTE$3)
+  return add_milliseconds(dirtyDate, amount * MILLISECONDS_IN_MINUTE$3);
 }
 
 var add_minutes = addMinutes;
@@ -778,14 +799,14 @@ var add_minutes = addMinutes;
  * var result = getDaysInMonth(new Date(2000, 1))
  * //=> 29
  */
-function getDaysInMonth (dirtyDate) {
+function getDaysInMonth(dirtyDate) {
   var date = parse_1(dirtyDate);
   var year = date.getFullYear();
   var monthIndex = date.getMonth();
   var lastDayOfMonth = new Date(0);
   lastDayOfMonth.setFullYear(year, monthIndex + 1, 0);
   lastDayOfMonth.setHours(0, 0, 0, 0);
-  return lastDayOfMonth.getDate()
+  return lastDayOfMonth.getDate();
 }
 
 var get_days_in_month = getDaysInMonth;
@@ -806,7 +827,7 @@ var get_days_in_month = getDaysInMonth;
  * var result = addMonths(new Date(2014, 8, 1), 5)
  * //=> Sun Feb 01 2015 00:00:00
  */
-function addMonths (dirtyDate, dirtyAmount) {
+function addMonths(dirtyDate, dirtyAmount) {
   var date = parse_1(dirtyDate);
   var amount = Number(dirtyAmount);
   var desiredMonth = date.getMonth() + amount;
@@ -817,7 +838,7 @@ function addMonths (dirtyDate, dirtyAmount) {
   // Set the last day of the new month
   // if the original date was the last day of the longer month
   date.setMonth(desiredMonth, Math.min(daysInMonth, date.getDate()));
-  return date
+  return date;
 }
 
 var add_months = addMonths;
@@ -838,10 +859,10 @@ var add_months = addMonths;
  * var result = addQuarters(new Date(2014, 8, 1), 1)
  * //=> Mon Dec 01 2014 00:00:00
  */
-function addQuarters (dirtyDate, dirtyAmount) {
+function addQuarters(dirtyDate, dirtyAmount) {
   var amount = Number(dirtyAmount);
   var months = amount * 3;
-  return add_months(dirtyDate, months)
+  return add_months(dirtyDate, months);
 }
 
 var add_quarters = addQuarters;
@@ -862,9 +883,9 @@ var add_quarters = addQuarters;
  * var result = addSeconds(new Date(2014, 6, 10, 12, 45, 0), 30)
  * //=> Thu Jul 10 2014 12:45:30
  */
-function addSeconds (dirtyDate, dirtyAmount) {
+function addSeconds(dirtyDate, dirtyAmount) {
   var amount = Number(dirtyAmount);
-  return add_milliseconds(dirtyDate, amount * 1000)
+  return add_milliseconds(dirtyDate, amount * 1000);
 }
 
 var add_seconds = addSeconds;
@@ -885,10 +906,10 @@ var add_seconds = addSeconds;
  * var result = addWeeks(new Date(2014, 8, 1), 4)
  * //=> Mon Sep 29 2014 00:00:00
  */
-function addWeeks (dirtyDate, dirtyAmount) {
+function addWeeks(dirtyDate, dirtyAmount) {
   var amount = Number(dirtyAmount);
   var days = amount * 7;
-  return add_days(dirtyDate, days)
+  return add_days(dirtyDate, days);
 }
 
 var add_weeks = addWeeks;
@@ -909,9 +930,9 @@ var add_weeks = addWeeks;
  * var result = addYears(new Date(2014, 8, 1), 5)
  * //=> Sun Sep 01 2019 00:00:00
  */
-function addYears (dirtyDate, dirtyAmount) {
+function addYears(dirtyDate, dirtyAmount) {
   var amount = Number(dirtyAmount);
-  return add_months(dirtyDate, amount * 12)
+  return add_months(dirtyDate, amount * 12);
 }
 
 var add_years = addYears;
@@ -944,17 +965,29 @@ var add_years = addYears;
  * )
  * //=> false
  */
-function areRangesOverlapping (dirtyInitialRangeStartDate, dirtyInitialRangeEndDate, dirtyComparedRangeStartDate, dirtyComparedRangeEndDate) {
+function areRangesOverlapping(
+  dirtyInitialRangeStartDate,
+  dirtyInitialRangeEndDate,
+  dirtyComparedRangeStartDate,
+  dirtyComparedRangeEndDate
+) {
   var initialStartTime = parse_1(dirtyInitialRangeStartDate).getTime();
   var initialEndTime = parse_1(dirtyInitialRangeEndDate).getTime();
   var comparedStartTime = parse_1(dirtyComparedRangeStartDate).getTime();
   var comparedEndTime = parse_1(dirtyComparedRangeEndDate).getTime();
 
-  if (initialStartTime > initialEndTime || comparedStartTime > comparedEndTime) {
-    throw new Error('The start of the range cannot be after the end of the range')
+  if (
+    initialStartTime > initialEndTime ||
+    comparedStartTime > comparedEndTime
+  ) {
+    throw new Error(
+      "The start of the range cannot be after the end of the range"
+    );
   }
 
-  return initialStartTime < comparedEndTime && comparedStartTime < initialEndTime
+  return (
+    initialStartTime < comparedEndTime && comparedStartTime < initialEndTime
+  );
 }
 
 var are_ranges_overlapping = areRangesOverlapping;
@@ -982,9 +1015,11 @@ var are_ranges_overlapping = areRangesOverlapping;
  * var result = closestIndexTo(dateToCompare, datesArray)
  * //=> 1
  */
-function closestIndexTo (dirtyDateToCompare, dirtyDatesArray) {
+function closestIndexTo(dirtyDateToCompare, dirtyDatesArray) {
   if (!(dirtyDatesArray instanceof Array)) {
-    throw new TypeError(toString.call(dirtyDatesArray) + ' is not an instance of Array')
+    throw new TypeError(
+      toString.call(dirtyDatesArray) + " is not an instance of Array"
+    );
   }
 
   var dateToCompare = parse_1(dirtyDateToCompare);
@@ -1002,7 +1037,7 @@ function closestIndexTo (dirtyDateToCompare, dirtyDatesArray) {
     }
   });
 
-  return result
+  return result;
 }
 
 var closest_index_to = closestIndexTo;
@@ -1028,9 +1063,11 @@ var closest_index_to = closestIndexTo;
  * ])
  * //=> Tue Jan 01 2030 00:00:00
  */
-function closestTo (dirtyDateToCompare, dirtyDatesArray) {
+function closestTo(dirtyDateToCompare, dirtyDatesArray) {
   if (!(dirtyDatesArray instanceof Array)) {
-    throw new TypeError(toString.call(dirtyDatesArray) + ' is not an instance of Array')
+    throw new TypeError(
+      toString.call(dirtyDatesArray) + " is not an instance of Array"
+    );
   }
 
   var dateToCompare = parse_1(dirtyDateToCompare);
@@ -1048,7 +1085,7 @@ function closestTo (dirtyDateToCompare, dirtyDatesArray) {
     }
   });
 
-  return result
+  return result;
 }
 
 var closest_to = closestTo;
@@ -1086,18 +1123,18 @@ var closest_to = closestTo;
  * //   Sun Jul 02 1995 00:00:00
  * // ]
  */
-function compareAsc (dirtyDateLeft, dirtyDateRight) {
+function compareAsc(dirtyDateLeft, dirtyDateRight) {
   var dateLeft = parse_1(dirtyDateLeft);
   var timeLeft = dateLeft.getTime();
   var dateRight = parse_1(dirtyDateRight);
   var timeRight = dateRight.getTime();
 
   if (timeLeft < timeRight) {
-    return -1
+    return -1;
   } else if (timeLeft > timeRight) {
-    return 1
+    return 1;
   } else {
-    return 0
+    return 0;
   }
 }
 
@@ -1136,18 +1173,18 @@ var compare_asc = compareAsc;
  * //   Wed Feb 11 1987 00:00:00
  * // ]
  */
-function compareDesc (dirtyDateLeft, dirtyDateRight) {
+function compareDesc(dirtyDateLeft, dirtyDateRight) {
   var dateLeft = parse_1(dirtyDateLeft);
   var timeLeft = dateLeft.getTime();
   var dateRight = parse_1(dirtyDateRight);
   var timeRight = dateRight.getTime();
 
   if (timeLeft > timeRight) {
-    return -1
+    return -1;
   } else if (timeLeft < timeRight) {
-    return 1
+    return 1;
   } else {
-    return 0
+    return 0;
   }
 }
 
@@ -1177,19 +1214,21 @@ var MILLISECONDS_IN_WEEK$3 = 604800000;
  * )
  * //=> 3
  */
-function differenceInCalendarISOWeeks (dirtyDateLeft, dirtyDateRight) {
+function differenceInCalendarISOWeeks(dirtyDateLeft, dirtyDateRight) {
   var startOfISOWeekLeft = start_of_iso_week(dirtyDateLeft);
   var startOfISOWeekRight = start_of_iso_week(dirtyDateRight);
 
-  var timestampLeft = startOfISOWeekLeft.getTime() -
+  var timestampLeft =
+    startOfISOWeekLeft.getTime() -
     startOfISOWeekLeft.getTimezoneOffset() * MILLISECONDS_IN_MINUTE$2;
-  var timestampRight = startOfISOWeekRight.getTime() -
+  var timestampRight =
+    startOfISOWeekRight.getTime() -
     startOfISOWeekRight.getTimezoneOffset() * MILLISECONDS_IN_MINUTE$2;
 
   // Round the number of days to the nearest integer
   // because the number of milliseconds in a week is not constant
   // (e.g. it's different in the week of the daylight saving time clock shift)
-  return Math.round((timestampLeft - timestampRight) / MILLISECONDS_IN_WEEK$3)
+  return Math.round((timestampLeft - timestampRight) / MILLISECONDS_IN_WEEK$3);
 }
 
 var difference_in_calendar_iso_weeks = differenceInCalendarISOWeeks;
@@ -1215,8 +1254,8 @@ var difference_in_calendar_iso_weeks = differenceInCalendarISOWeeks;
  * )
  * //=> 2
  */
-function differenceInCalendarISOYears (dirtyDateLeft, dirtyDateRight) {
-  return get_iso_year(dirtyDateLeft) - get_iso_year(dirtyDateRight)
+function differenceInCalendarISOYears(dirtyDateLeft, dirtyDateRight) {
+  return get_iso_year(dirtyDateLeft) - get_iso_year(dirtyDateRight);
 }
 
 var difference_in_calendar_iso_years = differenceInCalendarISOYears;
@@ -1240,14 +1279,14 @@ var difference_in_calendar_iso_years = differenceInCalendarISOYears;
  * )
  * //=> 8
  */
-function differenceInCalendarMonths (dirtyDateLeft, dirtyDateRight) {
+function differenceInCalendarMonths(dirtyDateLeft, dirtyDateRight) {
   var dateLeft = parse_1(dirtyDateLeft);
   var dateRight = parse_1(dirtyDateRight);
 
   var yearDiff = dateLeft.getFullYear() - dateRight.getFullYear();
   var monthDiff = dateLeft.getMonth() - dateRight.getMonth();
 
-  return yearDiff * 12 + monthDiff
+  return yearDiff * 12 + monthDiff;
 }
 
 var difference_in_calendar_months = differenceInCalendarMonths;
@@ -1267,10 +1306,10 @@ var difference_in_calendar_months = differenceInCalendarMonths;
  * var result = getQuarter(new Date(2014, 6, 2))
  * //=> 3
  */
-function getQuarter (dirtyDate) {
+function getQuarter(dirtyDate) {
   var date = parse_1(dirtyDate);
   var quarter = Math.floor(date.getMonth() / 3) + 1;
-  return quarter
+  return quarter;
 }
 
 var get_quarter = getQuarter;
@@ -1294,14 +1333,14 @@ var get_quarter = getQuarter;
  * )
  * //=> 3
  */
-function differenceInCalendarQuarters (dirtyDateLeft, dirtyDateRight) {
+function differenceInCalendarQuarters(dirtyDateLeft, dirtyDateRight) {
   var dateLeft = parse_1(dirtyDateLeft);
   var dateRight = parse_1(dirtyDateRight);
 
   var yearDiff = dateLeft.getFullYear() - dateRight.getFullYear();
   var quarterDiff = get_quarter(dateLeft) - get_quarter(dateRight);
 
-  return yearDiff * 4 + quarterDiff
+  return yearDiff * 4 + quarterDiff;
 }
 
 var difference_in_calendar_quarters = differenceInCalendarQuarters;
@@ -1340,19 +1379,25 @@ var MILLISECONDS_IN_WEEK$2 = 604800000;
  * )
  * //=> 2
  */
-function differenceInCalendarWeeks (dirtyDateLeft, dirtyDateRight, dirtyOptions) {
+function differenceInCalendarWeeks(
+  dirtyDateLeft,
+  dirtyDateRight,
+  dirtyOptions
+) {
   var startOfWeekLeft = start_of_week(dirtyDateLeft, dirtyOptions);
   var startOfWeekRight = start_of_week(dirtyDateRight, dirtyOptions);
 
-  var timestampLeft = startOfWeekLeft.getTime() -
+  var timestampLeft =
+    startOfWeekLeft.getTime() -
     startOfWeekLeft.getTimezoneOffset() * MILLISECONDS_IN_MINUTE$1;
-  var timestampRight = startOfWeekRight.getTime() -
+  var timestampRight =
+    startOfWeekRight.getTime() -
     startOfWeekRight.getTimezoneOffset() * MILLISECONDS_IN_MINUTE$1;
 
   // Round the number of days to the nearest integer
   // because the number of milliseconds in a week is not constant
   // (e.g. it's different in the week of the daylight saving time clock shift)
-  return Math.round((timestampLeft - timestampRight) / MILLISECONDS_IN_WEEK$2)
+  return Math.round((timestampLeft - timestampRight) / MILLISECONDS_IN_WEEK$2);
 }
 
 var difference_in_calendar_weeks = differenceInCalendarWeeks;
@@ -1376,11 +1421,11 @@ var difference_in_calendar_weeks = differenceInCalendarWeeks;
  * )
  * //=> 2
  */
-function differenceInCalendarYears (dirtyDateLeft, dirtyDateRight) {
+function differenceInCalendarYears(dirtyDateLeft, dirtyDateRight) {
   var dateLeft = parse_1(dirtyDateLeft);
   var dateRight = parse_1(dirtyDateRight);
 
-  return dateLeft.getFullYear() - dateRight.getFullYear()
+  return dateLeft.getFullYear() - dateRight.getFullYear();
 }
 
 var difference_in_calendar_years = differenceInCalendarYears;
@@ -1405,7 +1450,7 @@ var difference_in_calendar_years = differenceInCalendarYears;
  * )
  * //=> 365
  */
-function differenceInDays (dirtyDateLeft, dirtyDateRight) {
+function differenceInDays(dirtyDateLeft, dirtyDateRight) {
   var dateLeft = parse_1(dirtyDateLeft);
   var dateRight = parse_1(dirtyDateRight);
 
@@ -1416,7 +1461,7 @@ function differenceInDays (dirtyDateLeft, dirtyDateRight) {
   // Math.abs(diff in full days - diff in calendar days) === 1 if last calendar day is not full
   // If so, result must be decreased by 1 in absolute value
   var isLastDayNotFull = compare_asc(dateLeft, dateRight) === -sign;
-  return sign * (difference - isLastDayNotFull)
+  return sign * (difference - isLastDayNotFull);
 }
 
 var difference_in_days = differenceInDays;
@@ -1441,10 +1486,10 @@ var difference_in_days = differenceInDays;
  * )
  * //=> 1100
  */
-function differenceInMilliseconds (dirtyDateLeft, dirtyDateRight) {
+function differenceInMilliseconds(dirtyDateLeft, dirtyDateRight) {
   var dateLeft = parse_1(dirtyDateLeft);
   var dateRight = parse_1(dirtyDateRight);
-  return dateLeft.getTime() - dateRight.getTime()
+  return dateLeft.getTime() - dateRight.getTime();
 }
 
 var difference_in_milliseconds = differenceInMilliseconds;
@@ -1470,9 +1515,11 @@ var MILLISECONDS_IN_HOUR = 3600000;
  * )
  * //=> 12
  */
-function differenceInHours (dirtyDateLeft, dirtyDateRight) {
-  var diff = difference_in_milliseconds(dirtyDateLeft, dirtyDateRight) / MILLISECONDS_IN_HOUR;
-  return diff > 0 ? Math.floor(diff) : Math.ceil(diff)
+function differenceInHours(dirtyDateLeft, dirtyDateRight) {
+  var diff =
+    difference_in_milliseconds(dirtyDateLeft, dirtyDateRight) /
+    MILLISECONDS_IN_HOUR;
+  return diff > 0 ? Math.floor(diff) : Math.ceil(diff);
 }
 
 var difference_in_hours = differenceInHours;
@@ -1495,9 +1542,9 @@ var difference_in_hours = differenceInHours;
  * var result = subISOYears(new Date(2014, 8, 1), 5)
  * //=> Mon Aug 31 2009 00:00:00
  */
-function subISOYears (dirtyDate, dirtyAmount) {
+function subISOYears(dirtyDate, dirtyAmount) {
   var amount = Number(dirtyAmount);
-  return add_iso_years(dirtyDate, -amount)
+  return add_iso_years(dirtyDate, -amount);
 }
 
 var sub_iso_years = subISOYears;
@@ -1523,19 +1570,21 @@ var sub_iso_years = subISOYears;
  * )
  * //=> 1
  */
-function differenceInISOYears (dirtyDateLeft, dirtyDateRight) {
+function differenceInISOYears(dirtyDateLeft, dirtyDateRight) {
   var dateLeft = parse_1(dirtyDateLeft);
   var dateRight = parse_1(dirtyDateRight);
 
   var sign = compare_asc(dateLeft, dateRight);
-  var difference = Math.abs(difference_in_calendar_iso_years(dateLeft, dateRight));
+  var difference = Math.abs(
+    difference_in_calendar_iso_years(dateLeft, dateRight)
+  );
   dateLeft = sub_iso_years(dateLeft, sign * difference);
 
   // Math.abs(diff in full ISO years - diff in calendar ISO years) === 1
   // if last calendar ISO year is not full
   // If so, result must be decreased by 1 in absolute value
   var isLastISOYearNotFull = compare_asc(dateLeft, dateRight) === -sign;
-  return sign * (difference - isLastISOYearNotFull)
+  return sign * (difference - isLastISOYearNotFull);
 }
 
 var difference_in_iso_years = differenceInISOYears;
@@ -1561,9 +1610,11 @@ var MILLISECONDS_IN_MINUTE = 60000;
  * )
  * //=> 12
  */
-function differenceInMinutes (dirtyDateLeft, dirtyDateRight) {
-  var diff = difference_in_milliseconds(dirtyDateLeft, dirtyDateRight) / MILLISECONDS_IN_MINUTE;
-  return diff > 0 ? Math.floor(diff) : Math.ceil(diff)
+function differenceInMinutes(dirtyDateLeft, dirtyDateRight) {
+  var diff =
+    difference_in_milliseconds(dirtyDateLeft, dirtyDateRight) /
+    MILLISECONDS_IN_MINUTE;
+  return diff > 0 ? Math.floor(diff) : Math.ceil(diff);
 }
 
 var difference_in_minutes = differenceInMinutes;
@@ -1587,7 +1638,7 @@ var difference_in_minutes = differenceInMinutes;
  * )
  * //=> 7
  */
-function differenceInMonths (dirtyDateLeft, dirtyDateRight) {
+function differenceInMonths(dirtyDateLeft, dirtyDateRight) {
   var dateLeft = parse_1(dirtyDateLeft);
   var dateRight = parse_1(dirtyDateRight);
 
@@ -1598,7 +1649,7 @@ function differenceInMonths (dirtyDateLeft, dirtyDateRight) {
   // Math.abs(diff in full months - diff in calendar months) === 1 if last calendar month is not full
   // If so, result must be decreased by 1 in absolute value
   var isLastMonthNotFull = compare_asc(dateLeft, dateRight) === -sign;
-  return sign * (difference - isLastMonthNotFull)
+  return sign * (difference - isLastMonthNotFull);
 }
 
 var difference_in_months = differenceInMonths;
@@ -1622,9 +1673,9 @@ var difference_in_months = differenceInMonths;
  * )
  * //=> 2
  */
-function differenceInQuarters (dirtyDateLeft, dirtyDateRight) {
+function differenceInQuarters(dirtyDateLeft, dirtyDateRight) {
   var diff = difference_in_months(dirtyDateLeft, dirtyDateRight) / 3;
-  return diff > 0 ? Math.floor(diff) : Math.ceil(diff)
+  return diff > 0 ? Math.floor(diff) : Math.ceil(diff);
 }
 
 var difference_in_quarters = differenceInQuarters;
@@ -1649,9 +1700,9 @@ var difference_in_quarters = differenceInQuarters;
  * )
  * //=> 12
  */
-function differenceInSeconds (dirtyDateLeft, dirtyDateRight) {
+function differenceInSeconds(dirtyDateLeft, dirtyDateRight) {
   var diff = difference_in_milliseconds(dirtyDateLeft, dirtyDateRight) / 1000;
-  return diff > 0 ? Math.floor(diff) : Math.ceil(diff)
+  return diff > 0 ? Math.floor(diff) : Math.ceil(diff);
 }
 
 var difference_in_seconds = differenceInSeconds;
@@ -1675,9 +1726,9 @@ var difference_in_seconds = differenceInSeconds;
  * )
  * //=> 2
  */
-function differenceInWeeks (dirtyDateLeft, dirtyDateRight) {
+function differenceInWeeks(dirtyDateLeft, dirtyDateRight) {
   var diff = difference_in_days(dirtyDateLeft, dirtyDateRight) / 7;
-  return diff > 0 ? Math.floor(diff) : Math.ceil(diff)
+  return diff > 0 ? Math.floor(diff) : Math.ceil(diff);
 }
 
 var difference_in_weeks = differenceInWeeks;
@@ -1701,7 +1752,7 @@ var difference_in_weeks = differenceInWeeks;
  * )
  * //=> 1
  */
-function differenceInYears (dirtyDateLeft, dirtyDateRight) {
+function differenceInYears(dirtyDateLeft, dirtyDateRight) {
   var dateLeft = parse_1(dirtyDateLeft);
   var dateRight = parse_1(dirtyDateRight);
 
@@ -1712,120 +1763,145 @@ function differenceInYears (dirtyDateLeft, dirtyDateRight) {
   // Math.abs(diff in full years - diff in calendar years) === 1 if last calendar year is not full
   // If so, result must be decreased by 1 in absolute value
   var isLastYearNotFull = compare_asc(dateLeft, dateRight) === -sign;
-  return sign * (difference - isLastYearNotFull)
+  return sign * (difference - isLastYearNotFull);
 }
 
 var difference_in_years = differenceInYears;
 
-function buildDistanceInWordsLocale$1 () {
+function buildDistanceInWordsLocale$1() {
   var distanceInWordsLocale = {
     lessThanXSeconds: {
-      one: 'less than a second',
-      other: 'less than {{count}} seconds'
+      one: "less than a second",
+      other: "less than {{count}} seconds",
     },
 
     xSeconds: {
-      one: '1 second',
-      other: '{{count}} seconds'
+      one: "1 second",
+      other: "{{count}} seconds",
     },
 
-    halfAMinute: 'half a minute',
+    halfAMinute: "half a minute",
 
     lessThanXMinutes: {
-      one: 'less than a minute',
-      other: 'less than {{count}} minutes'
+      one: "less than a minute",
+      other: "less than {{count}} minutes",
     },
 
     xMinutes: {
-      one: '1 minute',
-      other: '{{count}} minutes'
+      one: "1 minute",
+      other: "{{count}} minutes",
     },
 
     aboutXHours: {
-      one: 'about 1 hour',
-      other: 'about {{count}} hours'
+      one: "about 1 hour",
+      other: "about {{count}} hours",
     },
 
     xHours: {
-      one: '1 hour',
-      other: '{{count}} hours'
+      one: "1 hour",
+      other: "{{count}} hours",
     },
 
     xDays: {
-      one: '1 day',
-      other: '{{count}} days'
+      one: "1 day",
+      other: "{{count}} days",
     },
 
     aboutXMonths: {
-      one: 'about 1 month',
-      other: 'about {{count}} months'
+      one: "about 1 month",
+      other: "about {{count}} months",
     },
 
     xMonths: {
-      one: '1 month',
-      other: '{{count}} months'
+      one: "1 month",
+      other: "{{count}} months",
     },
 
     aboutXYears: {
-      one: 'about 1 year',
-      other: 'about {{count}} years'
+      one: "about 1 year",
+      other: "about {{count}} years",
     },
 
     xYears: {
-      one: '1 year',
-      other: '{{count}} years'
+      one: "1 year",
+      other: "{{count}} years",
     },
 
     overXYears: {
-      one: 'over 1 year',
-      other: 'over {{count}} years'
+      one: "over 1 year",
+      other: "over {{count}} years",
     },
 
     almostXYears: {
-      one: 'almost 1 year',
-      other: 'almost {{count}} years'
-    }
+      one: "almost 1 year",
+      other: "almost {{count}} years",
+    },
   };
 
-  function localize (token, count, options) {
+  function localize(token, count, options) {
     options = options || {};
 
     var result;
-    if (typeof distanceInWordsLocale[token] === 'string') {
+    if (typeof distanceInWordsLocale[token] === "string") {
       result = distanceInWordsLocale[token];
     } else if (count === 1) {
       result = distanceInWordsLocale[token].one;
     } else {
-      result = distanceInWordsLocale[token].other.replace('{{count}}', count);
+      result = distanceInWordsLocale[token].other.replace("{{count}}", count);
     }
 
     if (options.addSuffix) {
       if (options.comparison > 0) {
-        return 'in ' + result
+        return "in " + result;
       } else {
-        return result + ' ago'
+        return result + " ago";
       }
     }
 
-    return result
+    return result;
   }
 
   return {
-    localize: localize
-  }
+    localize: localize,
+  };
 }
 
 var build_distance_in_words_locale$1 = buildDistanceInWordsLocale$1;
 
 var commonFormatterKeys = [
-  'M', 'MM', 'Q', 'D', 'DD', 'DDD', 'DDDD', 'd',
-  'E', 'W', 'WW', 'YY', 'YYYY', 'GG', 'GGGG',
-  'H', 'HH', 'h', 'hh', 'm', 'mm',
-  's', 'ss', 'S', 'SS', 'SSS',
-  'Z', 'ZZ', 'X', 'x'
+  "M",
+  "MM",
+  "Q",
+  "D",
+  "DD",
+  "DDD",
+  "DDDD",
+  "d",
+  "E",
+  "W",
+  "WW",
+  "YY",
+  "YYYY",
+  "GG",
+  "GGGG",
+  "H",
+  "HH",
+  "h",
+  "hh",
+  "m",
+  "mm",
+  "s",
+  "ss",
+  "S",
+  "SS",
+  "SSS",
+  "Z",
+  "ZZ",
+  "X",
+  "x",
 ];
 
-function buildFormattingTokensRegExp (formatters) {
+function buildFormattingTokensRegExp(formatters) {
   var formatterKeys = [];
   for (var key in formatters) {
     if (formatters.hasOwnProperty(key)) {
@@ -1838,97 +1914,136 @@ function buildFormattingTokensRegExp (formatters) {
     .sort()
     .reverse();
   var formattingTokensRegExp = new RegExp(
-    '(\\[[^\\[]*\\])|(\\\\)?' + '(' + formattingTokens.join('|') + '|.)', 'g'
+    "(\\[[^\\[]*\\])|(\\\\)?" + "(" + formattingTokens.join("|") + "|.)",
+    "g"
   );
 
-  return formattingTokensRegExp
+  return formattingTokensRegExp;
 }
 
 var build_formatting_tokens_reg_exp = buildFormattingTokensRegExp;
 
-function buildFormatLocale$1 () {
+function buildFormatLocale$1() {
   // Note: in English, the names of days of the week and months are capitalized.
   // If you are making a new locale based on this one, check if the same is true for the language you're working on.
   // Generally, formatted dates should look like they are in the middle of a sentence,
   // e.g. in Spanish language the weekdays and months should be in the lowercase.
-  var months3char = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  var monthsFull = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  var weekdays2char = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
-  var weekdays3char = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  var weekdaysFull = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  var meridiemUppercase = ['AM', 'PM'];
-  var meridiemLowercase = ['am', 'pm'];
-  var meridiemFull = ['a.m.', 'p.m.'];
+  var months3char = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  var monthsFull = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  var weekdays2char = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+  var weekdays3char = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  var weekdaysFull = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  var meridiemUppercase = ["AM", "PM"];
+  var meridiemLowercase = ["am", "pm"];
+  var meridiemFull = ["a.m.", "p.m."];
 
   var formatters = {
     // Month: Jan, Feb, ..., Dec
-    'MMM': function (date) {
-      return months3char[date.getMonth()]
+    MMM: function (date) {
+      return months3char[date.getMonth()];
     },
 
     // Month: January, February, ..., December
-    'MMMM': function (date) {
-      return monthsFull[date.getMonth()]
+    MMMM: function (date) {
+      return monthsFull[date.getMonth()];
     },
 
     // Day of week: Su, Mo, ..., Sa
-    'dd': function (date) {
-      return weekdays2char[date.getDay()]
+    dd: function (date) {
+      return weekdays2char[date.getDay()];
     },
 
     // Day of week: Sun, Mon, ..., Sat
-    'ddd': function (date) {
-      return weekdays3char[date.getDay()]
+    ddd: function (date) {
+      return weekdays3char[date.getDay()];
     },
 
     // Day of week: Sunday, Monday, ..., Saturday
-    'dddd': function (date) {
-      return weekdaysFull[date.getDay()]
+    dddd: function (date) {
+      return weekdaysFull[date.getDay()];
     },
 
     // AM, PM
-    'A': function (date) {
-      return (date.getHours() / 12) >= 1 ? meridiemUppercase[1] : meridiemUppercase[0]
+    A: function (date) {
+      return date.getHours() / 12 >= 1
+        ? meridiemUppercase[1]
+        : meridiemUppercase[0];
     },
 
     // am, pm
-    'a': function (date) {
-      return (date.getHours() / 12) >= 1 ? meridiemLowercase[1] : meridiemLowercase[0]
+    a: function (date) {
+      return date.getHours() / 12 >= 1
+        ? meridiemLowercase[1]
+        : meridiemLowercase[0];
     },
 
     // a.m., p.m.
-    'aa': function (date) {
-      return (date.getHours() / 12) >= 1 ? meridiemFull[1] : meridiemFull[0]
-    }
+    aa: function (date) {
+      return date.getHours() / 12 >= 1 ? meridiemFull[1] : meridiemFull[0];
+    },
   };
 
   // Generate ordinal version of formatters: M -> Mo, D -> Do, etc.
-  var ordinalFormatters = ['M', 'D', 'DDD', 'd', 'Q', 'W'];
+  var ordinalFormatters = ["M", "D", "DDD", "d", "Q", "W"];
   ordinalFormatters.forEach(function (formatterToken) {
-    formatters[formatterToken + 'o'] = function (date, formatters) {
-      return ordinal$1(formatters[formatterToken](date))
+    formatters[formatterToken + "o"] = function (date, formatters) {
+      return ordinal$1(formatters[formatterToken](date));
     };
   });
 
   return {
     formatters: formatters,
-    formattingTokensRegExp: build_formatting_tokens_reg_exp(formatters)
-  }
+    formattingTokensRegExp: build_formatting_tokens_reg_exp(formatters),
+  };
 }
 
-function ordinal$1 (number) {
+function ordinal$1(number) {
   var rem100 = number % 100;
   if (rem100 > 20 || rem100 < 10) {
     switch (rem100 % 10) {
       case 1:
-        return number + 'st'
+        return number + "st";
       case 2:
-        return number + 'nd'
+        return number + "nd";
       case 3:
-        return number + 'rd'
+        return number + "rd";
     }
   }
-  return number + 'th'
+  return number + "th";
 }
 
 var build_format_locale$1 = buildFormatLocale$1;
@@ -1939,7 +2054,7 @@ var build_format_locale$1 = buildFormatLocale$1;
  */
 var en = {
   distanceInWords: build_distance_in_words_locale$1(),
-  format: build_format_locale$1()
+  format: build_format_locale$1(),
 };
 
 var MINUTES_IN_DAY$1 = 1440;
@@ -2029,7 +2144,7 @@ var MINUTES_IN_TWO_MONTHS = 86400;
  * )
  * //=> 'pli ol 1 jaro'
  */
-function distanceInWords (dirtyDateToCompare, dirtyDate, dirtyOptions) {
+function distanceInWords(dirtyDateToCompare, dirtyDate, dirtyOptions) {
   var options = dirtyOptions || {};
 
   var comparison = compare_desc(dirtyDateToCompare, dirtyDate);
@@ -2042,7 +2157,7 @@ function distanceInWords (dirtyDateToCompare, dirtyDate, dirtyOptions) {
 
   var localizeOptions = {
     addSuffix: Boolean(options.addSuffix),
-    comparison: comparison
+    comparison: comparison,
   };
 
   var dateLeft, dateRight;
@@ -2063,52 +2178,52 @@ function distanceInWords (dirtyDateToCompare, dirtyDate, dirtyOptions) {
   if (minutes < 2) {
     if (options.includeSeconds) {
       if (seconds < 5) {
-        return localize('lessThanXSeconds', 5, localizeOptions)
+        return localize("lessThanXSeconds", 5, localizeOptions);
       } else if (seconds < 10) {
-        return localize('lessThanXSeconds', 10, localizeOptions)
+        return localize("lessThanXSeconds", 10, localizeOptions);
       } else if (seconds < 20) {
-        return localize('lessThanXSeconds', 20, localizeOptions)
+        return localize("lessThanXSeconds", 20, localizeOptions);
       } else if (seconds < 40) {
-        return localize('halfAMinute', null, localizeOptions)
+        return localize("halfAMinute", null, localizeOptions);
       } else if (seconds < 60) {
-        return localize('lessThanXMinutes', 1, localizeOptions)
+        return localize("lessThanXMinutes", 1, localizeOptions);
       } else {
-        return localize('xMinutes', 1, localizeOptions)
+        return localize("xMinutes", 1, localizeOptions);
       }
     } else {
       if (minutes === 0) {
-        return localize('lessThanXMinutes', 1, localizeOptions)
+        return localize("lessThanXMinutes", 1, localizeOptions);
       } else {
-        return localize('xMinutes', minutes, localizeOptions)
+        return localize("xMinutes", minutes, localizeOptions);
       }
     }
 
-  // 2 mins up to 0.75 hrs
+    // 2 mins up to 0.75 hrs
   } else if (minutes < 45) {
-    return localize('xMinutes', minutes, localizeOptions)
+    return localize("xMinutes", minutes, localizeOptions);
 
-  // 0.75 hrs up to 1.5 hrs
+    // 0.75 hrs up to 1.5 hrs
   } else if (minutes < 90) {
-    return localize('aboutXHours', 1, localizeOptions)
+    return localize("aboutXHours", 1, localizeOptions);
 
-  // 1.5 hrs up to 24 hrs
+    // 1.5 hrs up to 24 hrs
   } else if (minutes < MINUTES_IN_DAY$1) {
     var hours = Math.round(minutes / 60);
-    return localize('aboutXHours', hours, localizeOptions)
+    return localize("aboutXHours", hours, localizeOptions);
 
-  // 1 day up to 1.75 days
+    // 1 day up to 1.75 days
   } else if (minutes < MINUTES_IN_ALMOST_TWO_DAYS) {
-    return localize('xDays', 1, localizeOptions)
+    return localize("xDays", 1, localizeOptions);
 
-  // 1.75 days up to 30 days
+    // 1.75 days up to 30 days
   } else if (minutes < MINUTES_IN_MONTH$1) {
     var days = Math.round(minutes / MINUTES_IN_DAY$1);
-    return localize('xDays', days, localizeOptions)
+    return localize("xDays", days, localizeOptions);
 
-  // 1 month up to 2 months
+    // 1 month up to 2 months
   } else if (minutes < MINUTES_IN_TWO_MONTHS) {
     months = Math.round(minutes / MINUTES_IN_MONTH$1);
-    return localize('aboutXMonths', months, localizeOptions)
+    return localize("aboutXMonths", months, localizeOptions);
   }
 
   months = difference_in_months(dateRight, dateLeft);
@@ -2116,24 +2231,24 @@ function distanceInWords (dirtyDateToCompare, dirtyDate, dirtyOptions) {
   // 2 months up to 12 months
   if (months < 12) {
     var nearestMonth = Math.round(minutes / MINUTES_IN_MONTH$1);
-    return localize('xMonths', nearestMonth, localizeOptions)
+    return localize("xMonths", nearestMonth, localizeOptions);
 
-  // 1 year up to max Date
+    // 1 year up to max Date
   } else {
     var monthsSinceStartOfYear = months % 12;
     var years = Math.floor(months / 12);
 
     // N years up to 1 years 3 months
     if (monthsSinceStartOfYear < 3) {
-      return localize('aboutXYears', years, localizeOptions)
+      return localize("aboutXYears", years, localizeOptions);
 
-    // N years 3 months up to N years 9 months
+      // N years 3 months up to N years 9 months
     } else if (monthsSinceStartOfYear < 9) {
-      return localize('overXYears', years, localizeOptions)
+      return localize("overXYears", years, localizeOptions);
 
-    // N years 9 months up to N year 12 months
+      // N years 9 months up to N year 12 months
     } else {
-      return localize('almostXYears', years + 1, localizeOptions)
+      return localize("almostXYears", years + 1, localizeOptions);
     }
   }
 }
@@ -2228,7 +2343,7 @@ var MINUTES_IN_YEAR = 525600;
  * )
  * //=> '1 jaro'
  */
-function distanceInWordsStrict (dirtyDateToCompare, dirtyDate, dirtyOptions) {
+function distanceInWordsStrict(dirtyDateToCompare, dirtyDate, dirtyOptions) {
   var options = dirtyOptions || {};
 
   var comparison = compare_desc(dirtyDateToCompare, dirtyDate);
@@ -2241,7 +2356,7 @@ function distanceInWordsStrict (dirtyDateToCompare, dirtyDate, dirtyOptions) {
 
   var localizeOptions = {
     addSuffix: Boolean(options.addSuffix),
-    comparison: comparison
+    comparison: comparison,
   };
 
   var dateLeft, dateRight;
@@ -2254,7 +2369,8 @@ function distanceInWordsStrict (dirtyDateToCompare, dirtyDate, dirtyOptions) {
   }
 
   var unit;
-  var mathPartial = Math[options.partialMethod ? String(options.partialMethod) : 'floor'];
+  var mathPartial =
+    Math[options.partialMethod ? String(options.partialMethod) : "floor"];
   var seconds = difference_in_seconds(dateRight, dateLeft);
   var offset = dateRight.getTimezoneOffset() - dateLeft.getTimezoneOffset();
   var minutes = mathPartial(seconds / 60) - offset;
@@ -2264,50 +2380,50 @@ function distanceInWordsStrict (dirtyDateToCompare, dirtyDate, dirtyOptions) {
     unit = String(options.unit);
   } else {
     if (minutes < 1) {
-      unit = 's';
+      unit = "s";
     } else if (minutes < 60) {
-      unit = 'm';
+      unit = "m";
     } else if (minutes < MINUTES_IN_DAY) {
-      unit = 'h';
+      unit = "h";
     } else if (minutes < MINUTES_IN_MONTH) {
-      unit = 'd';
+      unit = "d";
     } else if (minutes < MINUTES_IN_YEAR) {
-      unit = 'M';
+      unit = "M";
     } else {
-      unit = 'Y';
+      unit = "Y";
     }
   }
 
   // 0 up to 60 seconds
-  if (unit === 's') {
-    return localize('xSeconds', seconds, localizeOptions)
+  if (unit === "s") {
+    return localize("xSeconds", seconds, localizeOptions);
 
-  // 1 up to 60 mins
-  } else if (unit === 'm') {
-    return localize('xMinutes', minutes, localizeOptions)
+    // 1 up to 60 mins
+  } else if (unit === "m") {
+    return localize("xMinutes", minutes, localizeOptions);
 
-  // 1 up to 24 hours
-  } else if (unit === 'h') {
+    // 1 up to 24 hours
+  } else if (unit === "h") {
     hours = mathPartial(minutes / 60);
-    return localize('xHours', hours, localizeOptions)
+    return localize("xHours", hours, localizeOptions);
 
-  // 1 up to 30 days
-  } else if (unit === 'd') {
+    // 1 up to 30 days
+  } else if (unit === "d") {
     days = mathPartial(minutes / MINUTES_IN_DAY);
-    return localize('xDays', days, localizeOptions)
+    return localize("xDays", days, localizeOptions);
 
-  // 1 up to 12 months
-  } else if (unit === 'M') {
+    // 1 up to 12 months
+  } else if (unit === "M") {
     months = mathPartial(minutes / MINUTES_IN_MONTH);
-    return localize('xMonths', months, localizeOptions)
+    return localize("xMonths", months, localizeOptions);
 
-  // 1 year up to max Date
-  } else if (unit === 'Y') {
+    // 1 year up to max Date
+  } else if (unit === "Y") {
     years = mathPartial(minutes / MINUTES_IN_YEAR);
-    return localize('xYears', years, localizeOptions)
+    return localize("xYears", years, localizeOptions);
   }
 
-  throw new Error('Unknown unit: ' + unit)
+  throw new Error("Unknown unit: " + unit);
 }
 
 var distance_in_words_strict = distanceInWordsStrict;
@@ -2390,8 +2506,8 @@ var distance_in_words_strict = distanceInWordsStrict;
  * )
  * //=> 'pli ol 1 jaro'
  */
-function distanceInWordsToNow (dirtyDate, dirtyOptions) {
-  return distance_in_words(Date.now(), dirtyDate, dirtyOptions)
+function distanceInWordsToNow(dirtyDate, dirtyOptions) {
+  return distance_in_words(Date.now(), dirtyDate, dirtyOptions);
 }
 
 var distance_in_words_to_now = distanceInWordsToNow;
@@ -2423,7 +2539,7 @@ var distance_in_words_to_now = distanceInWordsToNow;
  * //   Fri Oct 10 2014 00:00:00
  * // ]
  */
-function eachDay (dirtyStartDate, dirtyEndDate, dirtyStep) {
+function eachDay(dirtyStartDate, dirtyEndDate, dirtyStep) {
   var startDate = parse_1(dirtyStartDate);
   var endDate = parse_1(dirtyEndDate);
   var step = dirtyStep !== undefined ? dirtyStep : 1;
@@ -2431,7 +2547,7 @@ function eachDay (dirtyStartDate, dirtyEndDate, dirtyStep) {
   var endTime = endDate.getTime();
 
   if (startDate.getTime() > endTime) {
-    throw new Error('The first date cannot be after the second date')
+    throw new Error("The first date cannot be after the second date");
   }
 
   var dates = [];
@@ -2444,7 +2560,7 @@ function eachDay (dirtyStartDate, dirtyEndDate, dirtyStep) {
     currentDate.setDate(currentDate.getDate() + step);
   }
 
-  return dates
+  return dates;
 }
 
 var each_day = eachDay;
@@ -2465,10 +2581,10 @@ var each_day = eachDay;
  * var result = endOfDay(new Date(2014, 8, 2, 11, 55, 0))
  * //=> Tue Sep 02 2014 23:59:59.999
  */
-function endOfDay (dirtyDate) {
+function endOfDay(dirtyDate) {
   var date = parse_1(dirtyDate);
   date.setHours(23, 59, 59, 999);
-  return date
+  return date;
 }
 
 var end_of_day = endOfDay;
@@ -2489,10 +2605,10 @@ var end_of_day = endOfDay;
  * var result = endOfHour(new Date(2014, 8, 2, 11, 55))
  * //=> Tue Sep 02 2014 11:59:59.999
  */
-function endOfHour (dirtyDate) {
+function endOfHour(dirtyDate) {
   var date = parse_1(dirtyDate);
   date.setMinutes(59, 59, 999);
-  return date
+  return date;
 }
 
 var end_of_hour = endOfHour;
@@ -2520,8 +2636,8 @@ var end_of_hour = endOfHour;
  * var result = endOfWeek(new Date(2014, 8, 2, 11, 55, 0), {weekStartsOn: 1})
  * //=> Sun Sep 07 2014 23:59:59.999
  */
-function endOfWeek (dirtyDate, dirtyOptions) {
-  var weekStartsOn = dirtyOptions ? (Number(dirtyOptions.weekStartsOn) || 0) : 0;
+function endOfWeek(dirtyDate, dirtyOptions) {
+  var weekStartsOn = dirtyOptions ? Number(dirtyOptions.weekStartsOn) || 0 : 0;
 
   var date = parse_1(dirtyDate);
   var day = date.getDay();
@@ -2529,7 +2645,7 @@ function endOfWeek (dirtyDate, dirtyOptions) {
 
   date.setDate(date.getDate() + diff);
   date.setHours(23, 59, 59, 999);
-  return date
+  return date;
 }
 
 var end_of_week = endOfWeek;
@@ -2552,8 +2668,8 @@ var end_of_week = endOfWeek;
  * var result = endOfISOWeek(new Date(2014, 8, 2, 11, 55, 0))
  * //=> Sun Sep 07 2014 23:59:59.999
  */
-function endOfISOWeek (dirtyDate) {
-  return end_of_week(dirtyDate, {weekStartsOn: 1})
+function endOfISOWeek(dirtyDate) {
+  return end_of_week(dirtyDate, { weekStartsOn: 1 });
 }
 
 var end_of_iso_week = endOfISOWeek;
@@ -2577,14 +2693,14 @@ var end_of_iso_week = endOfISOWeek;
  * var result = endOfISOYear(new Date(2005, 6, 2))
  * //=> Sun Jan 01 2006 23:59:59.999
  */
-function endOfISOYear (dirtyDate) {
+function endOfISOYear(dirtyDate) {
   var year = get_iso_year(dirtyDate);
   var fourthOfJanuaryOfNextYear = new Date(0);
   fourthOfJanuaryOfNextYear.setFullYear(year + 1, 0, 4);
   fourthOfJanuaryOfNextYear.setHours(0, 0, 0, 0);
   var date = start_of_iso_week(fourthOfJanuaryOfNextYear);
   date.setMilliseconds(date.getMilliseconds() - 1);
-  return date
+  return date;
 }
 
 var end_of_iso_year = endOfISOYear;
@@ -2605,10 +2721,10 @@ var end_of_iso_year = endOfISOYear;
  * var result = endOfMinute(new Date(2014, 11, 1, 22, 15, 45, 400))
  * //=> Mon Dec 01 2014 22:15:59.999
  */
-function endOfMinute (dirtyDate) {
+function endOfMinute(dirtyDate) {
   var date = parse_1(dirtyDate);
   date.setSeconds(59, 999);
-  return date
+  return date;
 }
 
 var end_of_minute = endOfMinute;
@@ -2629,12 +2745,12 @@ var end_of_minute = endOfMinute;
  * var result = endOfMonth(new Date(2014, 8, 2, 11, 55, 0))
  * //=> Tue Sep 30 2014 23:59:59.999
  */
-function endOfMonth (dirtyDate) {
+function endOfMonth(dirtyDate) {
   var date = parse_1(dirtyDate);
   var month = date.getMonth();
   date.setFullYear(date.getFullYear(), month + 1, 0);
   date.setHours(23, 59, 59, 999);
-  return date
+  return date;
 }
 
 var end_of_month = endOfMonth;
@@ -2655,13 +2771,13 @@ var end_of_month = endOfMonth;
  * var result = endOfQuarter(new Date(2014, 8, 2, 11, 55, 0))
  * //=> Tue Sep 30 2014 23:59:59.999
  */
-function endOfQuarter (dirtyDate) {
+function endOfQuarter(dirtyDate) {
   var date = parse_1(dirtyDate);
   var currentMonth = date.getMonth();
-  var month = currentMonth - currentMonth % 3 + 3;
+  var month = currentMonth - (currentMonth % 3) + 3;
   date.setMonth(month, 0);
   date.setHours(23, 59, 59, 999);
-  return date
+  return date;
 }
 
 var end_of_quarter = endOfQuarter;
@@ -2682,10 +2798,10 @@ var end_of_quarter = endOfQuarter;
  * var result = endOfSecond(new Date(2014, 11, 1, 22, 15, 45, 400))
  * //=> Mon Dec 01 2014 22:15:45.999
  */
-function endOfSecond (dirtyDate) {
+function endOfSecond(dirtyDate) {
   var date = parse_1(dirtyDate);
   date.setMilliseconds(999);
-  return date
+  return date;
 }
 
 var end_of_second = endOfSecond;
@@ -2704,8 +2820,8 @@ var end_of_second = endOfSecond;
  * var result = endOfToday()
  * //=> Mon Oct 6 2014 23:59:59.999
  */
-function endOfToday () {
-  return end_of_day(new Date())
+function endOfToday() {
+  return end_of_day(new Date());
 }
 
 var end_of_today = endOfToday;
@@ -2724,7 +2840,7 @@ var end_of_today = endOfToday;
  * var result = endOfTomorrow()
  * //=> Tue Oct 7 2014 23:59:59.999
  */
-function endOfTomorrow () {
+function endOfTomorrow() {
   var now = new Date();
   var year = now.getFullYear();
   var month = now.getMonth();
@@ -2733,7 +2849,7 @@ function endOfTomorrow () {
   var date = new Date(0);
   date.setFullYear(year, month, day + 1);
   date.setHours(23, 59, 59, 999);
-  return date
+  return date;
 }
 
 var end_of_tomorrow = endOfTomorrow;
@@ -2754,12 +2870,12 @@ var end_of_tomorrow = endOfTomorrow;
  * var result = endOfYear(new Date(2014, 8, 2, 11, 55, 00))
  * //=> Wed Dec 31 2014 23:59:59.999
  */
-function endOfYear (dirtyDate) {
+function endOfYear(dirtyDate) {
   var date = parse_1(dirtyDate);
   var year = date.getFullYear();
   date.setFullYear(year + 1, 0, 0);
   date.setHours(23, 59, 59, 999);
-  return date
+  return date;
 }
 
 var end_of_year = endOfYear;
@@ -2778,7 +2894,7 @@ var end_of_year = endOfYear;
  * var result = endOfYesterday()
  * //=> Sun Oct 5 2014 23:59:59.999
  */
-function endOfYesterday () {
+function endOfYesterday() {
   var now = new Date();
   var year = now.getFullYear();
   var month = now.getMonth();
@@ -2787,7 +2903,7 @@ function endOfYesterday () {
   var date = new Date(0);
   date.setFullYear(year, month, day - 1);
   date.setHours(23, 59, 59, 999);
-  return date
+  return date;
 }
 
 var end_of_yesterday = endOfYesterday;
@@ -2808,12 +2924,12 @@ var end_of_yesterday = endOfYesterday;
  * var result = startOfYear(new Date(2014, 8, 2, 11, 55, 00))
  * //=> Wed Jan 01 2014 00:00:00
  */
-function startOfYear (dirtyDate) {
+function startOfYear(dirtyDate) {
   var cleanDate = parse_1(dirtyDate);
   var date = new Date(0);
   date.setFullYear(cleanDate.getFullYear(), 0, 1);
   date.setHours(0, 0, 0, 0);
-  return date
+  return date;
 }
 
 var start_of_year = startOfYear;
@@ -2833,11 +2949,11 @@ var start_of_year = startOfYear;
  * var result = getDayOfYear(new Date(2014, 6, 2))
  * //=> 183
  */
-function getDayOfYear (dirtyDate) {
+function getDayOfYear(dirtyDate) {
   var date = parse_1(dirtyDate);
   var diff = difference_in_calendar_days(date, start_of_year(date));
   var dayOfYear = diff + 1;
-  return dayOfYear
+  return dayOfYear;
 }
 
 var get_day_of_year = getDayOfYear;
@@ -2861,14 +2977,15 @@ var MILLISECONDS_IN_WEEK$1 = 604800000;
  * var result = getISOWeek(new Date(2005, 0, 2))
  * //=> 53
  */
-function getISOWeek (dirtyDate) {
+function getISOWeek(dirtyDate) {
   var date = parse_1(dirtyDate);
-  var diff = start_of_iso_week(date).getTime() - start_of_iso_year(date).getTime();
+  var diff =
+    start_of_iso_week(date).getTime() - start_of_iso_year(date).getTime();
 
   // Round the number of days to the nearest integer
   // because the number of milliseconds in a week is not constant
   // (e.g. it's different in the week of the daylight saving time clock shift)
-  return Math.round(diff / MILLISECONDS_IN_WEEK$1) + 1
+  return Math.round(diff / MILLISECONDS_IN_WEEK$1) + 1;
 }
 
 var get_iso_week = getISOWeek;
@@ -2897,11 +3014,13 @@ var get_iso_week = getISOWeek;
  * var result = isValid(new Date(''))
  * //=> false
  */
-function isValid (dirtyDate) {
+function isValid(dirtyDate) {
   if (is_date(dirtyDate)) {
-    return !isNaN(dirtyDate)
+    return !isNaN(dirtyDate);
   } else {
-    throw new TypeError(toString.call(dirtyDate) + ' is not an instance of Date')
+    throw new TypeError(
+      toString.call(dirtyDate) + " is not an instance of Date"
+    );
   }
 }
 
@@ -2990,8 +3109,10 @@ var is_valid = isValid;
  * )
  * //=> '2-a de julio 2014'
  */
-function format (dirtyDate, dirtyFormatStr, dirtyOptions) {
-  var formatStr = dirtyFormatStr ? String(dirtyFormatStr) : 'YYYY-MM-DDTHH:mm:ss.SSSZ';
+function format(dirtyDate, dirtyFormatStr, dirtyOptions) {
+  var formatStr = dirtyFormatStr
+    ? String(dirtyFormatStr)
+    : "YYYY-MM-DDTHH:mm:ss.SSSZ";
   var options = dirtyOptions || {};
 
   var locale = options.locale;
@@ -3008,174 +3129,178 @@ function format (dirtyDate, dirtyFormatStr, dirtyOptions) {
   var date = parse_1(dirtyDate);
 
   if (!is_valid(date)) {
-    return 'Invalid Date'
+    return "Invalid Date";
   }
 
-  var formatFn = buildFormatFn(formatStr, localeFormatters, formattingTokensRegExp);
+  var formatFn = buildFormatFn(
+    formatStr,
+    localeFormatters,
+    formattingTokensRegExp
+  );
 
-  return formatFn(date)
+  return formatFn(date);
 }
 
 var formatters = {
   // Month: 1, 2, ..., 12
-  'M': function (date) {
-    return date.getMonth() + 1
+  M: function (date) {
+    return date.getMonth() + 1;
   },
 
   // Month: 01, 02, ..., 12
-  'MM': function (date) {
-    return addLeadingZeros(date.getMonth() + 1, 2)
+  MM: function (date) {
+    return addLeadingZeros(date.getMonth() + 1, 2);
   },
 
   // Quarter: 1, 2, 3, 4
-  'Q': function (date) {
-    return Math.ceil((date.getMonth() + 1) / 3)
+  Q: function (date) {
+    return Math.ceil((date.getMonth() + 1) / 3);
   },
 
   // Day of month: 1, 2, ..., 31
-  'D': function (date) {
-    return date.getDate()
+  D: function (date) {
+    return date.getDate();
   },
 
   // Day of month: 01, 02, ..., 31
-  'DD': function (date) {
-    return addLeadingZeros(date.getDate(), 2)
+  DD: function (date) {
+    return addLeadingZeros(date.getDate(), 2);
   },
 
   // Day of year: 1, 2, ..., 366
-  'DDD': function (date) {
-    return get_day_of_year(date)
+  DDD: function (date) {
+    return get_day_of_year(date);
   },
 
   // Day of year: 001, 002, ..., 366
-  'DDDD': function (date) {
-    return addLeadingZeros(get_day_of_year(date), 3)
+  DDDD: function (date) {
+    return addLeadingZeros(get_day_of_year(date), 3);
   },
 
   // Day of week: 0, 1, ..., 6
-  'd': function (date) {
-    return date.getDay()
+  d: function (date) {
+    return date.getDay();
   },
 
   // Day of ISO week: 1, 2, ..., 7
-  'E': function (date) {
-    return date.getDay() || 7
+  E: function (date) {
+    return date.getDay() || 7;
   },
 
   // ISO week: 1, 2, ..., 53
-  'W': function (date) {
-    return get_iso_week(date)
+  W: function (date) {
+    return get_iso_week(date);
   },
 
   // ISO week: 01, 02, ..., 53
-  'WW': function (date) {
-    return addLeadingZeros(get_iso_week(date), 2)
+  WW: function (date) {
+    return addLeadingZeros(get_iso_week(date), 2);
   },
 
   // Year: 00, 01, ..., 99
-  'YY': function (date) {
-    return addLeadingZeros(date.getFullYear(), 4).substr(2)
+  YY: function (date) {
+    return addLeadingZeros(date.getFullYear(), 4).substr(2);
   },
 
   // Year: 1900, 1901, ..., 2099
-  'YYYY': function (date) {
-    return addLeadingZeros(date.getFullYear(), 4)
+  YYYY: function (date) {
+    return addLeadingZeros(date.getFullYear(), 4);
   },
 
   // ISO week-numbering year: 00, 01, ..., 99
-  'GG': function (date) {
-    return String(get_iso_year(date)).substr(2)
+  GG: function (date) {
+    return String(get_iso_year(date)).substr(2);
   },
 
   // ISO week-numbering year: 1900, 1901, ..., 2099
-  'GGGG': function (date) {
-    return get_iso_year(date)
+  GGGG: function (date) {
+    return get_iso_year(date);
   },
 
   // Hour: 0, 1, ... 23
-  'H': function (date) {
-    return date.getHours()
+  H: function (date) {
+    return date.getHours();
   },
 
   // Hour: 00, 01, ..., 23
-  'HH': function (date) {
-    return addLeadingZeros(date.getHours(), 2)
+  HH: function (date) {
+    return addLeadingZeros(date.getHours(), 2);
   },
 
   // Hour: 1, 2, ..., 12
-  'h': function (date) {
+  h: function (date) {
     var hours = date.getHours();
     if (hours === 0) {
-      return 12
+      return 12;
     } else if (hours > 12) {
-      return hours % 12
+      return hours % 12;
     } else {
-      return hours
+      return hours;
     }
   },
 
   // Hour: 01, 02, ..., 12
-  'hh': function (date) {
-    return addLeadingZeros(formatters['h'](date), 2)
+  hh: function (date) {
+    return addLeadingZeros(formatters["h"](date), 2);
   },
 
   // Minute: 0, 1, ..., 59
-  'm': function (date) {
-    return date.getMinutes()
+  m: function (date) {
+    return date.getMinutes();
   },
 
   // Minute: 00, 01, ..., 59
-  'mm': function (date) {
-    return addLeadingZeros(date.getMinutes(), 2)
+  mm: function (date) {
+    return addLeadingZeros(date.getMinutes(), 2);
   },
 
   // Second: 0, 1, ..., 59
-  's': function (date) {
-    return date.getSeconds()
+  s: function (date) {
+    return date.getSeconds();
   },
 
   // Second: 00, 01, ..., 59
-  'ss': function (date) {
-    return addLeadingZeros(date.getSeconds(), 2)
+  ss: function (date) {
+    return addLeadingZeros(date.getSeconds(), 2);
   },
 
   // 1/10 of second: 0, 1, ..., 9
-  'S': function (date) {
-    return Math.floor(date.getMilliseconds() / 100)
+  S: function (date) {
+    return Math.floor(date.getMilliseconds() / 100);
   },
 
   // 1/100 of second: 00, 01, ..., 99
-  'SS': function (date) {
-    return addLeadingZeros(Math.floor(date.getMilliseconds() / 10), 2)
+  SS: function (date) {
+    return addLeadingZeros(Math.floor(date.getMilliseconds() / 10), 2);
   },
 
   // Millisecond: 000, 001, ..., 999
-  'SSS': function (date) {
-    return addLeadingZeros(date.getMilliseconds(), 3)
+  SSS: function (date) {
+    return addLeadingZeros(date.getMilliseconds(), 3);
   },
 
   // Timezone: -01:00, +00:00, ... +12:00
-  'Z': function (date) {
-    return formatTimezone(date.getTimezoneOffset(), ':')
+  Z: function (date) {
+    return formatTimezone(date.getTimezoneOffset(), ":");
   },
 
   // Timezone: -0100, +0000, ... +1200
-  'ZZ': function (date) {
-    return formatTimezone(date.getTimezoneOffset())
+  ZZ: function (date) {
+    return formatTimezone(date.getTimezoneOffset());
   },
 
   // Seconds timestamp: 512969520
-  'X': function (date) {
-    return Math.floor(date.getTime() / 1000)
+  X: function (date) {
+    return Math.floor(date.getTime() / 1000);
   },
 
   // Milliseconds timestamp: 512969520900
-  'x': function (date) {
-    return date.getTime()
-  }
+  x: function (date) {
+    return date.getTime();
+  },
 };
 
-function buildFormatFn (formatStr, localeFormatters, formattingTokensRegExp) {
+function buildFormatFn(formatStr, localeFormatters, formattingTokensRegExp) {
   var array = formatStr.match(formattingTokensRegExp);
   var length = array.length;
 
@@ -3191,7 +3316,7 @@ function buildFormatFn (formatStr, localeFormatters, formattingTokensRegExp) {
   }
 
   return function (date) {
-    var output = '';
+    var output = "";
     for (var i = 0; i < length; i++) {
       if (array[i] instanceof Function) {
         output += array[i](date, formatters);
@@ -3199,32 +3324,34 @@ function buildFormatFn (formatStr, localeFormatters, formattingTokensRegExp) {
         output += array[i];
       }
     }
-    return output
-  }
+    return output;
+  };
 }
 
-function removeFormattingTokens (input) {
+function removeFormattingTokens(input) {
   if (input.match(/\[[\s\S]/)) {
-    return input.replace(/^\[|]$/g, '')
+    return input.replace(/^\[|]$/g, "");
   }
-  return input.replace(/\\/g, '')
+  return input.replace(/\\/g, "");
 }
 
-function formatTimezone (offset, delimeter) {
-  delimeter = delimeter || '';
-  var sign = offset > 0 ? '-' : '+';
+function formatTimezone(offset, delimeter) {
+  delimeter = delimeter || "";
+  var sign = offset > 0 ? "-" : "+";
   var absOffset = Math.abs(offset);
   var hours = Math.floor(absOffset / 60);
   var minutes = absOffset % 60;
-  return sign + addLeadingZeros(hours, 2) + delimeter + addLeadingZeros(minutes, 2)
+  return (
+    sign + addLeadingZeros(hours, 2) + delimeter + addLeadingZeros(minutes, 2)
+  );
 }
 
-function addLeadingZeros (number, targetLength) {
+function addLeadingZeros(number, targetLength) {
   var output = Math.abs(number).toString();
   while (output.length < targetLength) {
-    output = '0' + output;
+    output = "0" + output;
   }
-  return output
+  return output;
 }
 
 var format_1 = format;
@@ -3244,10 +3371,10 @@ var format_1 = format;
  * var result = getDate(new Date(2012, 1, 29))
  * //=> 29
  */
-function getDate (dirtyDate) {
+function getDate(dirtyDate) {
   var date = parse_1(dirtyDate);
   var dayOfMonth = date.getDate();
-  return dayOfMonth
+  return dayOfMonth;
 }
 
 var get_date = getDate;
@@ -3267,10 +3394,10 @@ var get_date = getDate;
  * var result = getDay(new Date(2012, 1, 29))
  * //=> 3
  */
-function getDay (dirtyDate) {
+function getDay(dirtyDate) {
   var date = parse_1(dirtyDate);
   var day = date.getDay();
-  return day
+  return day;
 }
 
 var get_day = getDay;
@@ -3290,10 +3417,10 @@ var get_day = getDay;
  * var result = isLeapYear(new Date(2012, 8, 1))
  * //=> true
  */
-function isLeapYear (dirtyDate) {
+function isLeapYear(dirtyDate) {
   var date = parse_1(dirtyDate);
   var year = date.getFullYear();
-  return year % 400 === 0 || year % 4 === 0 && year % 100 !== 0
+  return year % 400 === 0 || (year % 4 === 0 && year % 100 !== 0);
 }
 
 var is_leap_year = isLeapYear;
@@ -3313,8 +3440,8 @@ var is_leap_year = isLeapYear;
  * var result = getDaysInYear(new Date(2012, 0, 1))
  * //=> 366
  */
-function getDaysInYear (dirtyDate) {
-  return is_leap_year(dirtyDate) ? 366 : 365
+function getDaysInYear(dirtyDate) {
+  return is_leap_year(dirtyDate) ? 366 : 365;
 }
 
 var get_days_in_year = getDaysInYear;
@@ -3334,10 +3461,10 @@ var get_days_in_year = getDaysInYear;
  * var result = getHours(new Date(2012, 1, 29, 11, 45))
  * //=> 11
  */
-function getHours (dirtyDate) {
+function getHours(dirtyDate) {
   var date = parse_1(dirtyDate);
   var hours = date.getHours();
-  return hours
+  return hours;
 }
 
 var get_hours = getHours;
@@ -3360,7 +3487,7 @@ var get_hours = getHours;
  * var result = getISODay(new Date(2012, 1, 26))
  * //=> 7
  */
-function getISODay (dirtyDate) {
+function getISODay(dirtyDate) {
   var date = parse_1(dirtyDate);
   var day = date.getDay();
 
@@ -3368,7 +3495,7 @@ function getISODay (dirtyDate) {
     day = 7;
   }
 
-  return day
+  return day;
 }
 
 var get_iso_day = getISODay;
@@ -3392,14 +3519,14 @@ var MILLISECONDS_IN_WEEK = 604800000;
  * var result = getISOWeeksInYear(new Date(2015, 1, 11))
  * //=> 53
  */
-function getISOWeeksInYear (dirtyDate) {
+function getISOWeeksInYear(dirtyDate) {
   var thisYear = start_of_iso_year(dirtyDate);
   var nextYear = start_of_iso_year(add_weeks(thisYear, 60));
   var diff = nextYear.valueOf() - thisYear.valueOf();
   // Round the number of weeks to the nearest integer
   // because the number of milliseconds in a week is not constant
   // (e.g. it's different in the week of the daylight saving time clock shift)
-  return Math.round(diff / MILLISECONDS_IN_WEEK)
+  return Math.round(diff / MILLISECONDS_IN_WEEK);
 }
 
 var get_iso_weeks_in_year = getISOWeeksInYear;
@@ -3419,10 +3546,10 @@ var get_iso_weeks_in_year = getISOWeeksInYear;
  * var result = getMilliseconds(new Date(2012, 1, 29, 11, 45, 5, 123))
  * //=> 123
  */
-function getMilliseconds (dirtyDate) {
+function getMilliseconds(dirtyDate) {
   var date = parse_1(dirtyDate);
   var milliseconds = date.getMilliseconds();
-  return milliseconds
+  return milliseconds;
 }
 
 var get_milliseconds = getMilliseconds;
@@ -3442,10 +3569,10 @@ var get_milliseconds = getMilliseconds;
  * var result = getMinutes(new Date(2012, 1, 29, 11, 45, 5))
  * //=> 45
  */
-function getMinutes (dirtyDate) {
+function getMinutes(dirtyDate) {
   var date = parse_1(dirtyDate);
   var minutes = date.getMinutes();
-  return minutes
+  return minutes;
 }
 
 var get_minutes = getMinutes;
@@ -3465,10 +3592,10 @@ var get_minutes = getMinutes;
  * var result = getMonth(new Date(2012, 1, 29))
  * //=> 1
  */
-function getMonth (dirtyDate) {
+function getMonth(dirtyDate) {
   var date = parse_1(dirtyDate);
   var month = date.getMonth();
-  return month
+  return month;
 }
 
 var get_month = getMonth;
@@ -3503,33 +3630,42 @@ var MILLISECONDS_IN_DAY = 24 * 60 * 60 * 1000;
  * )
  * //=> 0
  */
-function getOverlappingDaysInRanges (dirtyInitialRangeStartDate, dirtyInitialRangeEndDate, dirtyComparedRangeStartDate, dirtyComparedRangeEndDate) {
+function getOverlappingDaysInRanges(
+  dirtyInitialRangeStartDate,
+  dirtyInitialRangeEndDate,
+  dirtyComparedRangeStartDate,
+  dirtyComparedRangeEndDate
+) {
   var initialStartTime = parse_1(dirtyInitialRangeStartDate).getTime();
   var initialEndTime = parse_1(dirtyInitialRangeEndDate).getTime();
   var comparedStartTime = parse_1(dirtyComparedRangeStartDate).getTime();
   var comparedEndTime = parse_1(dirtyComparedRangeEndDate).getTime();
 
-  if (initialStartTime > initialEndTime || comparedStartTime > comparedEndTime) {
-    throw new Error('The start of the range cannot be after the end of the range')
+  if (
+    initialStartTime > initialEndTime ||
+    comparedStartTime > comparedEndTime
+  ) {
+    throw new Error(
+      "The start of the range cannot be after the end of the range"
+    );
   }
 
-  var isOverlapping = initialStartTime < comparedEndTime && comparedStartTime < initialEndTime;
+  var isOverlapping =
+    initialStartTime < comparedEndTime && comparedStartTime < initialEndTime;
 
   if (!isOverlapping) {
-    return 0
+    return 0;
   }
 
-  var overlapStartDate = comparedStartTime < initialStartTime
-    ? initialStartTime
-    : comparedStartTime;
+  var overlapStartDate =
+    comparedStartTime < initialStartTime ? initialStartTime : comparedStartTime;
 
-  var overlapEndDate = comparedEndTime > initialEndTime
-    ? initialEndTime
-    : comparedEndTime;
+  var overlapEndDate =
+    comparedEndTime > initialEndTime ? initialEndTime : comparedEndTime;
 
   var differenceInMs = overlapEndDate - overlapStartDate;
 
-  return Math.ceil(differenceInMs / MILLISECONDS_IN_DAY)
+  return Math.ceil(differenceInMs / MILLISECONDS_IN_DAY);
 }
 
 var get_overlapping_days_in_ranges = getOverlappingDaysInRanges;
@@ -3549,10 +3685,10 @@ var get_overlapping_days_in_ranges = getOverlappingDaysInRanges;
  * var result = getSeconds(new Date(2012, 1, 29, 11, 45, 5, 123))
  * //=> 5
  */
-function getSeconds (dirtyDate) {
+function getSeconds(dirtyDate) {
   var date = parse_1(dirtyDate);
   var seconds = date.getSeconds();
-  return seconds
+  return seconds;
 }
 
 var get_seconds = getSeconds;
@@ -3572,10 +3708,10 @@ var get_seconds = getSeconds;
  * var result = getTime(new Date(2012, 1, 29, 11, 45, 5, 123))
  * //=> 1330515905123
  */
-function getTime (dirtyDate) {
+function getTime(dirtyDate) {
   var date = parse_1(dirtyDate);
   var timestamp = date.getTime();
-  return timestamp
+  return timestamp;
 }
 
 var get_time = getTime;
@@ -3595,10 +3731,10 @@ var get_time = getTime;
  * var result = getYear(new Date(2014, 6, 2))
  * //=> 2014
  */
-function getYear (dirtyDate) {
+function getYear(dirtyDate) {
   var date = parse_1(dirtyDate);
   var year = date.getFullYear();
-  return year
+  return year;
 }
 
 var get_year = getYear;
@@ -3619,10 +3755,10 @@ var get_year = getYear;
  * var result = isAfter(new Date(1989, 6, 10), new Date(1987, 1, 11))
  * //=> true
  */
-function isAfter (dirtyDate, dirtyDateToCompare) {
+function isAfter(dirtyDate, dirtyDateToCompare) {
   var date = parse_1(dirtyDate);
   var dateToCompare = parse_1(dirtyDateToCompare);
-  return date.getTime() > dateToCompare.getTime()
+  return date.getTime() > dateToCompare.getTime();
 }
 
 var is_after = isAfter;
@@ -3643,10 +3779,10 @@ var is_after = isAfter;
  * var result = isBefore(new Date(1989, 6, 10), new Date(1987, 1, 11))
  * //=> false
  */
-function isBefore (dirtyDate, dirtyDateToCompare) {
+function isBefore(dirtyDate, dirtyDateToCompare) {
   var date = parse_1(dirtyDate);
   var dateToCompare = parse_1(dirtyDateToCompare);
-  return date.getTime() < dateToCompare.getTime()
+  return date.getTime() < dateToCompare.getTime();
 }
 
 var is_before = isBefore;
@@ -3670,10 +3806,10 @@ var is_before = isBefore;
  * )
  * //=> false
  */
-function isEqual (dirtyLeftDate, dirtyRightDate) {
+function isEqual(dirtyLeftDate, dirtyRightDate) {
   var dateLeft = parse_1(dirtyLeftDate);
   var dateRight = parse_1(dirtyRightDate);
-  return dateLeft.getTime() === dateRight.getTime()
+  return dateLeft.getTime() === dateRight.getTime();
 }
 
 var is_equal = isEqual;
@@ -3693,8 +3829,8 @@ var is_equal = isEqual;
  * var result = isFirstDayOfMonth(new Date(2014, 8, 1))
  * //=> true
  */
-function isFirstDayOfMonth (dirtyDate) {
-  return parse_1(dirtyDate).getDate() === 1
+function isFirstDayOfMonth(dirtyDate) {
+  return parse_1(dirtyDate).getDate() === 1;
 }
 
 var is_first_day_of_month = isFirstDayOfMonth;
@@ -3714,8 +3850,8 @@ var is_first_day_of_month = isFirstDayOfMonth;
  * var result = isFriday(new Date(2014, 8, 26))
  * //=> true
  */
-function isFriday (dirtyDate) {
-  return parse_1(dirtyDate).getDay() === 5
+function isFriday(dirtyDate) {
+  return parse_1(dirtyDate).getDay() === 5;
 }
 
 var is_friday = isFriday;
@@ -3735,8 +3871,8 @@ var is_friday = isFriday;
  * var result = isFuture(new Date(2014, 11, 31))
  * //=> true
  */
-function isFuture (dirtyDate) {
-  return parse_1(dirtyDate).getTime() > new Date().getTime()
+function isFuture(dirtyDate) {
+  return parse_1(dirtyDate).getTime() > new Date().getTime();
 }
 
 var is_future = isFuture;
@@ -3756,9 +3892,9 @@ var is_future = isFuture;
  * var result = isLastDayOfMonth(new Date(2014, 1, 28))
  * //=> true
  */
-function isLastDayOfMonth (dirtyDate) {
+function isLastDayOfMonth(dirtyDate) {
   var date = parse_1(dirtyDate);
-  return end_of_day(date).getTime() === end_of_month(date).getTime()
+  return end_of_day(date).getTime() === end_of_month(date).getTime();
 }
 
 var is_last_day_of_month = isLastDayOfMonth;
@@ -3778,8 +3914,8 @@ var is_last_day_of_month = isLastDayOfMonth;
  * var result = isMonday(new Date(2014, 8, 22))
  * //=> true
  */
-function isMonday (dirtyDate) {
-  return parse_1(dirtyDate).getDay() === 1
+function isMonday(dirtyDate) {
+  return parse_1(dirtyDate).getDay() === 1;
 }
 
 var is_monday = isMonday;
@@ -3799,8 +3935,8 @@ var is_monday = isMonday;
  * var result = isPast(new Date(2014, 6, 2))
  * //=> true
  */
-function isPast (dirtyDate) {
-  return parse_1(dirtyDate).getTime() < new Date().getTime()
+function isPast(dirtyDate) {
+  return parse_1(dirtyDate).getTime() < new Date().getTime();
 }
 
 var is_past = isPast;
@@ -3824,11 +3960,11 @@ var is_past = isPast;
  * )
  * //=> true
  */
-function isSameDay (dirtyDateLeft, dirtyDateRight) {
+function isSameDay(dirtyDateLeft, dirtyDateRight) {
   var dateLeftStartOfDay = start_of_day(dirtyDateLeft);
   var dateRightStartOfDay = start_of_day(dirtyDateRight);
 
-  return dateLeftStartOfDay.getTime() === dateRightStartOfDay.getTime()
+  return dateLeftStartOfDay.getTime() === dateRightStartOfDay.getTime();
 }
 
 var is_same_day = isSameDay;
@@ -3849,10 +3985,10 @@ var is_same_day = isSameDay;
  * var result = startOfHour(new Date(2014, 8, 2, 11, 55))
  * //=> Tue Sep 02 2014 11:00:00
  */
-function startOfHour (dirtyDate) {
+function startOfHour(dirtyDate) {
   var date = parse_1(dirtyDate);
   date.setMinutes(0, 0, 0);
-  return date
+  return date;
 }
 
 var start_of_hour = startOfHour;
@@ -3876,11 +4012,11 @@ var start_of_hour = startOfHour;
  * )
  * //=> true
  */
-function isSameHour (dirtyDateLeft, dirtyDateRight) {
+function isSameHour(dirtyDateLeft, dirtyDateRight) {
   var dateLeftStartOfHour = start_of_hour(dirtyDateLeft);
   var dateRightStartOfHour = start_of_hour(dirtyDateRight);
 
-  return dateLeftStartOfHour.getTime() === dateRightStartOfHour.getTime()
+  return dateLeftStartOfHour.getTime() === dateRightStartOfHour.getTime();
 }
 
 var is_same_hour = isSameHour;
@@ -3916,11 +4052,11 @@ var is_same_hour = isSameHour;
  * )
  * //=> false
  */
-function isSameWeek (dirtyDateLeft, dirtyDateRight, dirtyOptions) {
+function isSameWeek(dirtyDateLeft, dirtyDateRight, dirtyOptions) {
   var dateLeftStartOfWeek = start_of_week(dirtyDateLeft, dirtyOptions);
   var dateRightStartOfWeek = start_of_week(dirtyDateRight, dirtyOptions);
 
-  return dateLeftStartOfWeek.getTime() === dateRightStartOfWeek.getTime()
+  return dateLeftStartOfWeek.getTime() === dateRightStartOfWeek.getTime();
 }
 
 var is_same_week = isSameWeek;
@@ -3946,8 +4082,8 @@ var is_same_week = isSameWeek;
  * )
  * //=> true
  */
-function isSameISOWeek (dirtyDateLeft, dirtyDateRight) {
-  return is_same_week(dirtyDateLeft, dirtyDateRight, {weekStartsOn: 1})
+function isSameISOWeek(dirtyDateLeft, dirtyDateRight) {
+  return is_same_week(dirtyDateLeft, dirtyDateRight, { weekStartsOn: 1 });
 }
 
 var is_same_iso_week = isSameISOWeek;
@@ -3973,11 +4109,11 @@ var is_same_iso_week = isSameISOWeek;
  * )
  * //=> true
  */
-function isSameISOYear (dirtyDateLeft, dirtyDateRight) {
+function isSameISOYear(dirtyDateLeft, dirtyDateRight) {
   var dateLeftStartOfYear = start_of_iso_year(dirtyDateLeft);
   var dateRightStartOfYear = start_of_iso_year(dirtyDateRight);
 
-  return dateLeftStartOfYear.getTime() === dateRightStartOfYear.getTime()
+  return dateLeftStartOfYear.getTime() === dateRightStartOfYear.getTime();
 }
 
 var is_same_iso_year = isSameISOYear;
@@ -3998,10 +4134,10 @@ var is_same_iso_year = isSameISOYear;
  * var result = startOfMinute(new Date(2014, 11, 1, 22, 15, 45, 400))
  * //=> Mon Dec 01 2014 22:15:00
  */
-function startOfMinute (dirtyDate) {
+function startOfMinute(dirtyDate) {
   var date = parse_1(dirtyDate);
   date.setSeconds(0, 0);
-  return date
+  return date;
 }
 
 var start_of_minute = startOfMinute;
@@ -4026,11 +4162,11 @@ var start_of_minute = startOfMinute;
  * )
  * //=> true
  */
-function isSameMinute (dirtyDateLeft, dirtyDateRight) {
+function isSameMinute(dirtyDateLeft, dirtyDateRight) {
   var dateLeftStartOfMinute = start_of_minute(dirtyDateLeft);
   var dateRightStartOfMinute = start_of_minute(dirtyDateRight);
 
-  return dateLeftStartOfMinute.getTime() === dateRightStartOfMinute.getTime()
+  return dateLeftStartOfMinute.getTime() === dateRightStartOfMinute.getTime();
 }
 
 var is_same_minute = isSameMinute;
@@ -4054,11 +4190,13 @@ var is_same_minute = isSameMinute;
  * )
  * //=> true
  */
-function isSameMonth (dirtyDateLeft, dirtyDateRight) {
+function isSameMonth(dirtyDateLeft, dirtyDateRight) {
   var dateLeft = parse_1(dirtyDateLeft);
   var dateRight = parse_1(dirtyDateRight);
-  return dateLeft.getFullYear() === dateRight.getFullYear() &&
+  return (
+    dateLeft.getFullYear() === dateRight.getFullYear() &&
     dateLeft.getMonth() === dateRight.getMonth()
+  );
 }
 
 var is_same_month = isSameMonth;
@@ -4079,13 +4217,13 @@ var is_same_month = isSameMonth;
  * var result = startOfQuarter(new Date(2014, 8, 2, 11, 55, 0))
  * //=> Tue Jul 01 2014 00:00:00
  */
-function startOfQuarter (dirtyDate) {
+function startOfQuarter(dirtyDate) {
   var date = parse_1(dirtyDate);
   var currentMonth = date.getMonth();
-  var month = currentMonth - currentMonth % 3;
+  var month = currentMonth - (currentMonth % 3);
   date.setMonth(month, 1);
   date.setHours(0, 0, 0, 0);
-  return date
+  return date;
 }
 
 var start_of_quarter = startOfQuarter;
@@ -4109,11 +4247,11 @@ var start_of_quarter = startOfQuarter;
  * )
  * //=> true
  */
-function isSameQuarter (dirtyDateLeft, dirtyDateRight) {
+function isSameQuarter(dirtyDateLeft, dirtyDateRight) {
   var dateLeftStartOfQuarter = start_of_quarter(dirtyDateLeft);
   var dateRightStartOfQuarter = start_of_quarter(dirtyDateRight);
 
-  return dateLeftStartOfQuarter.getTime() === dateRightStartOfQuarter.getTime()
+  return dateLeftStartOfQuarter.getTime() === dateRightStartOfQuarter.getTime();
 }
 
 var is_same_quarter = isSameQuarter;
@@ -4134,10 +4272,10 @@ var is_same_quarter = isSameQuarter;
  * var result = startOfSecond(new Date(2014, 11, 1, 22, 15, 45, 400))
  * //=> Mon Dec 01 2014 22:15:45.000
  */
-function startOfSecond (dirtyDate) {
+function startOfSecond(dirtyDate) {
   var date = parse_1(dirtyDate);
   date.setMilliseconds(0);
-  return date
+  return date;
 }
 
 var start_of_second = startOfSecond;
@@ -4162,11 +4300,11 @@ var start_of_second = startOfSecond;
  * )
  * //=> true
  */
-function isSameSecond (dirtyDateLeft, dirtyDateRight) {
+function isSameSecond(dirtyDateLeft, dirtyDateRight) {
   var dateLeftStartOfSecond = start_of_second(dirtyDateLeft);
   var dateRightStartOfSecond = start_of_second(dirtyDateRight);
 
-  return dateLeftStartOfSecond.getTime() === dateRightStartOfSecond.getTime()
+  return dateLeftStartOfSecond.getTime() === dateRightStartOfSecond.getTime();
 }
 
 var is_same_second = isSameSecond;
@@ -4190,10 +4328,10 @@ var is_same_second = isSameSecond;
  * )
  * //=> true
  */
-function isSameYear (dirtyDateLeft, dirtyDateRight) {
+function isSameYear(dirtyDateLeft, dirtyDateRight) {
   var dateLeft = parse_1(dirtyDateLeft);
   var dateRight = parse_1(dirtyDateRight);
-  return dateLeft.getFullYear() === dateRight.getFullYear()
+  return dateLeft.getFullYear() === dateRight.getFullYear();
 }
 
 var is_same_year = isSameYear;
@@ -4213,8 +4351,8 @@ var is_same_year = isSameYear;
  * var result = isSaturday(new Date(2014, 8, 27))
  * //=> true
  */
-function isSaturday (dirtyDate) {
-  return parse_1(dirtyDate).getDay() === 6
+function isSaturday(dirtyDate) {
+  return parse_1(dirtyDate).getDay() === 6;
 }
 
 var is_saturday = isSaturday;
@@ -4234,8 +4372,8 @@ var is_saturday = isSaturday;
  * var result = isSunday(new Date(2014, 8, 21))
  * //=> true
  */
-function isSunday (dirtyDate) {
-  return parse_1(dirtyDate).getDay() === 0
+function isSunday(dirtyDate) {
+  return parse_1(dirtyDate).getDay() === 0;
 }
 
 var is_sunday = isSunday;
@@ -4256,8 +4394,8 @@ var is_sunday = isSunday;
  * var result = isThisHour(new Date(2014, 8, 25, 18))
  * //=> true
  */
-function isThisHour (dirtyDate) {
-  return is_same_hour(new Date(), dirtyDate)
+function isThisHour(dirtyDate) {
+  return is_same_hour(new Date(), dirtyDate);
 }
 
 var is_this_hour = isThisHour;
@@ -4279,8 +4417,8 @@ var is_this_hour = isThisHour;
  * var result = isThisISOWeek(new Date(2014, 8, 22))
  * //=> true
  */
-function isThisISOWeek (dirtyDate) {
-  return is_same_iso_week(new Date(), dirtyDate)
+function isThisISOWeek(dirtyDate) {
+  return is_same_iso_week(new Date(), dirtyDate);
 }
 
 var is_this_iso_week = isThisISOWeek;
@@ -4303,8 +4441,8 @@ var is_this_iso_week = isThisISOWeek;
  * var result = isThisISOYear(new Date(2013, 11, 30))
  * //=> true
  */
-function isThisISOYear (dirtyDate) {
-  return is_same_iso_year(new Date(), dirtyDate)
+function isThisISOYear(dirtyDate) {
+  return is_same_iso_year(new Date(), dirtyDate);
 }
 
 var is_this_iso_year = isThisISOYear;
@@ -4325,8 +4463,8 @@ var is_this_iso_year = isThisISOYear;
  * var result = isThisMinute(new Date(2014, 8, 25, 18, 30))
  * //=> true
  */
-function isThisMinute (dirtyDate) {
-  return is_same_minute(new Date(), dirtyDate)
+function isThisMinute(dirtyDate) {
+  return is_same_minute(new Date(), dirtyDate);
 }
 
 var is_this_minute = isThisMinute;
@@ -4346,8 +4484,8 @@ var is_this_minute = isThisMinute;
  * var result = isThisMonth(new Date(2014, 8, 15))
  * //=> true
  */
-function isThisMonth (dirtyDate) {
-  return is_same_month(new Date(), dirtyDate)
+function isThisMonth(dirtyDate) {
+  return is_same_month(new Date(), dirtyDate);
 }
 
 var is_this_month = isThisMonth;
@@ -4367,8 +4505,8 @@ var is_this_month = isThisMonth;
  * var result = isThisQuarter(new Date(2014, 6, 2))
  * //=> true
  */
-function isThisQuarter (dirtyDate) {
-  return is_same_quarter(new Date(), dirtyDate)
+function isThisQuarter(dirtyDate) {
+  return is_same_quarter(new Date(), dirtyDate);
 }
 
 var is_this_quarter = isThisQuarter;
@@ -4389,8 +4527,8 @@ var is_this_quarter = isThisQuarter;
  * var result = isThisSecond(new Date(2014, 8, 25, 18, 30, 15))
  * //=> true
  */
-function isThisSecond (dirtyDate) {
-  return is_same_second(new Date(), dirtyDate)
+function isThisSecond(dirtyDate) {
+  return is_same_second(new Date(), dirtyDate);
 }
 
 var is_this_second = isThisSecond;
@@ -4418,8 +4556,8 @@ var is_this_second = isThisSecond;
  * var result = isThisWeek(new Date(2014, 8, 21), {weekStartsOn: 1})
  * //=> false
  */
-function isThisWeek (dirtyDate, dirtyOptions) {
-  return is_same_week(new Date(), dirtyDate, dirtyOptions)
+function isThisWeek(dirtyDate, dirtyOptions) {
+  return is_same_week(new Date(), dirtyDate, dirtyOptions);
 }
 
 var is_this_week = isThisWeek;
@@ -4439,8 +4577,8 @@ var is_this_week = isThisWeek;
  * var result = isThisYear(new Date(2014, 6, 2))
  * //=> true
  */
-function isThisYear (dirtyDate) {
-  return is_same_year(new Date(), dirtyDate)
+function isThisYear(dirtyDate) {
+  return is_same_year(new Date(), dirtyDate);
 }
 
 var is_this_year = isThisYear;
@@ -4460,8 +4598,8 @@ var is_this_year = isThisYear;
  * var result = isThursday(new Date(2014, 8, 25))
  * //=> true
  */
-function isThursday (dirtyDate) {
-  return parse_1(dirtyDate).getDay() === 4
+function isThursday(dirtyDate) {
+  return parse_1(dirtyDate).getDay() === 4;
 }
 
 var is_thursday = isThursday;
@@ -4481,8 +4619,10 @@ var is_thursday = isThursday;
  * var result = isToday(new Date(2014, 9, 6, 14, 0))
  * //=> true
  */
-function isToday (dirtyDate) {
-  return start_of_day(dirtyDate).getTime() === start_of_day(new Date()).getTime()
+function isToday(dirtyDate) {
+  return (
+    start_of_day(dirtyDate).getTime() === start_of_day(new Date()).getTime()
+  );
 }
 
 var is_today = isToday;
@@ -4502,10 +4642,10 @@ var is_today = isToday;
  * var result = isTomorrow(new Date(2014, 9, 7, 14, 0))
  * //=> true
  */
-function isTomorrow (dirtyDate) {
+function isTomorrow(dirtyDate) {
   var tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
-  return start_of_day(dirtyDate).getTime() === start_of_day(tomorrow).getTime()
+  return start_of_day(dirtyDate).getTime() === start_of_day(tomorrow).getTime();
 }
 
 var is_tomorrow = isTomorrow;
@@ -4525,8 +4665,8 @@ var is_tomorrow = isTomorrow;
  * var result = isTuesday(new Date(2014, 8, 23))
  * //=> true
  */
-function isTuesday (dirtyDate) {
-  return parse_1(dirtyDate).getDay() === 2
+function isTuesday(dirtyDate) {
+  return parse_1(dirtyDate).getDay() === 2;
 }
 
 var is_tuesday = isTuesday;
@@ -4546,8 +4686,8 @@ var is_tuesday = isTuesday;
  * var result = isWednesday(new Date(2014, 8, 24))
  * //=> true
  */
-function isWednesday (dirtyDate) {
-  return parse_1(dirtyDate).getDay() === 3
+function isWednesday(dirtyDate) {
+  return parse_1(dirtyDate).getDay() === 3;
 }
 
 var is_wednesday = isWednesday;
@@ -4567,10 +4707,10 @@ var is_wednesday = isWednesday;
  * var result = isWeekend(new Date(2014, 9, 5))
  * //=> true
  */
-function isWeekend (dirtyDate) {
+function isWeekend(dirtyDate) {
   var date = parse_1(dirtyDate);
   var day = date.getDay();
-  return day === 0 || day === 6
+  return day === 0 || day === 6;
 }
 
 var is_weekend = isWeekend;
@@ -4602,16 +4742,18 @@ var is_weekend = isWeekend;
  * )
  * //=> false
  */
-function isWithinRange (dirtyDate, dirtyStartDate, dirtyEndDate) {
+function isWithinRange(dirtyDate, dirtyStartDate, dirtyEndDate) {
   var time = parse_1(dirtyDate).getTime();
   var startTime = parse_1(dirtyStartDate).getTime();
   var endTime = parse_1(dirtyEndDate).getTime();
 
   if (startTime > endTime) {
-    throw new Error('The start of the range cannot be after the end of the range')
+    throw new Error(
+      "The start of the range cannot be after the end of the range"
+    );
   }
 
-  return time >= startTime && time <= endTime
+  return time >= startTime && time <= endTime;
 }
 
 var is_within_range = isWithinRange;
@@ -4631,10 +4773,12 @@ var is_within_range = isWithinRange;
  * var result = isYesterday(new Date(2014, 9, 5, 14, 0))
  * //=> true
  */
-function isYesterday (dirtyDate) {
+function isYesterday(dirtyDate) {
   var yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
-  return start_of_day(dirtyDate).getTime() === start_of_day(yesterday).getTime()
+  return (
+    start_of_day(dirtyDate).getTime() === start_of_day(yesterday).getTime()
+  );
 }
 
 var is_yesterday = isYesterday;
@@ -4662,8 +4806,8 @@ var is_yesterday = isYesterday;
  * var result = lastDayOfWeek(new Date(2014, 8, 2, 11, 55, 0), {weekStartsOn: 1})
  * //=> Sun Sep 07 2014 00:00:00
  */
-function lastDayOfWeek (dirtyDate, dirtyOptions) {
-  var weekStartsOn = dirtyOptions ? (Number(dirtyOptions.weekStartsOn) || 0) : 0;
+function lastDayOfWeek(dirtyDate, dirtyOptions) {
+  var weekStartsOn = dirtyOptions ? Number(dirtyOptions.weekStartsOn) || 0 : 0;
 
   var date = parse_1(dirtyDate);
   var day = date.getDay();
@@ -4671,7 +4815,7 @@ function lastDayOfWeek (dirtyDate, dirtyOptions) {
 
   date.setHours(0, 0, 0, 0);
   date.setDate(date.getDate() + diff);
-  return date
+  return date;
 }
 
 var last_day_of_week = lastDayOfWeek;
@@ -4694,8 +4838,8 @@ var last_day_of_week = lastDayOfWeek;
  * var result = lastDayOfISOWeek(new Date(2014, 8, 2, 11, 55, 0))
  * //=> Sun Sep 07 2014 00:00:00
  */
-function lastDayOfISOWeek (dirtyDate) {
-  return last_day_of_week(dirtyDate, {weekStartsOn: 1})
+function lastDayOfISOWeek(dirtyDate) {
+  return last_day_of_week(dirtyDate, { weekStartsOn: 1 });
 }
 
 var last_day_of_iso_week = lastDayOfISOWeek;
@@ -4719,14 +4863,14 @@ var last_day_of_iso_week = lastDayOfISOWeek;
  * var result = lastDayOfISOYear(new Date(2005, 6, 2))
  * //=> Sun Jan 01 2006 00:00:00
  */
-function lastDayOfISOYear (dirtyDate) {
+function lastDayOfISOYear(dirtyDate) {
   var year = get_iso_year(dirtyDate);
   var fourthOfJanuary = new Date(0);
   fourthOfJanuary.setFullYear(year + 1, 0, 4);
   fourthOfJanuary.setHours(0, 0, 0, 0);
   var date = start_of_iso_week(fourthOfJanuary);
   date.setDate(date.getDate() - 1);
-  return date
+  return date;
 }
 
 var last_day_of_iso_year = lastDayOfISOYear;
@@ -4747,12 +4891,12 @@ var last_day_of_iso_year = lastDayOfISOYear;
  * var result = lastDayOfMonth(new Date(2014, 8, 2, 11, 55, 0))
  * //=> Tue Sep 30 2014 00:00:00
  */
-function lastDayOfMonth (dirtyDate) {
+function lastDayOfMonth(dirtyDate) {
   var date = parse_1(dirtyDate);
   var month = date.getMonth();
   date.setFullYear(date.getFullYear(), month + 1, 0);
   date.setHours(0, 0, 0, 0);
-  return date
+  return date;
 }
 
 var last_day_of_month = lastDayOfMonth;
@@ -4773,13 +4917,13 @@ var last_day_of_month = lastDayOfMonth;
  * var result = lastDayOfQuarter(new Date(2014, 8, 2, 11, 55, 0))
  * //=> Tue Sep 30 2014 00:00:00
  */
-function lastDayOfQuarter (dirtyDate) {
+function lastDayOfQuarter(dirtyDate) {
   var date = parse_1(dirtyDate);
   var currentMonth = date.getMonth();
-  var month = currentMonth - currentMonth % 3 + 3;
+  var month = currentMonth - (currentMonth % 3) + 3;
   date.setMonth(month, 0);
   date.setHours(0, 0, 0, 0);
-  return date
+  return date;
 }
 
 var last_day_of_quarter = lastDayOfQuarter;
@@ -4800,12 +4944,12 @@ var last_day_of_quarter = lastDayOfQuarter;
  * var result = lastDayOfYear(new Date(2014, 8, 2, 11, 55, 00))
  * //=> Wed Dec 31 2014 00:00:00
  */
-function lastDayOfYear (dirtyDate) {
+function lastDayOfYear(dirtyDate) {
   var date = parse_1(dirtyDate);
   var year = date.getFullYear();
   date.setFullYear(year + 1, 0, 0);
   date.setHours(0, 0, 0, 0);
-  return date
+  return date;
 }
 
 var last_day_of_year = lastDayOfYear;
@@ -4830,13 +4974,13 @@ var last_day_of_year = lastDayOfYear;
  * )
  * //=> Sun Jul 02 1995 00:00:00
  */
-function max () {
+function max() {
   var dirtyDates = Array.prototype.slice.call(arguments);
   var dates = dirtyDates.map(function (dirtyDate) {
-    return parse_1(dirtyDate)
+    return parse_1(dirtyDate);
   });
   var latestTimestamp = Math.max.apply(null, dates);
-  return new Date(latestTimestamp)
+  return new Date(latestTimestamp);
 }
 
 var max_1 = max;
@@ -4861,13 +5005,13 @@ var max_1 = max;
  * )
  * //=> Wed Feb 11 1987 00:00:00
  */
-function min () {
+function min() {
   var dirtyDates = Array.prototype.slice.call(arguments);
   var dates = dirtyDates.map(function (dirtyDate) {
-    return parse_1(dirtyDate)
+    return parse_1(dirtyDate);
   });
   var earliestTimestamp = Math.min.apply(null, dates);
-  return new Date(earliestTimestamp)
+  return new Date(earliestTimestamp);
 }
 
 var min_1 = min;
@@ -4888,11 +5032,11 @@ var min_1 = min;
  * var result = setDate(new Date(2014, 8, 1), 30)
  * //=> Tue Sep 30 2014 00:00:00
  */
-function setDate (dirtyDate, dirtyDayOfMonth) {
+function setDate(dirtyDate, dirtyDayOfMonth) {
   var date = parse_1(dirtyDate);
   var dayOfMonth = Number(dirtyDayOfMonth);
   date.setDate(dayOfMonth);
-  return date
+  return date;
 }
 
 var set_date = setDate;
@@ -4920,8 +5064,8 @@ var set_date = setDate;
  * var result = setDay(new Date(2014, 8, 1), 0, {weekStartsOn: 1})
  * //=> Sun Sep 07 2014 00:00:00
  */
-function setDay (dirtyDate, dirtyDay, dirtyOptions) {
-  var weekStartsOn = dirtyOptions ? (Number(dirtyOptions.weekStartsOn) || 0) : 0;
+function setDay(dirtyDate, dirtyDay, dirtyOptions) {
+  var weekStartsOn = dirtyOptions ? Number(dirtyOptions.weekStartsOn) || 0 : 0;
   var date = parse_1(dirtyDate);
   var day = Number(dirtyDay);
   var currentDay = date.getDay();
@@ -4930,7 +5074,7 @@ function setDay (dirtyDate, dirtyDay, dirtyOptions) {
   var dayIndex = (remainder + 7) % 7;
 
   var diff = (dayIndex < weekStartsOn ? 7 : 0) + day - currentDay;
-  return add_days(date, diff)
+  return add_days(date, diff);
 }
 
 var set_day = setDay;
@@ -4951,12 +5095,12 @@ var set_day = setDay;
  * var result = setDayOfYear(new Date(2014, 6, 2), 2)
  * //=> Thu Jan 02 2014 00:00:00
  */
-function setDayOfYear (dirtyDate, dirtyDayOfYear) {
+function setDayOfYear(dirtyDate, dirtyDayOfYear) {
   var date = parse_1(dirtyDate);
   var dayOfYear = Number(dirtyDayOfYear);
   date.setMonth(0);
   date.setDate(dayOfYear);
-  return date
+  return date;
 }
 
 var set_day_of_year = setDayOfYear;
@@ -4977,11 +5121,11 @@ var set_day_of_year = setDayOfYear;
  * var result = setHours(new Date(2014, 8, 1, 11, 30), 4)
  * //=> Mon Sep 01 2014 04:30:00
  */
-function setHours (dirtyDate, dirtyHours) {
+function setHours(dirtyDate, dirtyHours) {
   var date = parse_1(dirtyDate);
   var hours = Number(dirtyHours);
   date.setHours(hours);
-  return date
+  return date;
 }
 
 var set_hours = setHours;
@@ -5004,12 +5148,12 @@ var set_hours = setHours;
  * var result = setISODay(new Date(2014, 8, 1), 7)
  * //=> Sun Sep 07 2014 00:00:00
  */
-function setISODay (dirtyDate, dirtyDay) {
+function setISODay(dirtyDate, dirtyDay) {
   var date = parse_1(dirtyDate);
   var day = Number(dirtyDay);
   var currentDay = get_iso_day(date);
   var diff = day - currentDay;
-  return add_days(date, diff)
+  return add_days(date, diff);
 }
 
 var set_iso_day = setISODay;
@@ -5032,12 +5176,12 @@ var set_iso_day = setISODay;
  * var result = setISOWeek(new Date(2004, 7, 7), 53)
  * //=> Sat Jan 01 2005 00:00:00
  */
-function setISOWeek (dirtyDate, dirtyISOWeek) {
+function setISOWeek(dirtyDate, dirtyISOWeek) {
   var date = parse_1(dirtyDate);
   var isoWeek = Number(dirtyISOWeek);
   var diff = get_iso_week(date) - isoWeek;
   date.setDate(date.getDate() - diff * 7);
-  return date
+  return date;
 }
 
 var set_iso_week = setISOWeek;
@@ -5058,11 +5202,11 @@ var set_iso_week = setISOWeek;
  * var result = setMilliseconds(new Date(2014, 8, 1, 11, 30, 40, 500), 300)
  * //=> Mon Sep 01 2014 11:30:40.300
  */
-function setMilliseconds (dirtyDate, dirtyMilliseconds) {
+function setMilliseconds(dirtyDate, dirtyMilliseconds) {
   var date = parse_1(dirtyDate);
   var milliseconds = Number(dirtyMilliseconds);
   date.setMilliseconds(milliseconds);
-  return date
+  return date;
 }
 
 var set_milliseconds = setMilliseconds;
@@ -5083,11 +5227,11 @@ var set_milliseconds = setMilliseconds;
  * var result = setMinutes(new Date(2014, 8, 1, 11, 30, 40), 45)
  * //=> Mon Sep 01 2014 11:45:40
  */
-function setMinutes (dirtyDate, dirtyMinutes) {
+function setMinutes(dirtyDate, dirtyMinutes) {
   var date = parse_1(dirtyDate);
   var minutes = Number(dirtyMinutes);
   date.setMinutes(minutes);
-  return date
+  return date;
 }
 
 var set_minutes = setMinutes;
@@ -5108,7 +5252,7 @@ var set_minutes = setMinutes;
  * var result = setMonth(new Date(2014, 8, 1), 1)
  * //=> Sat Feb 01 2014 00:00:00
  */
-function setMonth (dirtyDate, dirtyMonth) {
+function setMonth(dirtyDate, dirtyMonth) {
   var date = parse_1(dirtyDate);
   var month = Number(dirtyMonth);
   var year = date.getFullYear();
@@ -5121,7 +5265,7 @@ function setMonth (dirtyDate, dirtyMonth) {
   // Set the last day of the new month
   // if the original date was the last day of the longer month
   date.setMonth(month, Math.min(day, daysInMonth));
-  return date
+  return date;
 }
 
 var set_month = setMonth;
@@ -5142,12 +5286,12 @@ var set_month = setMonth;
  * var result = setQuarter(new Date(2014, 6, 2), 2)
  * //=> Wed Apr 02 2014 00:00:00
  */
-function setQuarter (dirtyDate, dirtyQuarter) {
+function setQuarter(dirtyDate, dirtyQuarter) {
   var date = parse_1(dirtyDate);
   var quarter = Number(dirtyQuarter);
   var oldQuarter = Math.floor(date.getMonth() / 3) + 1;
   var diff = quarter - oldQuarter;
-  return set_month(date, date.getMonth() + diff * 3)
+  return set_month(date, date.getMonth() + diff * 3);
 }
 
 var set_quarter = setQuarter;
@@ -5168,11 +5312,11 @@ var set_quarter = setQuarter;
  * var result = setSeconds(new Date(2014, 8, 1, 11, 30, 40), 45)
  * //=> Mon Sep 01 2014 11:30:45
  */
-function setSeconds (dirtyDate, dirtySeconds) {
+function setSeconds(dirtyDate, dirtySeconds) {
   var date = parse_1(dirtyDate);
   var seconds = Number(dirtySeconds);
   date.setSeconds(seconds);
-  return date
+  return date;
 }
 
 var set_seconds = setSeconds;
@@ -5193,11 +5337,11 @@ var set_seconds = setSeconds;
  * var result = setYear(new Date(2014, 8, 1), 2013)
  * //=> Sun Sep 01 2013 00:00:00
  */
-function setYear (dirtyDate, dirtyYear) {
+function setYear(dirtyDate, dirtyYear) {
   var date = parse_1(dirtyDate);
   var year = Number(dirtyYear);
   date.setFullYear(year);
-  return date
+  return date;
 }
 
 var set_year = setYear;
@@ -5218,11 +5362,11 @@ var set_year = setYear;
  * var result = startOfMonth(new Date(2014, 8, 2, 11, 55, 0))
  * //=> Mon Sep 01 2014 00:00:00
  */
-function startOfMonth (dirtyDate) {
+function startOfMonth(dirtyDate) {
   var date = parse_1(dirtyDate);
   date.setDate(1);
   date.setHours(0, 0, 0, 0);
-  return date
+  return date;
 }
 
 var start_of_month = startOfMonth;
@@ -5241,8 +5385,8 @@ var start_of_month = startOfMonth;
  * var result = startOfToday()
  * //=> Mon Oct 6 2014 00:00:00
  */
-function startOfToday () {
-  return start_of_day(new Date())
+function startOfToday() {
+  return start_of_day(new Date());
 }
 
 var start_of_today = startOfToday;
@@ -5261,7 +5405,7 @@ var start_of_today = startOfToday;
  * var result = startOfTomorrow()
  * //=> Tue Oct 7 2014 00:00:00
  */
-function startOfTomorrow () {
+function startOfTomorrow() {
   var now = new Date();
   var year = now.getFullYear();
   var month = now.getMonth();
@@ -5270,7 +5414,7 @@ function startOfTomorrow () {
   var date = new Date(0);
   date.setFullYear(year, month, day + 1);
   date.setHours(0, 0, 0, 0);
-  return date
+  return date;
 }
 
 var start_of_tomorrow = startOfTomorrow;
@@ -5289,7 +5433,7 @@ var start_of_tomorrow = startOfTomorrow;
  * var result = startOfYesterday()
  * //=> Sun Oct 5 2014 00:00:00
  */
-function startOfYesterday () {
+function startOfYesterday() {
   var now = new Date();
   var year = now.getFullYear();
   var month = now.getMonth();
@@ -5298,7 +5442,7 @@ function startOfYesterday () {
   var date = new Date(0);
   date.setFullYear(year, month, day - 1);
   date.setHours(0, 0, 0, 0);
-  return date
+  return date;
 }
 
 var start_of_yesterday = startOfYesterday;
@@ -5319,9 +5463,9 @@ var start_of_yesterday = startOfYesterday;
  * var result = subDays(new Date(2014, 8, 1), 10)
  * //=> Fri Aug 22 2014 00:00:00
  */
-function subDays (dirtyDate, dirtyAmount) {
+function subDays(dirtyDate, dirtyAmount) {
   var amount = Number(dirtyAmount);
-  return add_days(dirtyDate, -amount)
+  return add_days(dirtyDate, -amount);
 }
 
 var sub_days = subDays;
@@ -5342,9 +5486,9 @@ var sub_days = subDays;
  * var result = subHours(new Date(2014, 6, 11, 1, 0), 2)
  * //=> Thu Jul 10 2014 23:00:00
  */
-function subHours (dirtyDate, dirtyAmount) {
+function subHours(dirtyDate, dirtyAmount) {
   var amount = Number(dirtyAmount);
-  return add_hours(dirtyDate, -amount)
+  return add_hours(dirtyDate, -amount);
 }
 
 var sub_hours = subHours;
@@ -5365,9 +5509,9 @@ var sub_hours = subHours;
  * var result = subMilliseconds(new Date(2014, 6, 10, 12, 45, 30, 0), 750)
  * //=> Thu Jul 10 2014 12:45:29.250
  */
-function subMilliseconds (dirtyDate, dirtyAmount) {
+function subMilliseconds(dirtyDate, dirtyAmount) {
   var amount = Number(dirtyAmount);
-  return add_milliseconds(dirtyDate, -amount)
+  return add_milliseconds(dirtyDate, -amount);
 }
 
 var sub_milliseconds = subMilliseconds;
@@ -5388,9 +5532,9 @@ var sub_milliseconds = subMilliseconds;
  * var result = subMinutes(new Date(2014, 6, 10, 12, 0), 30)
  * //=> Thu Jul 10 2014 11:30:00
  */
-function subMinutes (dirtyDate, dirtyAmount) {
+function subMinutes(dirtyDate, dirtyAmount) {
   var amount = Number(dirtyAmount);
-  return add_minutes(dirtyDate, -amount)
+  return add_minutes(dirtyDate, -amount);
 }
 
 var sub_minutes = subMinutes;
@@ -5411,9 +5555,9 @@ var sub_minutes = subMinutes;
  * var result = subMonths(new Date(2015, 1, 1), 5)
  * //=> Mon Sep 01 2014 00:00:00
  */
-function subMonths (dirtyDate, dirtyAmount) {
+function subMonths(dirtyDate, dirtyAmount) {
   var amount = Number(dirtyAmount);
-  return add_months(dirtyDate, -amount)
+  return add_months(dirtyDate, -amount);
 }
 
 var sub_months = subMonths;
@@ -5434,9 +5578,9 @@ var sub_months = subMonths;
  * var result = subQuarters(new Date(2014, 8, 1), 3)
  * //=> Sun Dec 01 2013 00:00:00
  */
-function subQuarters (dirtyDate, dirtyAmount) {
+function subQuarters(dirtyDate, dirtyAmount) {
   var amount = Number(dirtyAmount);
-  return add_quarters(dirtyDate, -amount)
+  return add_quarters(dirtyDate, -amount);
 }
 
 var sub_quarters = subQuarters;
@@ -5457,9 +5601,9 @@ var sub_quarters = subQuarters;
  * var result = subSeconds(new Date(2014, 6, 10, 12, 45, 0), 30)
  * //=> Thu Jul 10 2014 12:44:30
  */
-function subSeconds (dirtyDate, dirtyAmount) {
+function subSeconds(dirtyDate, dirtyAmount) {
   var amount = Number(dirtyAmount);
-  return add_seconds(dirtyDate, -amount)
+  return add_seconds(dirtyDate, -amount);
 }
 
 var sub_seconds = subSeconds;
@@ -5480,9 +5624,9 @@ var sub_seconds = subSeconds;
  * var result = subWeeks(new Date(2014, 8, 1), 4)
  * //=> Mon Aug 04 2014 00:00:00
  */
-function subWeeks (dirtyDate, dirtyAmount) {
+function subWeeks(dirtyDate, dirtyAmount) {
   var amount = Number(dirtyAmount);
-  return add_weeks(dirtyDate, -amount)
+  return add_weeks(dirtyDate, -amount);
 }
 
 var sub_weeks = subWeeks;
@@ -5503,9 +5647,9 @@ var sub_weeks = subWeeks;
  * var result = subYears(new Date(2014, 8, 1), 5)
  * //=> Tue Sep 01 2009 00:00:00
  */
-function subYears (dirtyDate, dirtyAmount) {
+function subYears(dirtyDate, dirtyAmount) {
   var amount = Number(dirtyAmount);
-  return add_years(dirtyDate, -amount)
+  return add_years(dirtyDate, -amount);
 }
 
 var sub_years = subYears;
@@ -5664,177 +5808,215 @@ var dateFns = {
   subQuarters: sub_quarters,
   subSeconds: sub_seconds,
   subWeeks: sub_weeks,
-  subYears: sub_years
+  subYears: sub_years,
 };
 
-function buildDistanceInWordsLocale () {
+function buildDistanceInWordsLocale() {
   var distanceInWordsLocale = {
     lessThanXSeconds: {
-      one: 'meno di un secondo',
-      other: 'meno di {{count}} secondi'
+      one: "meno di un secondo",
+      other: "meno di {{count}} secondi",
     },
 
     xSeconds: {
-      one: 'un secondo',
-      other: '{{count}} secondi'
+      one: "un secondo",
+      other: "{{count}} secondi",
     },
 
-    halfAMinute: 'alcuni secondi',
+    halfAMinute: "alcuni secondi",
 
     lessThanXMinutes: {
-      one: 'meno di un minuto',
-      other: 'meno di {{count}} minuti'
+      one: "meno di un minuto",
+      other: "meno di {{count}} minuti",
     },
 
     xMinutes: {
-      one: 'un minuto',
-      other: '{{count}} minuti'
+      one: "un minuto",
+      other: "{{count}} minuti",
     },
 
     aboutXHours: {
-      one: 'circa un\'ora',
-      other: 'circa {{count}} ore'
+      one: "circa un'ora",
+      other: "circa {{count}} ore",
     },
 
     xHours: {
-      one: 'un\'ora',
-      other: '{{count}} ore'
+      one: "un'ora",
+      other: "{{count}} ore",
     },
 
     xDays: {
-      one: 'un giorno',
-      other: '{{count}} giorni'
+      one: "un giorno",
+      other: "{{count}} giorni",
     },
 
     aboutXMonths: {
-      one: 'circa un mese',
-      other: 'circa {{count}} mesi'
+      one: "circa un mese",
+      other: "circa {{count}} mesi",
     },
 
     xMonths: {
-      one: 'un mese',
-      other: '{{count}} mesi'
+      one: "un mese",
+      other: "{{count}} mesi",
     },
 
     aboutXYears: {
-      one: 'circa un anno',
-      other: 'circa {{count}} anni'
+      one: "circa un anno",
+      other: "circa {{count}} anni",
     },
 
     xYears: {
-      one: 'un anno',
-      other: '{{count}} anni'
+      one: "un anno",
+      other: "{{count}} anni",
     },
 
     overXYears: {
-      one: 'più di un anno',
-      other: 'più di {{count}} anni'
+      one: "più di un anno",
+      other: "più di {{count}} anni",
     },
 
     almostXYears: {
-      one: 'quasi un anno',
-      other: 'quasi {{count}} anni'
-    }
+      one: "quasi un anno",
+      other: "quasi {{count}} anni",
+    },
   };
 
-  function localize (token, count, options) {
+  function localize(token, count, options) {
     options = options || {};
 
     var result;
-    if (typeof distanceInWordsLocale[token] === 'string') {
+    if (typeof distanceInWordsLocale[token] === "string") {
       result = distanceInWordsLocale[token];
     } else if (count === 1) {
       result = distanceInWordsLocale[token].one;
     } else {
-      result = distanceInWordsLocale[token].other.replace('{{count}}', count);
+      result = distanceInWordsLocale[token].other.replace("{{count}}", count);
     }
 
     if (options.addSuffix) {
       if (options.comparison > 0) {
-        return 'tra ' + result
+        return "tra " + result;
       } else {
-        return result + ' fa'
+        return result + " fa";
       }
     }
 
-    return result
+    return result;
   }
 
   return {
-    localize: localize
-  }
+    localize: localize,
+  };
 }
 
 var build_distance_in_words_locale = buildDistanceInWordsLocale;
 
-function buildFormatLocale () {
-  var months3char = ['gen', 'feb', 'mar', 'apr', 'mag', 'giu', 'lug', 'ago', 'set', 'ott', 'nov', 'dic'];
-  var monthsFull = ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre'];
-  var weekdays2char = ['do', 'lu', 'ma', 'me', 'gi', 've', 'sa'];
-  var weekdays3char = ['dom', 'lun', 'mar', 'mer', 'gio', 'ven', 'sab'];
-  var weekdaysFull = ['domenica', 'lunedì', 'martedì', 'mercoledì', 'giovedì', 'venerdì', 'sabato'];
-  var meridiemUppercase = ['AM', 'PM'];
-  var meridiemLowercase = ['am', 'pm'];
-  var meridiemFull = ['a.m.', 'p.m.'];
+function buildFormatLocale() {
+  var months3char = [
+    "gen",
+    "feb",
+    "mar",
+    "apr",
+    "mag",
+    "giu",
+    "lug",
+    "ago",
+    "set",
+    "ott",
+    "nov",
+    "dic",
+  ];
+  var monthsFull = [
+    "gennaio",
+    "febbraio",
+    "marzo",
+    "aprile",
+    "maggio",
+    "giugno",
+    "luglio",
+    "agosto",
+    "settembre",
+    "ottobre",
+    "novembre",
+    "dicembre",
+  ];
+  var weekdays2char = ["do", "lu", "ma", "me", "gi", "ve", "sa"];
+  var weekdays3char = ["dom", "lun", "mar", "mer", "gio", "ven", "sab"];
+  var weekdaysFull = [
+    "domenica",
+    "lunedì",
+    "martedì",
+    "mercoledì",
+    "giovedì",
+    "venerdì",
+    "sabato",
+  ];
+  var meridiemUppercase = ["AM", "PM"];
+  var meridiemLowercase = ["am", "pm"];
+  var meridiemFull = ["a.m.", "p.m."];
 
   var formatters = {
     // Month: Jan, Feb, ..., Dec
-    'MMM': function (date) {
-      return months3char[date.getMonth()]
+    MMM: function (date) {
+      return months3char[date.getMonth()];
     },
 
     // Month: January, February, ..., December
-    'MMMM': function (date) {
-      return monthsFull[date.getMonth()]
+    MMMM: function (date) {
+      return monthsFull[date.getMonth()];
     },
 
     // Day of week: Su, Mo, ..., Sa
-    'dd': function (date) {
-      return weekdays2char[date.getDay()]
+    dd: function (date) {
+      return weekdays2char[date.getDay()];
     },
 
     // Day of week: Sun, Mon, ..., Sat
-    'ddd': function (date) {
-      return weekdays3char[date.getDay()]
+    ddd: function (date) {
+      return weekdays3char[date.getDay()];
     },
 
     // Day of week: Sunday, Monday, ..., Saturday
-    'dddd': function (date) {
-      return weekdaysFull[date.getDay()]
+    dddd: function (date) {
+      return weekdaysFull[date.getDay()];
     },
 
     // AM, PM
-    'A': function (date) {
-      return (date.getHours() / 12) >= 1 ? meridiemUppercase[1] : meridiemUppercase[0]
+    A: function (date) {
+      return date.getHours() / 12 >= 1
+        ? meridiemUppercase[1]
+        : meridiemUppercase[0];
     },
 
     // am, pm
-    'a': function (date) {
-      return (date.getHours() / 12) >= 1 ? meridiemLowercase[1] : meridiemLowercase[0]
+    a: function (date) {
+      return date.getHours() / 12 >= 1
+        ? meridiemLowercase[1]
+        : meridiemLowercase[0];
     },
 
     // a.m., p.m.
-    'aa': function (date) {
-      return (date.getHours() / 12) >= 1 ? meridiemFull[1] : meridiemFull[0]
-    }
+    aa: function (date) {
+      return date.getHours() / 12 >= 1 ? meridiemFull[1] : meridiemFull[0];
+    },
   };
 
   // Generate ordinal version of formatters: M -> Mo, D -> Do, etc.
-  var ordinalFormatters = ['M', 'D', 'DDD', 'd', 'Q', 'W'];
+  var ordinalFormatters = ["M", "D", "DDD", "d", "Q", "W"];
   ordinalFormatters.forEach(function (formatterToken) {
-    formatters[formatterToken + 'o'] = function (date, formatters) {
-      return ordinal(formatters[formatterToken](date))
+    formatters[formatterToken + "o"] = function (date, formatters) {
+      return ordinal(formatters[formatterToken](date));
     };
   });
 
   return {
     formatters: formatters,
-    formattingTokensRegExp: build_formatting_tokens_reg_exp(formatters)
-  }
+    formattingTokensRegExp: build_formatting_tokens_reg_exp(formatters),
+  };
 }
 
-function ordinal (number) {
-  return number + 'º'
+function ordinal(number) {
+  return number + "º";
 }
 
 var build_format_locale = buildFormatLocale;
@@ -5846,142 +6028,254 @@ var build_format_locale = buildFormatLocale;
  */
 var it = {
   distanceInWords: build_distance_in_words_locale(),
-  format: build_format_locale()
+  format: build_format_locale(),
 };
 
 // @ts-nocheck
 function Header(props) {
-    var prevTime = props.prevTime, selectedDate = props.selectedDate, nextTime = props.nextTime;
-    return (React__default["default"].createElement("div", { className: "header row flex-middle" },
-        React__default["default"].createElement("div", { className: "col col-start" },
-            React__default["default"].createElement("div", { className: "icon", onClick: prevTime, onKeyDown: prevTime, tabIndex: 0, role: "button" }, "chevron_left")),
-        React__default["default"].createElement("div", { className: "col col-center" },
-            React__default["default"].createElement("span", null, selectedDate)),
-        React__default["default"].createElement("div", { className: "col col-end", onClick: nextTime, onKeyDown: nextTime, tabIndex: "0", role: "button" },
-            React__default["default"].createElement("div", { className: "icon" }, "chevron_right"))));
+  var prevTime = props.prevTime,
+    selectedDate = props.selectedDate,
+    nextTime = props.nextTime;
+  return React__default["default"].createElement(
+    "div",
+    { className: "header row flex-middle" },
+    React__default["default"].createElement(
+      "div",
+      { className: "col col-start" },
+      React__default["default"].createElement(
+        "div",
+        {
+          className: "icon",
+          onClick: prevTime,
+          onKeyDown: prevTime,
+          tabIndex: 0,
+          role: "button",
+        },
+        "chevron_left"
+      )
+    ),
+    React__default["default"].createElement(
+      "div",
+      { className: "col col-center" },
+      React__default["default"].createElement("span", null, selectedDate)
+    ),
+    React__default["default"].createElement(
+      "div",
+      {
+        className: "col col-end",
+        onClick: nextTime,
+        onKeyDown: nextTime,
+        tabIndex: "0",
+        role: "button",
+      },
+      React__default["default"].createElement(
+        "div",
+        { className: "icon" },
+        "chevron_right"
+      )
+    )
+  );
 }
 
 var DayTitle = /** @class */ (function (_super) {
-    __extends(DayTitle, _super);
-    function DayTitle(props) {
-        var _this = _super.call(this, props) || this;
-        _this.state = {
-            dateFormat: "ddd"
-        };
-        return _this;
+  __extends(DayTitle, _super);
+  function DayTitle(props) {
+    var _this = _super.call(this, props) || this;
+    _this.state = {
+      dateFormat: "ddd",
+    };
+    return _this;
+  }
+  DayTitle.prototype.componentDidMount = function () {
+    this.setState({
+      // @ts-ignore
+      dateFormat: this.dayTitle.parentNode.clientWidth > 500 ? "dddd" : "ddd",
+    });
+  };
+  DayTitle.prototype.render = function () {
+    var _this = this;
+    var currentMonth = this.props.currentMonth;
+    var dateFormat = this.state.dateFormat;
+    var days = [];
+    var startDate = dateFns.startOfWeek(currentMonth);
+    for (var i = 0; i < 7; i++) {
+      days.push(
+        React__default["default"].createElement(
+          "div",
+          { className: "col col-center", key: i },
+          dateFns.format(dateFns.addDays(startDate, i), dateFormat, {
+            locale: it,
+          })
+        )
+      );
     }
-    DayTitle.prototype.componentDidMount = function () {
-        this.setState({
-            // @ts-ignore
-            dateFormat: this.dayTitle.parentNode.clientWidth > 500 ? "dddd" : "ddd"
-        });
-    };
-    DayTitle.prototype.render = function () {
-        var _this = this;
-        var currentMonth = this.props.currentMonth;
-        var dateFormat = this.state.dateFormat;
-        var days = [];
-        var startDate = dateFns.startOfWeek(currentMonth);
-        for (var i = 0; i < 7; i++) {
-            days.push(React__default["default"].createElement("div", { className: "col col-center", key: i }, dateFns.format(dateFns.addDays(startDate, i), dateFormat, {
-                locale: it
-            })));
-        }
-        return (React__default["default"].createElement("div", { className: "days row", ref: function (c) {
-                // @ts-ignore
-                _this.dayTitle = c;
-            } }, days));
-    };
-    return DayTitle;
-}(React__default["default"].Component));
+    return React__default["default"].createElement(
+      "div",
+      {
+        className: "days row",
+        ref: function (c) {
+          // @ts-ignore
+          _this.dayTitle = c;
+        },
+      },
+      days
+    );
+  };
+  return DayTitle;
+})(React__default["default"].Component);
 
 //@ts-nocheck
 function Day(props) {
-    var classSet = props.classSet, onDateClick = props.onDateClick, date = props.date, day = props.day;
-    return (React__default["default"].createElement("div", { className: "col cell" + classSet + " t" + day.replaceAll("/", "-"), role: "gridcell3", tabIndex: 0, onClick: onDateClick, onKeyDown: onDateClick },
-        React__default["default"].createElement("span", { className: "number" }, date),
-        React__default["default"].createElement("span", { className: "bg" }, date)));
+  var classSet = props.classSet,
+    onDateClick = props.onDateClick,
+    date = props.date,
+    day = props.day;
+  return React__default["default"].createElement(
+    "div",
+    {
+      className: "col cell" + classSet + " t" + day.replaceAll("/", "-"),
+      role: "gridcell3",
+      tabIndex: 0,
+      onClick: onDateClick,
+      onKeyDown: onDateClick,
+    },
+    React__default["default"].createElement(
+      "span",
+      { className: "number" },
+      date
+    ),
+    React__default["default"].createElement("span", { className: "bg" }, date)
+  );
 }
 
 var Weeks = /** @class */ (function (_super) {
-    __extends(Weeks, _super);
-    function Weeks() {
-        return _super !== null && _super.apply(this, arguments) || this;
+  __extends(Weeks, _super);
+  function Weeks() {
+    return (_super !== null && _super.apply(this, arguments)) || this;
+  }
+  Weeks.prototype.generateClasses = function (day) {
+    var classSet = "";
+    classSet += " " + dateFns.format(day, "ddd");
+    classSet += dateFns.isToday(day) ? " today" : "";
+    classSet += this.isDaySelected(day) ? " selected" : "";
+    classSet += this.isdayDisabled(day) ? " disabled" : "";
+    return classSet;
+  };
+  Weeks.prototype.isDaySelected = function (day) {
+    var _a = this.props,
+      selectedDate = _a.selectedDate,
+      selectedTime = _a.selectedTime;
+    if (
+      dateFns.isSameDay(day, selectedDate) ||
+      dateFns.isWithinRange(day, selectedTime.start, selectedTime.end)
+    ) {
+      return true;
     }
-    Weeks.prototype.generateClasses = function (day) {
-        var classSet = "";
-        classSet += " " + dateFns.format(day, "ddd");
-        classSet += dateFns.isToday(day) ? " today" : "";
-        classSet += this.isDaySelected(day) ? " selected" : "";
-        classSet += this.isdayDisabled(day) ? " disabled" : "";
-        return classSet;
-    };
-    Weeks.prototype.isDaySelected = function (day) {
-        var _a = this.props, selectedDate = _a.selectedDate, selectedTime = _a.selectedTime;
-        if (dateFns.isSameDay(day, selectedDate) ||
-            dateFns.isWithinRange(day, selectedTime.start, selectedTime.end)) {
-            return true;
-        }
-    };
-    Weeks.prototype.isdayDisabled = function (day) {
-        var _a = this.props, clickable = _a.clickable, disableHistory = _a.disableHistory, selectedDate = _a.selectedDate, timeSlot = _a.timeSlot;
-        if (!clickable ||
-            (disableHistory &&
-                dateFns.isBefore(day, dateFns.endOfYesterday())) ||
-            !dateFns.isSameMonth(day, selectedDate)) {
-            return true;
-        }
-        if (!timeSlot && this.isBetweenBookings(day)) {
-            return true;
-        }
-    };
-    Weeks.prototype.isBetweenBookings = function (day) {
-        var bookings = this.props.bookings;
-        for (var f = 0; f < bookings.length; f += 1) {
-            if (dateFns.isWithinRange(day, dateFns.startOfDay(bookings[f].start_time), dateFns.endOfDay(bookings[f].end_time))) {
-                return true;
-            }
-        }
-    };
-    Weeks.prototype.render = function () {
-        var _a = this.props, selectedDate = _a.selectedDate, onDateClick = _a.onDateClick;
-        var endDate = dateFns.endOfWeek(dateFns.endOfMonth(dateFns.startOfMonth(selectedDate)));
-        var rows = [];
-        var days = [];
-        var day = dateFns.startOfWeek(dateFns.startOfMonth(selectedDate));
-        while (day <= endDate) {
-            var _loop_1 = function (i) {
-                var classSet = this_1.generateClasses(day);
-                var cloneDay = day;
-                days.push(React__default["default"].createElement(Day, { classSet: classSet, day: dateFns.format(day, "DD/MM"), key: JSON.stringify(day), date: dateFns.format(day, "D"), onDateClick: function () { return onDateClick(cloneDay); } }));
-                day = dateFns.addDays(day, 1);
-            };
-            var this_1 = this;
-            for (var i = 0; i < 7; i += 1) {
-                _loop_1(i);
-            }
-            rows.push(React__default["default"].createElement("div", { className: "row", key: JSON.stringify(day) }, days));
-            days = [];
-        }
-        return (React__default["default"].createElement("div", { className: "body" },
-            React__default["default"].createElement(DayTitle, { currentMonth: selectedDate }),
-            rows));
-    };
-    return Weeks;
-}(React.PureComponent));
+  };
+  Weeks.prototype.isdayDisabled = function (day) {
+    var _a = this.props,
+      clickable = _a.clickable,
+      disableHistory = _a.disableHistory,
+      selectedDate = _a.selectedDate,
+      timeSlot = _a.timeSlot;
+    if (
+      !clickable ||
+      (disableHistory && dateFns.isBefore(day, dateFns.endOfYesterday())) ||
+      !dateFns.isSameMonth(day, selectedDate)
+    ) {
+      return true;
+    }
+    if (!timeSlot && this.isBetweenBookings(day)) {
+      return true;
+    }
+  };
+  Weeks.prototype.isBetweenBookings = function (day) {
+    var bookings = this.props.bookings;
+    for (var f = 0; f < bookings.length; f += 1) {
+      if (
+        dateFns.isWithinRange(
+          day,
+          dateFns.startOfDay(bookings[f].start_time),
+          dateFns.endOfDay(bookings[f].end_time)
+        )
+      ) {
+        return true;
+      }
+    }
+  };
+  Weeks.prototype.render = function () {
+    var _a = this.props,
+      selectedDate = _a.selectedDate,
+      onDateClick = _a.onDateClick;
+    var endDate = dateFns.endOfWeek(
+      dateFns.endOfMonth(dateFns.startOfMonth(selectedDate))
+    );
+    var rows = [];
+    var days = [];
+    var day = dateFns.startOfWeek(dateFns.startOfMonth(selectedDate));
+    while (day <= endDate) {
+      var _loop_1 = function (i) {
+        var classSet = this_1.generateClasses(day);
+        var cloneDay = day;
+        days.push(
+          React__default["default"].createElement(Day, {
+            classSet: classSet,
+            day: dateFns.format(day, "DD/MM"),
+            key: JSON.stringify(day),
+            date: dateFns.format(day, "D"),
+            onDateClick: function () {
+              return onDateClick(cloneDay);
+            },
+          })
+        );
+        day = dateFns.addDays(day, 1);
+      };
+      var this_1 = this;
+      for (var i = 0; i < 7; i += 1) {
+        _loop_1(i);
+      }
+      rows.push(
+        React__default["default"].createElement(
+          "div",
+          { className: "row", key: JSON.stringify(day) },
+          days
+        )
+      );
+      days = [];
+    }
+    return React__default["default"].createElement(
+      "div",
+      { className: "body" },
+      React__default["default"].createElement(DayTitle, {
+        currentMonth: selectedDate,
+      }),
+      rows
+    );
+  };
+  return Weeks;
+})(React.PureComponent);
 
 function createCommonjsModule(fn, basedir, module) {
-	return module = {
-		path: basedir,
-		exports: {},
-		require: function (path, base) {
-			return commonjsRequire(path, (base === undefined || base === null) ? module.path : base);
-		}
-	}, fn(module, module.exports), module.exports;
+  return (
+    (module = {
+      path: basedir,
+      exports: {},
+      require: function (path, base) {
+        return commonjsRequire(
+          path,
+          base === undefined || base === null ? module.path : base
+        );
+      },
+    }),
+    fn(module, module.exports),
+    module.exports
+  );
 }
 
-function commonjsRequire () {
-	throw new Error('Dynamic requires are not currently supported by @rollup/plugin-commonjs');
+function commonjsRequire() {
+  throw new Error(
+    "Dynamic requires are not currently supported by @rollup/plugin-commonjs"
+  );
 }
 
 /** @license React v16.13.1
@@ -5992,224 +6286,389 @@ function commonjsRequire () {
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-var b="function"===typeof Symbol&&Symbol.for,c=b?Symbol.for("react.element"):60103,d=b?Symbol.for("react.portal"):60106,e=b?Symbol.for("react.fragment"):60107,f=b?Symbol.for("react.strict_mode"):60108,g=b?Symbol.for("react.profiler"):60114,h=b?Symbol.for("react.provider"):60109,k=b?Symbol.for("react.context"):60110,l=b?Symbol.for("react.async_mode"):60111,m=b?Symbol.for("react.concurrent_mode"):60111,n=b?Symbol.for("react.forward_ref"):60112,p=b?Symbol.for("react.suspense"):60113,q=b?
-Symbol.for("react.suspense_list"):60120,r=b?Symbol.for("react.memo"):60115,t=b?Symbol.for("react.lazy"):60116,v=b?Symbol.for("react.block"):60121,w=b?Symbol.for("react.fundamental"):60117,x=b?Symbol.for("react.responder"):60118,y=b?Symbol.for("react.scope"):60119;
-function z(a){if("object"===typeof a&&null!==a){var u=a.$$typeof;switch(u){case c:switch(a=a.type,a){case l:case m:case e:case g:case f:case p:return a;default:switch(a=a&&a.$$typeof,a){case k:case n:case t:case r:case h:return a;default:return u}}case d:return u}}}function A(a){return z(a)===m}var AsyncMode=l;var ConcurrentMode=m;var ContextConsumer=k;var ContextProvider=h;var Element=c;var ForwardRef=n;var Fragment=e;var Lazy=t;var Memo=r;var Portal=d;
-var Profiler=g;var StrictMode=f;var Suspense=p;var isAsyncMode=function(a){return A(a)||z(a)===l};var isConcurrentMode=A;var isContextConsumer=function(a){return z(a)===k};var isContextProvider=function(a){return z(a)===h};var isElement=function(a){return "object"===typeof a&&null!==a&&a.$$typeof===c};var isForwardRef=function(a){return z(a)===n};var isFragment=function(a){return z(a)===e};var isLazy=function(a){return z(a)===t};
-var isMemo=function(a){return z(a)===r};var isPortal=function(a){return z(a)===d};var isProfiler=function(a){return z(a)===g};var isStrictMode=function(a){return z(a)===f};var isSuspense=function(a){return z(a)===p};
-var isValidElementType=function(a){return "string"===typeof a||"function"===typeof a||a===e||a===m||a===g||a===f||a===p||a===q||"object"===typeof a&&null!==a&&(a.$$typeof===t||a.$$typeof===r||a.$$typeof===h||a.$$typeof===k||a.$$typeof===n||a.$$typeof===w||a.$$typeof===x||a.$$typeof===y||a.$$typeof===v)};var typeOf=z;
+var b = "function" === typeof Symbol && Symbol.for,
+  c = b ? Symbol.for("react.element") : 60103,
+  d = b ? Symbol.for("react.portal") : 60106,
+  e = b ? Symbol.for("react.fragment") : 60107,
+  f = b ? Symbol.for("react.strict_mode") : 60108,
+  g = b ? Symbol.for("react.profiler") : 60114,
+  h = b ? Symbol.for("react.provider") : 60109,
+  k = b ? Symbol.for("react.context") : 60110,
+  l = b ? Symbol.for("react.async_mode") : 60111,
+  m = b ? Symbol.for("react.concurrent_mode") : 60111,
+  n = b ? Symbol.for("react.forward_ref") : 60112,
+  p = b ? Symbol.for("react.suspense") : 60113,
+  q = b ? Symbol.for("react.suspense_list") : 60120,
+  r = b ? Symbol.for("react.memo") : 60115,
+  t = b ? Symbol.for("react.lazy") : 60116,
+  v = b ? Symbol.for("react.block") : 60121,
+  w = b ? Symbol.for("react.fundamental") : 60117,
+  x = b ? Symbol.for("react.responder") : 60118,
+  y = b ? Symbol.for("react.scope") : 60119;
+function z(a) {
+  if ("object" === typeof a && null !== a) {
+    var u = a.$$typeof;
+    switch (u) {
+      case c:
+        switch (((a = a.type), a)) {
+          case l:
+          case m:
+          case e:
+          case g:
+          case f:
+          case p:
+            return a;
+          default:
+            switch (((a = a && a.$$typeof), a)) {
+              case k:
+              case n:
+              case t:
+              case r:
+              case h:
+                return a;
+              default:
+                return u;
+            }
+        }
+      case d:
+        return u;
+    }
+  }
+}
+function A(a) {
+  return z(a) === m;
+}
+var AsyncMode = l;
+var ConcurrentMode = m;
+var ContextConsumer = k;
+var ContextProvider = h;
+var Element = c;
+var ForwardRef = n;
+var Fragment = e;
+var Lazy = t;
+var Memo = r;
+var Portal = d;
+var Profiler = g;
+var StrictMode = f;
+var Suspense = p;
+var isAsyncMode = function (a) {
+  return A(a) || z(a) === l;
+};
+var isConcurrentMode = A;
+var isContextConsumer = function (a) {
+  return z(a) === k;
+};
+var isContextProvider = function (a) {
+  return z(a) === h;
+};
+var isElement = function (a) {
+  return "object" === typeof a && null !== a && a.$$typeof === c;
+};
+var isForwardRef = function (a) {
+  return z(a) === n;
+};
+var isFragment = function (a) {
+  return z(a) === e;
+};
+var isLazy = function (a) {
+  return z(a) === t;
+};
+var isMemo = function (a) {
+  return z(a) === r;
+};
+var isPortal = function (a) {
+  return z(a) === d;
+};
+var isProfiler = function (a) {
+  return z(a) === g;
+};
+var isStrictMode = function (a) {
+  return z(a) === f;
+};
+var isSuspense = function (a) {
+  return z(a) === p;
+};
+var isValidElementType = function (a) {
+  return (
+    "string" === typeof a ||
+    "function" === typeof a ||
+    a === e ||
+    a === m ||
+    a === g ||
+    a === f ||
+    a === p ||
+    a === q ||
+    ("object" === typeof a &&
+      null !== a &&
+      (a.$$typeof === t ||
+        a.$$typeof === r ||
+        a.$$typeof === h ||
+        a.$$typeof === k ||
+        a.$$typeof === n ||
+        a.$$typeof === w ||
+        a.$$typeof === x ||
+        a.$$typeof === y ||
+        a.$$typeof === v))
+  );
+};
+var typeOf = z;
 
 var reactIs_production_min = {
-	AsyncMode: AsyncMode,
-	ConcurrentMode: ConcurrentMode,
-	ContextConsumer: ContextConsumer,
-	ContextProvider: ContextProvider,
-	Element: Element,
-	ForwardRef: ForwardRef,
-	Fragment: Fragment,
-	Lazy: Lazy,
-	Memo: Memo,
-	Portal: Portal,
-	Profiler: Profiler,
-	StrictMode: StrictMode,
-	Suspense: Suspense,
-	isAsyncMode: isAsyncMode,
-	isConcurrentMode: isConcurrentMode,
-	isContextConsumer: isContextConsumer,
-	isContextProvider: isContextProvider,
-	isElement: isElement,
-	isForwardRef: isForwardRef,
-	isFragment: isFragment,
-	isLazy: isLazy,
-	isMemo: isMemo,
-	isPortal: isPortal,
-	isProfiler: isProfiler,
-	isStrictMode: isStrictMode,
-	isSuspense: isSuspense,
-	isValidElementType: isValidElementType,
-	typeOf: typeOf
+  AsyncMode: AsyncMode,
+  ConcurrentMode: ConcurrentMode,
+  ContextConsumer: ContextConsumer,
+  ContextProvider: ContextProvider,
+  Element: Element,
+  ForwardRef: ForwardRef,
+  Fragment: Fragment,
+  Lazy: Lazy,
+  Memo: Memo,
+  Portal: Portal,
+  Profiler: Profiler,
+  StrictMode: StrictMode,
+  Suspense: Suspense,
+  isAsyncMode: isAsyncMode,
+  isConcurrentMode: isConcurrentMode,
+  isContextConsumer: isContextConsumer,
+  isContextProvider: isContextProvider,
+  isElement: isElement,
+  isForwardRef: isForwardRef,
+  isFragment: isFragment,
+  isLazy: isLazy,
+  isMemo: isMemo,
+  isPortal: isPortal,
+  isProfiler: isProfiler,
+  isStrictMode: isStrictMode,
+  isSuspense: isSuspense,
+  isValidElementType: isValidElementType,
+  typeOf: typeOf,
 };
 
 var reactIs_development = createCommonjsModule(function (module, exports) {
+  if (process.env.NODE_ENV !== "production") {
+    (function () {
+      // The Symbol used to tag the ReactElement-like types. If there is no native Symbol
+      // nor polyfill, then a plain number is used for performance.
+      var hasSymbol = typeof Symbol === "function" && Symbol.for;
+      var REACT_ELEMENT_TYPE = hasSymbol ? Symbol.for("react.element") : 0xeac7;
+      var REACT_PORTAL_TYPE = hasSymbol ? Symbol.for("react.portal") : 0xeaca;
+      var REACT_FRAGMENT_TYPE = hasSymbol
+        ? Symbol.for("react.fragment")
+        : 0xeacb;
+      var REACT_STRICT_MODE_TYPE = hasSymbol
+        ? Symbol.for("react.strict_mode")
+        : 0xeacc;
+      var REACT_PROFILER_TYPE = hasSymbol
+        ? Symbol.for("react.profiler")
+        : 0xead2;
+      var REACT_PROVIDER_TYPE = hasSymbol
+        ? Symbol.for("react.provider")
+        : 0xeacd;
+      var REACT_CONTEXT_TYPE = hasSymbol ? Symbol.for("react.context") : 0xeace; // TODO: We don't use AsyncMode or ConcurrentMode anymore. They were temporary
+      // (unstable) APIs that have been removed. Can we remove the symbols?
 
+      var REACT_ASYNC_MODE_TYPE = hasSymbol
+        ? Symbol.for("react.async_mode")
+        : 0xeacf;
+      var REACT_CONCURRENT_MODE_TYPE = hasSymbol
+        ? Symbol.for("react.concurrent_mode")
+        : 0xeacf;
+      var REACT_FORWARD_REF_TYPE = hasSymbol
+        ? Symbol.for("react.forward_ref")
+        : 0xead0;
+      var REACT_SUSPENSE_TYPE = hasSymbol
+        ? Symbol.for("react.suspense")
+        : 0xead1;
+      var REACT_SUSPENSE_LIST_TYPE = hasSymbol
+        ? Symbol.for("react.suspense_list")
+        : 0xead8;
+      var REACT_MEMO_TYPE = hasSymbol ? Symbol.for("react.memo") : 0xead3;
+      var REACT_LAZY_TYPE = hasSymbol ? Symbol.for("react.lazy") : 0xead4;
+      var REACT_BLOCK_TYPE = hasSymbol ? Symbol.for("react.block") : 0xead9;
+      var REACT_FUNDAMENTAL_TYPE = hasSymbol
+        ? Symbol.for("react.fundamental")
+        : 0xead5;
+      var REACT_RESPONDER_TYPE = hasSymbol
+        ? Symbol.for("react.responder")
+        : 0xead6;
+      var REACT_SCOPE_TYPE = hasSymbol ? Symbol.for("react.scope") : 0xead7;
 
+      function isValidElementType(type) {
+        return (
+          typeof type === "string" ||
+          typeof type === "function" || // Note: its typeof might be other than 'symbol' or 'number' if it's a polyfill.
+          type === REACT_FRAGMENT_TYPE ||
+          type === REACT_CONCURRENT_MODE_TYPE ||
+          type === REACT_PROFILER_TYPE ||
+          type === REACT_STRICT_MODE_TYPE ||
+          type === REACT_SUSPENSE_TYPE ||
+          type === REACT_SUSPENSE_LIST_TYPE ||
+          (typeof type === "object" &&
+            type !== null &&
+            (type.$$typeof === REACT_LAZY_TYPE ||
+              type.$$typeof === REACT_MEMO_TYPE ||
+              type.$$typeof === REACT_PROVIDER_TYPE ||
+              type.$$typeof === REACT_CONTEXT_TYPE ||
+              type.$$typeof === REACT_FORWARD_REF_TYPE ||
+              type.$$typeof === REACT_FUNDAMENTAL_TYPE ||
+              type.$$typeof === REACT_RESPONDER_TYPE ||
+              type.$$typeof === REACT_SCOPE_TYPE ||
+              type.$$typeof === REACT_BLOCK_TYPE))
+        );
+      }
 
-if (process.env.NODE_ENV !== "production") {
-  (function() {
+      function typeOf(object) {
+        if (typeof object === "object" && object !== null) {
+          var $$typeof = object.$$typeof;
 
-// The Symbol used to tag the ReactElement-like types. If there is no native Symbol
-// nor polyfill, then a plain number is used for performance.
-var hasSymbol = typeof Symbol === 'function' && Symbol.for;
-var REACT_ELEMENT_TYPE = hasSymbol ? Symbol.for('react.element') : 0xeac7;
-var REACT_PORTAL_TYPE = hasSymbol ? Symbol.for('react.portal') : 0xeaca;
-var REACT_FRAGMENT_TYPE = hasSymbol ? Symbol.for('react.fragment') : 0xeacb;
-var REACT_STRICT_MODE_TYPE = hasSymbol ? Symbol.for('react.strict_mode') : 0xeacc;
-var REACT_PROFILER_TYPE = hasSymbol ? Symbol.for('react.profiler') : 0xead2;
-var REACT_PROVIDER_TYPE = hasSymbol ? Symbol.for('react.provider') : 0xeacd;
-var REACT_CONTEXT_TYPE = hasSymbol ? Symbol.for('react.context') : 0xeace; // TODO: We don't use AsyncMode or ConcurrentMode anymore. They were temporary
-// (unstable) APIs that have been removed. Can we remove the symbols?
+          switch ($$typeof) {
+            case REACT_ELEMENT_TYPE:
+              var type = object.type;
 
-var REACT_ASYNC_MODE_TYPE = hasSymbol ? Symbol.for('react.async_mode') : 0xeacf;
-var REACT_CONCURRENT_MODE_TYPE = hasSymbol ? Symbol.for('react.concurrent_mode') : 0xeacf;
-var REACT_FORWARD_REF_TYPE = hasSymbol ? Symbol.for('react.forward_ref') : 0xead0;
-var REACT_SUSPENSE_TYPE = hasSymbol ? Symbol.for('react.suspense') : 0xead1;
-var REACT_SUSPENSE_LIST_TYPE = hasSymbol ? Symbol.for('react.suspense_list') : 0xead8;
-var REACT_MEMO_TYPE = hasSymbol ? Symbol.for('react.memo') : 0xead3;
-var REACT_LAZY_TYPE = hasSymbol ? Symbol.for('react.lazy') : 0xead4;
-var REACT_BLOCK_TYPE = hasSymbol ? Symbol.for('react.block') : 0xead9;
-var REACT_FUNDAMENTAL_TYPE = hasSymbol ? Symbol.for('react.fundamental') : 0xead5;
-var REACT_RESPONDER_TYPE = hasSymbol ? Symbol.for('react.responder') : 0xead6;
-var REACT_SCOPE_TYPE = hasSymbol ? Symbol.for('react.scope') : 0xead7;
+              switch (type) {
+                case REACT_ASYNC_MODE_TYPE:
+                case REACT_CONCURRENT_MODE_TYPE:
+                case REACT_FRAGMENT_TYPE:
+                case REACT_PROFILER_TYPE:
+                case REACT_STRICT_MODE_TYPE:
+                case REACT_SUSPENSE_TYPE:
+                  return type;
 
-function isValidElementType(type) {
-  return typeof type === 'string' || typeof type === 'function' || // Note: its typeof might be other than 'symbol' or 'number' if it's a polyfill.
-  type === REACT_FRAGMENT_TYPE || type === REACT_CONCURRENT_MODE_TYPE || type === REACT_PROFILER_TYPE || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || type === REACT_SUSPENSE_LIST_TYPE || typeof type === 'object' && type !== null && (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE || type.$$typeof === REACT_FUNDAMENTAL_TYPE || type.$$typeof === REACT_RESPONDER_TYPE || type.$$typeof === REACT_SCOPE_TYPE || type.$$typeof === REACT_BLOCK_TYPE);
-}
+                default:
+                  var $$typeofType = type && type.$$typeof;
 
-function typeOf(object) {
-  if (typeof object === 'object' && object !== null) {
-    var $$typeof = object.$$typeof;
+                  switch ($$typeofType) {
+                    case REACT_CONTEXT_TYPE:
+                    case REACT_FORWARD_REF_TYPE:
+                    case REACT_LAZY_TYPE:
+                    case REACT_MEMO_TYPE:
+                    case REACT_PROVIDER_TYPE:
+                      return $$typeofType;
 
-    switch ($$typeof) {
-      case REACT_ELEMENT_TYPE:
-        var type = object.type;
+                    default:
+                      return $$typeof;
+                  }
+              }
 
-        switch (type) {
-          case REACT_ASYNC_MODE_TYPE:
-          case REACT_CONCURRENT_MODE_TYPE:
-          case REACT_FRAGMENT_TYPE:
-          case REACT_PROFILER_TYPE:
-          case REACT_STRICT_MODE_TYPE:
-          case REACT_SUSPENSE_TYPE:
-            return type;
-
-          default:
-            var $$typeofType = type && type.$$typeof;
-
-            switch ($$typeofType) {
-              case REACT_CONTEXT_TYPE:
-              case REACT_FORWARD_REF_TYPE:
-              case REACT_LAZY_TYPE:
-              case REACT_MEMO_TYPE:
-              case REACT_PROVIDER_TYPE:
-                return $$typeofType;
-
-              default:
-                return $$typeof;
-            }
-
+            case REACT_PORTAL_TYPE:
+              return $$typeof;
+          }
         }
 
-      case REACT_PORTAL_TYPE:
-        return $$typeof;
-    }
+        return undefined;
+      } // AsyncMode is deprecated along with isAsyncMode
+
+      var AsyncMode = REACT_ASYNC_MODE_TYPE;
+      var ConcurrentMode = REACT_CONCURRENT_MODE_TYPE;
+      var ContextConsumer = REACT_CONTEXT_TYPE;
+      var ContextProvider = REACT_PROVIDER_TYPE;
+      var Element = REACT_ELEMENT_TYPE;
+      var ForwardRef = REACT_FORWARD_REF_TYPE;
+      var Fragment = REACT_FRAGMENT_TYPE;
+      var Lazy = REACT_LAZY_TYPE;
+      var Memo = REACT_MEMO_TYPE;
+      var Portal = REACT_PORTAL_TYPE;
+      var Profiler = REACT_PROFILER_TYPE;
+      var StrictMode = REACT_STRICT_MODE_TYPE;
+      var Suspense = REACT_SUSPENSE_TYPE;
+      var hasWarnedAboutDeprecatedIsAsyncMode = false; // AsyncMode should be deprecated
+
+      function isAsyncMode(object) {
+        {
+          if (!hasWarnedAboutDeprecatedIsAsyncMode) {
+            hasWarnedAboutDeprecatedIsAsyncMode = true; // Using console['warn'] to evade Babel and ESLint
+
+            console["warn"](
+              "The ReactIs.isAsyncMode() alias has been deprecated, " +
+                "and will be removed in React 17+. Update your code to use " +
+                "ReactIs.isConcurrentMode() instead. It has the exact same API."
+            );
+          }
+        }
+
+        return (
+          isConcurrentMode(object) || typeOf(object) === REACT_ASYNC_MODE_TYPE
+        );
+      }
+      function isConcurrentMode(object) {
+        return typeOf(object) === REACT_CONCURRENT_MODE_TYPE;
+      }
+      function isContextConsumer(object) {
+        return typeOf(object) === REACT_CONTEXT_TYPE;
+      }
+      function isContextProvider(object) {
+        return typeOf(object) === REACT_PROVIDER_TYPE;
+      }
+      function isElement(object) {
+        return (
+          typeof object === "object" &&
+          object !== null &&
+          object.$$typeof === REACT_ELEMENT_TYPE
+        );
+      }
+      function isForwardRef(object) {
+        return typeOf(object) === REACT_FORWARD_REF_TYPE;
+      }
+      function isFragment(object) {
+        return typeOf(object) === REACT_FRAGMENT_TYPE;
+      }
+      function isLazy(object) {
+        return typeOf(object) === REACT_LAZY_TYPE;
+      }
+      function isMemo(object) {
+        return typeOf(object) === REACT_MEMO_TYPE;
+      }
+      function isPortal(object) {
+        return typeOf(object) === REACT_PORTAL_TYPE;
+      }
+      function isProfiler(object) {
+        return typeOf(object) === REACT_PROFILER_TYPE;
+      }
+      function isStrictMode(object) {
+        return typeOf(object) === REACT_STRICT_MODE_TYPE;
+      }
+      function isSuspense(object) {
+        return typeOf(object) === REACT_SUSPENSE_TYPE;
+      }
+
+      exports.AsyncMode = AsyncMode;
+      exports.ConcurrentMode = ConcurrentMode;
+      exports.ContextConsumer = ContextConsumer;
+      exports.ContextProvider = ContextProvider;
+      exports.Element = Element;
+      exports.ForwardRef = ForwardRef;
+      exports.Fragment = Fragment;
+      exports.Lazy = Lazy;
+      exports.Memo = Memo;
+      exports.Portal = Portal;
+      exports.Profiler = Profiler;
+      exports.StrictMode = StrictMode;
+      exports.Suspense = Suspense;
+      exports.isAsyncMode = isAsyncMode;
+      exports.isConcurrentMode = isConcurrentMode;
+      exports.isContextConsumer = isContextConsumer;
+      exports.isContextProvider = isContextProvider;
+      exports.isElement = isElement;
+      exports.isForwardRef = isForwardRef;
+      exports.isFragment = isFragment;
+      exports.isLazy = isLazy;
+      exports.isMemo = isMemo;
+      exports.isPortal = isPortal;
+      exports.isProfiler = isProfiler;
+      exports.isStrictMode = isStrictMode;
+      exports.isSuspense = isSuspense;
+      exports.isValidElementType = isValidElementType;
+      exports.typeOf = typeOf;
+    })();
   }
-
-  return undefined;
-} // AsyncMode is deprecated along with isAsyncMode
-
-var AsyncMode = REACT_ASYNC_MODE_TYPE;
-var ConcurrentMode = REACT_CONCURRENT_MODE_TYPE;
-var ContextConsumer = REACT_CONTEXT_TYPE;
-var ContextProvider = REACT_PROVIDER_TYPE;
-var Element = REACT_ELEMENT_TYPE;
-var ForwardRef = REACT_FORWARD_REF_TYPE;
-var Fragment = REACT_FRAGMENT_TYPE;
-var Lazy = REACT_LAZY_TYPE;
-var Memo = REACT_MEMO_TYPE;
-var Portal = REACT_PORTAL_TYPE;
-var Profiler = REACT_PROFILER_TYPE;
-var StrictMode = REACT_STRICT_MODE_TYPE;
-var Suspense = REACT_SUSPENSE_TYPE;
-var hasWarnedAboutDeprecatedIsAsyncMode = false; // AsyncMode should be deprecated
-
-function isAsyncMode(object) {
-  {
-    if (!hasWarnedAboutDeprecatedIsAsyncMode) {
-      hasWarnedAboutDeprecatedIsAsyncMode = true; // Using console['warn'] to evade Babel and ESLint
-
-      console['warn']('The ReactIs.isAsyncMode() alias has been deprecated, ' + 'and will be removed in React 17+. Update your code to use ' + 'ReactIs.isConcurrentMode() instead. It has the exact same API.');
-    }
-  }
-
-  return isConcurrentMode(object) || typeOf(object) === REACT_ASYNC_MODE_TYPE;
-}
-function isConcurrentMode(object) {
-  return typeOf(object) === REACT_CONCURRENT_MODE_TYPE;
-}
-function isContextConsumer(object) {
-  return typeOf(object) === REACT_CONTEXT_TYPE;
-}
-function isContextProvider(object) {
-  return typeOf(object) === REACT_PROVIDER_TYPE;
-}
-function isElement(object) {
-  return typeof object === 'object' && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
-}
-function isForwardRef(object) {
-  return typeOf(object) === REACT_FORWARD_REF_TYPE;
-}
-function isFragment(object) {
-  return typeOf(object) === REACT_FRAGMENT_TYPE;
-}
-function isLazy(object) {
-  return typeOf(object) === REACT_LAZY_TYPE;
-}
-function isMemo(object) {
-  return typeOf(object) === REACT_MEMO_TYPE;
-}
-function isPortal(object) {
-  return typeOf(object) === REACT_PORTAL_TYPE;
-}
-function isProfiler(object) {
-  return typeOf(object) === REACT_PROFILER_TYPE;
-}
-function isStrictMode(object) {
-  return typeOf(object) === REACT_STRICT_MODE_TYPE;
-}
-function isSuspense(object) {
-  return typeOf(object) === REACT_SUSPENSE_TYPE;
-}
-
-exports.AsyncMode = AsyncMode;
-exports.ConcurrentMode = ConcurrentMode;
-exports.ContextConsumer = ContextConsumer;
-exports.ContextProvider = ContextProvider;
-exports.Element = Element;
-exports.ForwardRef = ForwardRef;
-exports.Fragment = Fragment;
-exports.Lazy = Lazy;
-exports.Memo = Memo;
-exports.Portal = Portal;
-exports.Profiler = Profiler;
-exports.StrictMode = StrictMode;
-exports.Suspense = Suspense;
-exports.isAsyncMode = isAsyncMode;
-exports.isConcurrentMode = isConcurrentMode;
-exports.isContextConsumer = isContextConsumer;
-exports.isContextProvider = isContextProvider;
-exports.isElement = isElement;
-exports.isForwardRef = isForwardRef;
-exports.isFragment = isFragment;
-exports.isLazy = isLazy;
-exports.isMemo = isMemo;
-exports.isPortal = isPortal;
-exports.isProfiler = isProfiler;
-exports.isStrictMode = isStrictMode;
-exports.isSuspense = isSuspense;
-exports.isValidElementType = isValidElementType;
-exports.typeOf = typeOf;
-  })();
-}
 });
 
 var reactIs = createCommonjsModule(function (module) {
-
-if (process.env.NODE_ENV === 'production') {
-  module.exports = reactIs_production_min;
-} else {
-  module.exports = reactIs_development;
-}
+  if (process.env.NODE_ENV === "production") {
+    module.exports = reactIs_production_min;
+  } else {
+    module.exports = reactIs_development;
+  }
 });
 
 /*
@@ -6223,83 +6682,88 @@ var hasOwnProperty = Object.prototype.hasOwnProperty;
 var propIsEnumerable = Object.prototype.propertyIsEnumerable;
 
 function toObject(val) {
-	if (val === null || val === undefined) {
-		throw new TypeError('Object.assign cannot be called with null or undefined');
-	}
+  if (val === null || val === undefined) {
+    throw new TypeError(
+      "Object.assign cannot be called with null or undefined"
+    );
+  }
 
-	return Object(val);
+  return Object(val);
 }
 
 function shouldUseNative() {
-	try {
-		if (!Object.assign) {
-			return false;
-		}
+  try {
+    if (!Object.assign) {
+      return false;
+    }
 
-		// Detect buggy property enumeration order in older V8 versions.
+    // Detect buggy property enumeration order in older V8 versions.
 
-		// https://bugs.chromium.org/p/v8/issues/detail?id=4118
-		var test1 = new String('abc');  // eslint-disable-line no-new-wrappers
-		test1[5] = 'de';
-		if (Object.getOwnPropertyNames(test1)[0] === '5') {
-			return false;
-		}
+    // https://bugs.chromium.org/p/v8/issues/detail?id=4118
+    var test1 = new String("abc"); // eslint-disable-line no-new-wrappers
+    test1[5] = "de";
+    if (Object.getOwnPropertyNames(test1)[0] === "5") {
+      return false;
+    }
 
-		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
-		var test2 = {};
-		for (var i = 0; i < 10; i++) {
-			test2['_' + String.fromCharCode(i)] = i;
-		}
-		var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
-			return test2[n];
-		});
-		if (order2.join('') !== '0123456789') {
-			return false;
-		}
+    // https://bugs.chromium.org/p/v8/issues/detail?id=3056
+    var test2 = {};
+    for (var i = 0; i < 10; i++) {
+      test2["_" + String.fromCharCode(i)] = i;
+    }
+    var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
+      return test2[n];
+    });
+    if (order2.join("") !== "0123456789") {
+      return false;
+    }
 
-		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
-		var test3 = {};
-		'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
-			test3[letter] = letter;
-		});
-		if (Object.keys(Object.assign({}, test3)).join('') !==
-				'abcdefghijklmnopqrst') {
-			return false;
-		}
+    // https://bugs.chromium.org/p/v8/issues/detail?id=3056
+    var test3 = {};
+    "abcdefghijklmnopqrst".split("").forEach(function (letter) {
+      test3[letter] = letter;
+    });
+    if (
+      Object.keys(Object.assign({}, test3)).join("") !== "abcdefghijklmnopqrst"
+    ) {
+      return false;
+    }
 
-		return true;
-	} catch (err) {
-		// We don't expect any of the above to throw, but better to be safe.
-		return false;
-	}
+    return true;
+  } catch (err) {
+    // We don't expect any of the above to throw, but better to be safe.
+    return false;
+  }
 }
 
-var objectAssign = shouldUseNative() ? Object.assign : function (target, source) {
-	var from;
-	var to = toObject(target);
-	var symbols;
+var objectAssign = shouldUseNative()
+  ? Object.assign
+  : function (target, source) {
+      var from;
+      var to = toObject(target);
+      var symbols;
 
-	for (var s = 1; s < arguments.length; s++) {
-		from = Object(arguments[s]);
+      for (var s = 1; s < arguments.length; s++) {
+        from = Object(arguments[s]);
 
-		for (var key in from) {
-			if (hasOwnProperty.call(from, key)) {
-				to[key] = from[key];
-			}
-		}
+        for (var key in from) {
+          if (hasOwnProperty.call(from, key)) {
+            to[key] = from[key];
+          }
+        }
 
-		if (getOwnPropertySymbols) {
-			symbols = getOwnPropertySymbols(from);
-			for (var i = 0; i < symbols.length; i++) {
-				if (propIsEnumerable.call(from, symbols[i])) {
-					to[symbols[i]] = from[symbols[i]];
-				}
-			}
-		}
-	}
+        if (getOwnPropertySymbols) {
+          symbols = getOwnPropertySymbols(from);
+          for (var i = 0; i < symbols.length; i++) {
+            if (propIsEnumerable.call(from, symbols[i])) {
+              to[symbols[i]] = from[symbols[i]];
+            }
+          }
+        }
+      }
 
-	return to;
-};
+      return to;
+    };
 
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -6308,7 +6772,7 @@ var objectAssign = shouldUseNative() ? Object.assign : function (target, source)
  * LICENSE file in the root directory of this source tree.
  */
 
-var ReactPropTypesSecret$2 = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
+var ReactPropTypesSecret$2 = "SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED";
 
 var ReactPropTypesSecret_1 = ReactPropTypesSecret$2;
 
@@ -6318,16 +6782,16 @@ var ReactPropTypesSecret$1 = ReactPropTypesSecret_1;
 
 var has$1 = has$2;
 
-var printWarning$1 = function() {};
+var printWarning$1 = function () {};
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== "production") {
   var ReactPropTypesSecret = ReactPropTypesSecret$1;
   var loggedTypeFailures = {};
   var has = has$1;
 
-  printWarning$1 = function(text) {
-    var message = 'Warning: ' + text;
-    if (typeof console !== 'undefined') {
+  printWarning$1 = function (text) {
+    var message = "Warning: " + text;
+    if (typeof console !== "undefined") {
       console.error(message);
     }
     try {
@@ -6335,7 +6799,9 @@ if (process.env.NODE_ENV !== 'production') {
       // This error was thrown as a convenience so that you can use this stack
       // to find the callsite that caused this warning to fire.
       throw new Error(message);
-    } catch (x) { /**/ }
+    } catch (x) {
+      /**/
+    }
   };
 }
 
@@ -6350,8 +6816,14 @@ if (process.env.NODE_ENV !== 'production') {
  * @param {?Function} getStack Returns the component stack.
  * @private
  */
-function checkPropTypes$1(typeSpecs, values, location, componentName, getStack) {
-  if (process.env.NODE_ENV !== 'production') {
+function checkPropTypes$1(
+  typeSpecs,
+  values,
+  location,
+  componentName,
+  getStack
+) {
+  if (process.env.NODE_ENV !== "production") {
     for (var typeSpecName in typeSpecs) {
       if (has(typeSpecs, typeSpecName)) {
         var error;
@@ -6361,27 +6833,47 @@ function checkPropTypes$1(typeSpecs, values, location, componentName, getStack) 
         try {
           // This is intentionally an invariant that gets caught. It's the same
           // behavior as without this statement except with a better message.
-          if (typeof typeSpecs[typeSpecName] !== 'function') {
+          if (typeof typeSpecs[typeSpecName] !== "function") {
             var err = Error(
-              (componentName || 'React class') + ': ' + location + ' type `' + typeSpecName + '` is invalid; ' +
-              'it must be a function, usually from the `prop-types` package, but received `' + typeof typeSpecs[typeSpecName] + '`.' +
-              'This often happens because of typos such as `PropTypes.function` instead of `PropTypes.func`.'
+              (componentName || "React class") +
+                ": " +
+                location +
+                " type `" +
+                typeSpecName +
+                "` is invalid; " +
+                "it must be a function, usually from the `prop-types` package, but received `" +
+                typeof typeSpecs[typeSpecName] +
+                "`." +
+                "This often happens because of typos such as `PropTypes.function` instead of `PropTypes.func`."
             );
-            err.name = 'Invariant Violation';
+            err.name = "Invariant Violation";
             throw err;
           }
-          error = typeSpecs[typeSpecName](values, typeSpecName, componentName, location, null, ReactPropTypesSecret);
+          error = typeSpecs[typeSpecName](
+            values,
+            typeSpecName,
+            componentName,
+            location,
+            null,
+            ReactPropTypesSecret
+          );
         } catch (ex) {
           error = ex;
         }
         if (error && !(error instanceof Error)) {
           printWarning$1(
-            (componentName || 'React class') + ': type specification of ' +
-            location + ' `' + typeSpecName + '` is invalid; the type checker ' +
-            'function must return `null` or an `Error` but returned a ' + typeof error + '. ' +
-            'You may have forgotten to pass an argument to the type checker ' +
-            'creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and ' +
-            'shape all require an argument).'
+            (componentName || "React class") +
+              ": type specification of " +
+              location +
+              " `" +
+              typeSpecName +
+              "` is invalid; the type checker " +
+              "function must return `null` or an `Error` but returned a " +
+              typeof error +
+              ". " +
+              "You may have forgotten to pass an argument to the type checker " +
+              "creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and " +
+              "shape all require an argument)."
           );
         }
         if (error instanceof Error && !(error.message in loggedTypeFailures)) {
@@ -6389,10 +6881,14 @@ function checkPropTypes$1(typeSpecs, values, location, componentName, getStack) 
           // same error.
           loggedTypeFailures[error.message] = true;
 
-          var stack = getStack ? getStack() : '';
+          var stack = getStack ? getStack() : "";
 
           printWarning$1(
-            'Failed ' + location + ' type: ' + error.message + (stack != null ? stack : '')
+            "Failed " +
+              location +
+              " type: " +
+              error.message +
+              (stack != null ? stack : "")
           );
         }
       }
@@ -6405,8 +6901,8 @@ function checkPropTypes$1(typeSpecs, values, location, componentName, getStack) 
  *
  * @private
  */
-checkPropTypes$1.resetWarningCache = function() {
-  if (process.env.NODE_ENV !== 'production') {
+checkPropTypes$1.resetWarningCache = function () {
+  if (process.env.NODE_ENV !== "production") {
     loggedTypeFailures = {};
   }
 };
@@ -6415,12 +6911,12 @@ var checkPropTypes_1 = checkPropTypes$1;
 
 var checkPropTypes = checkPropTypes_1;
 
-var printWarning = function() {};
+var printWarning = function () {};
 
-if (process.env.NODE_ENV !== 'production') {
-  printWarning = function(text) {
-    var message = 'Warning: ' + text;
-    if (typeof console !== 'undefined') {
+if (process.env.NODE_ENV !== "production") {
+  printWarning = function (text) {
+    var message = "Warning: " + text;
+    if (typeof console !== "undefined") {
       console.error(message);
     }
     try {
@@ -6436,10 +6932,10 @@ function emptyFunctionThatReturnsNull() {
   return null;
 }
 
-var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
+var factoryWithTypeCheckers = function (isValidElement, throwOnDirectAccess) {
   /* global Symbol */
-  var ITERATOR_SYMBOL = typeof Symbol === 'function' && Symbol.iterator;
-  var FAUX_ITERATOR_SYMBOL = '@@iterator'; // Before Symbol spec.
+  var ITERATOR_SYMBOL = typeof Symbol === "function" && Symbol.iterator;
+  var FAUX_ITERATOR_SYMBOL = "@@iterator"; // Before Symbol spec.
 
   /**
    * Returns the iterator method function contained on the iterable object.
@@ -6456,8 +6952,11 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
    * @return {?function}
    */
   function getIteratorFn(maybeIterable) {
-    var iteratorFn = maybeIterable && (ITERATOR_SYMBOL && maybeIterable[ITERATOR_SYMBOL] || maybeIterable[FAUX_ITERATOR_SYMBOL]);
-    if (typeof iteratorFn === 'function') {
+    var iteratorFn =
+      maybeIterable &&
+      ((ITERATOR_SYMBOL && maybeIterable[ITERATOR_SYMBOL]) ||
+        maybeIterable[FAUX_ITERATOR_SYMBOL]);
+    if (typeof iteratorFn === "function") {
       return iteratorFn;
     }
   }
@@ -6509,19 +7008,19 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
    * @internal
    */
 
-  var ANONYMOUS = '<<anonymous>>';
+  var ANONYMOUS = "<<anonymous>>";
 
   // Important!
   // Keep this list in sync with production version in `./factoryWithThrowingShims.js`.
   var ReactPropTypes = {
-    array: createPrimitiveTypeChecker('array'),
-    bigint: createPrimitiveTypeChecker('bigint'),
-    bool: createPrimitiveTypeChecker('boolean'),
-    func: createPrimitiveTypeChecker('function'),
-    number: createPrimitiveTypeChecker('number'),
-    object: createPrimitiveTypeChecker('object'),
-    string: createPrimitiveTypeChecker('string'),
-    symbol: createPrimitiveTypeChecker('symbol'),
+    array: createPrimitiveTypeChecker("array"),
+    bigint: createPrimitiveTypeChecker("bigint"),
+    bool: createPrimitiveTypeChecker("boolean"),
+    func: createPrimitiveTypeChecker("function"),
+    number: createPrimitiveTypeChecker("number"),
+    object: createPrimitiveTypeChecker("object"),
+    string: createPrimitiveTypeChecker("string"),
+    symbol: createPrimitiveTypeChecker("symbol"),
 
     any: createAnyTypeChecker(),
     arrayOf: createArrayOfTypeChecker,
@@ -6563,18 +7062,26 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
    */
   function PropTypeError(message, data) {
     this.message = message;
-    this.data = data && typeof data === 'object' ? data: {};
-    this.stack = '';
+    this.data = data && typeof data === "object" ? data : {};
+    this.stack = "";
   }
   // Make `instanceof Error` still work for returned errors.
   PropTypeError.prototype = Error.prototype;
 
   function createChainableTypeChecker(validate) {
-    if (process.env.NODE_ENV !== 'production') {
+    if (process.env.NODE_ENV !== "production") {
       var manualPropTypeCallCache = {};
       var manualPropTypeWarningCount = 0;
     }
-    function checkType(isRequired, props, propName, componentName, location, propFullName, secret) {
+    function checkType(
+      isRequired,
+      props,
+      propName,
+      componentName,
+      location,
+      propFullName,
+      secret
+    ) {
       componentName = componentName || ANONYMOUS;
       propFullName = propFullName || propName;
 
@@ -6582,26 +7089,34 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
         if (throwOnDirectAccess) {
           // New behavior only for users of `prop-types` package
           var err = new Error(
-            'Calling PropTypes validators directly is not supported by the `prop-types` package. ' +
-            'Use `PropTypes.checkPropTypes()` to call them. ' +
-            'Read more at http://fb.me/use-check-prop-types'
+            "Calling PropTypes validators directly is not supported by the `prop-types` package. " +
+              "Use `PropTypes.checkPropTypes()` to call them. " +
+              "Read more at http://fb.me/use-check-prop-types"
           );
-          err.name = 'Invariant Violation';
+          err.name = "Invariant Violation";
           throw err;
-        } else if (process.env.NODE_ENV !== 'production' && typeof console !== 'undefined') {
+        } else if (
+          process.env.NODE_ENV !== "production" &&
+          typeof console !== "undefined"
+        ) {
           // Old behavior for people using React.PropTypes
-          var cacheKey = componentName + ':' + propName;
+          var cacheKey = componentName + ":" + propName;
           if (
             !manualPropTypeCallCache[cacheKey] &&
             // Avoid spamming the console because they are often not actionable except for lib authors
             manualPropTypeWarningCount < 3
           ) {
             printWarning(
-              'You are manually calling a React.PropTypes validation ' +
-              'function for the `' + propFullName + '` prop on `' + componentName + '`. This is deprecated ' +
-              'and will throw in the standalone `prop-types` package. ' +
-              'You may be seeing this warning due to a third-party PropTypes ' +
-              'library. See https://fb.me/react-warning-dont-call-proptypes ' + 'for details.'
+              "You are manually calling a React.PropTypes validation " +
+                "function for the `" +
+                propFullName +
+                "` prop on `" +
+                componentName +
+                "`. This is deprecated " +
+                "and will throw in the standalone `prop-types` package. " +
+                "You may be seeing this warning due to a third-party PropTypes " +
+                "library. See https://fb.me/react-warning-dont-call-proptypes " +
+                "for details."
             );
             manualPropTypeCallCache[cacheKey] = true;
             manualPropTypeWarningCount++;
@@ -6611,9 +7126,23 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
       if (props[propName] == null) {
         if (isRequired) {
           if (props[propName] === null) {
-            return new PropTypeError('The ' + location + ' `' + propFullName + '` is marked as required ' + ('in `' + componentName + '`, but its value is `null`.'));
+            return new PropTypeError(
+              "The " +
+                location +
+                " `" +
+                propFullName +
+                "` is marked as required " +
+                ("in `" + componentName + "`, but its value is `null`.")
+            );
           }
-          return new PropTypeError('The ' + location + ' `' + propFullName + '` is marked as required in ' + ('`' + componentName + '`, but its value is `undefined`.'));
+          return new PropTypeError(
+            "The " +
+              location +
+              " `" +
+              propFullName +
+              "` is marked as required in " +
+              ("`" + componentName + "`, but its value is `undefined`.")
+          );
         }
         return null;
       } else {
@@ -6628,7 +7157,14 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
   }
 
   function createPrimitiveTypeChecker(expectedType) {
-    function validate(props, propName, componentName, location, propFullName, secret) {
+    function validate(
+      props,
+      propName,
+      componentName,
+      location,
+      propFullName,
+      secret
+    ) {
       var propValue = props[propName];
       var propType = getPropType(propValue);
       if (propType !== expectedType) {
@@ -6638,8 +7174,18 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
         var preciseType = getPreciseType(propValue);
 
         return new PropTypeError(
-          'Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + preciseType + '` supplied to `' + componentName + '`, expected ') + ('`' + expectedType + '`.'),
-          {expectedType: expectedType}
+          "Invalid " +
+            location +
+            " `" +
+            propFullName +
+            "` of type " +
+            ("`" +
+              preciseType +
+              "` supplied to `" +
+              componentName +
+              "`, expected ") +
+            ("`" + expectedType + "`."),
+          { expectedType: expectedType }
         );
       }
       return null;
@@ -6653,16 +7199,40 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
 
   function createArrayOfTypeChecker(typeChecker) {
     function validate(props, propName, componentName, location, propFullName) {
-      if (typeof typeChecker !== 'function') {
-        return new PropTypeError('Property `' + propFullName + '` of component `' + componentName + '` has invalid PropType notation inside arrayOf.');
+      if (typeof typeChecker !== "function") {
+        return new PropTypeError(
+          "Property `" +
+            propFullName +
+            "` of component `" +
+            componentName +
+            "` has invalid PropType notation inside arrayOf."
+        );
       }
       var propValue = props[propName];
       if (!Array.isArray(propValue)) {
         var propType = getPropType(propValue);
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected an array.'));
+        return new PropTypeError(
+          "Invalid " +
+            location +
+            " `" +
+            propFullName +
+            "` of type " +
+            ("`" +
+              propType +
+              "` supplied to `" +
+              componentName +
+              "`, expected an array.")
+        );
       }
       for (var i = 0; i < propValue.length; i++) {
-        var error = typeChecker(propValue, i, componentName, location, propFullName + '[' + i + ']', ReactPropTypesSecret$1);
+        var error = typeChecker(
+          propValue,
+          i,
+          componentName,
+          location,
+          propFullName + "[" + i + "]",
+          ReactPropTypesSecret$1
+        );
         if (error instanceof Error) {
           return error;
         }
@@ -6677,7 +7247,18 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
       var propValue = props[propName];
       if (!isValidElement(propValue)) {
         var propType = getPropType(propValue);
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected a single ReactElement.'));
+        return new PropTypeError(
+          "Invalid " +
+            location +
+            " `" +
+            propFullName +
+            "` of type " +
+            ("`" +
+              propType +
+              "` supplied to `" +
+              componentName +
+              "`, expected a single ReactElement.")
+        );
       }
       return null;
     }
@@ -6689,7 +7270,18 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
       var propValue = props[propName];
       if (!reactIs.isValidElementType(propValue)) {
         var propType = getPropType(propValue);
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected a single ReactElement type.'));
+        return new PropTypeError(
+          "Invalid " +
+            location +
+            " `" +
+            propFullName +
+            "` of type " +
+            ("`" +
+              propType +
+              "` supplied to `" +
+              componentName +
+              "`, expected a single ReactElement type.")
+        );
       }
       return null;
     }
@@ -6701,7 +7293,19 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
       if (!(props[propName] instanceof expectedClass)) {
         var expectedClassName = expectedClass.name || ANONYMOUS;
         var actualClassName = getClassName(props[propName]);
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + actualClassName + '` supplied to `' + componentName + '`, expected ') + ('instance of `' + expectedClassName + '`.'));
+        return new PropTypeError(
+          "Invalid " +
+            location +
+            " `" +
+            propFullName +
+            "` of type " +
+            ("`" +
+              actualClassName +
+              "` supplied to `" +
+              componentName +
+              "`, expected ") +
+            ("instance of `" + expectedClassName + "`.")
+        );
       }
       return null;
     }
@@ -6710,14 +7314,18 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
 
   function createEnumTypeChecker(expectedValues) {
     if (!Array.isArray(expectedValues)) {
-      if (process.env.NODE_ENV !== 'production') {
+      if (process.env.NODE_ENV !== "production") {
         if (arguments.length > 1) {
           printWarning(
-            'Invalid arguments supplied to oneOf, expected an array, got ' + arguments.length + ' arguments. ' +
-            'A common mistake is to write oneOf(x, y, z) instead of oneOf([x, y, z]).'
+            "Invalid arguments supplied to oneOf, expected an array, got " +
+              arguments.length +
+              " arguments. " +
+              "A common mistake is to write oneOf(x, y, z) instead of oneOf([x, y, z])."
           );
         } else {
-          printWarning('Invalid argument supplied to oneOf, expected an array.');
+          printWarning(
+            "Invalid argument supplied to oneOf, expected an array."
+          );
         }
       }
       return emptyFunctionThatReturnsNull;
@@ -6731,31 +7339,71 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
         }
       }
 
-      var valuesString = JSON.stringify(expectedValues, function replacer(key, value) {
-        var type = getPreciseType(value);
-        if (type === 'symbol') {
-          return String(value);
+      var valuesString = JSON.stringify(
+        expectedValues,
+        function replacer(key, value) {
+          var type = getPreciseType(value);
+          if (type === "symbol") {
+            return String(value);
+          }
+          return value;
         }
-        return value;
-      });
-      return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of value `' + String(propValue) + '` ' + ('supplied to `' + componentName + '`, expected one of ' + valuesString + '.'));
+      );
+      return new PropTypeError(
+        "Invalid " +
+          location +
+          " `" +
+          propFullName +
+          "` of value `" +
+          String(propValue) +
+          "` " +
+          ("supplied to `" +
+            componentName +
+            "`, expected one of " +
+            valuesString +
+            ".")
+      );
     }
     return createChainableTypeChecker(validate);
   }
 
   function createObjectOfTypeChecker(typeChecker) {
     function validate(props, propName, componentName, location, propFullName) {
-      if (typeof typeChecker !== 'function') {
-        return new PropTypeError('Property `' + propFullName + '` of component `' + componentName + '` has invalid PropType notation inside objectOf.');
+      if (typeof typeChecker !== "function") {
+        return new PropTypeError(
+          "Property `" +
+            propFullName +
+            "` of component `" +
+            componentName +
+            "` has invalid PropType notation inside objectOf."
+        );
       }
       var propValue = props[propName];
       var propType = getPropType(propValue);
-      if (propType !== 'object') {
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected an object.'));
+      if (propType !== "object") {
+        return new PropTypeError(
+          "Invalid " +
+            location +
+            " `" +
+            propFullName +
+            "` of type " +
+            ("`" +
+              propType +
+              "` supplied to `" +
+              componentName +
+              "`, expected an object.")
+        );
       }
       for (var key in propValue) {
         if (has$1(propValue, key)) {
-          var error = typeChecker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret$1);
+          var error = typeChecker(
+            propValue,
+            key,
+            componentName,
+            location,
+            propFullName + "." + key,
+            ReactPropTypesSecret$1
+          );
           if (error instanceof Error) {
             return error;
           }
@@ -6768,16 +7416,24 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
 
   function createUnionTypeChecker(arrayOfTypeCheckers) {
     if (!Array.isArray(arrayOfTypeCheckers)) {
-      process.env.NODE_ENV !== 'production' ? printWarning('Invalid argument supplied to oneOfType, expected an instance of array.') : void 0;
+      process.env.NODE_ENV !== "production"
+        ? printWarning(
+            "Invalid argument supplied to oneOfType, expected an instance of array."
+          )
+        : void 0;
       return emptyFunctionThatReturnsNull;
     }
 
     for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
       var checker = arrayOfTypeCheckers[i];
-      if (typeof checker !== 'function') {
+      if (typeof checker !== "function") {
         printWarning(
-          'Invalid argument supplied to oneOfType. Expected an array of check functions, but ' +
-          'received ' + getPostfixForTypeWarning(checker) + ' at index ' + i + '.'
+          "Invalid argument supplied to oneOfType. Expected an array of check functions, but " +
+            "received " +
+            getPostfixForTypeWarning(checker) +
+            " at index " +
+            i +
+            "."
         );
         return emptyFunctionThatReturnsNull;
       }
@@ -6787,16 +7443,33 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
       var expectedTypes = [];
       for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
         var checker = arrayOfTypeCheckers[i];
-        var checkerResult = checker(props, propName, componentName, location, propFullName, ReactPropTypesSecret$1);
+        var checkerResult = checker(
+          props,
+          propName,
+          componentName,
+          location,
+          propFullName,
+          ReactPropTypesSecret$1
+        );
         if (checkerResult == null) {
           return null;
         }
-        if (checkerResult.data && has$1(checkerResult.data, 'expectedType')) {
+        if (checkerResult.data && has$1(checkerResult.data, "expectedType")) {
           expectedTypes.push(checkerResult.data.expectedType);
         }
       }
-      var expectedTypesMessage = (expectedTypes.length > 0) ? ', expected one of type [' + expectedTypes.join(', ') + ']': '';
-      return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` supplied to ' + ('`' + componentName + '`' + expectedTypesMessage + '.'));
+      var expectedTypesMessage =
+        expectedTypes.length > 0
+          ? ", expected one of type [" + expectedTypes.join(", ") + "]"
+          : "";
+      return new PropTypeError(
+        "Invalid " +
+          location +
+          " `" +
+          propFullName +
+          "` supplied to " +
+          ("`" + componentName + "`" + expectedTypesMessage + ".")
+      );
     }
     return createChainableTypeChecker(validate);
   }
@@ -6804,17 +7477,39 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
   function createNodeChecker() {
     function validate(props, propName, componentName, location, propFullName) {
       if (!isNode(props[propName])) {
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` supplied to ' + ('`' + componentName + '`, expected a ReactNode.'));
+        return new PropTypeError(
+          "Invalid " +
+            location +
+            " `" +
+            propFullName +
+            "` supplied to " +
+            ("`" + componentName + "`, expected a ReactNode.")
+        );
       }
       return null;
     }
     return createChainableTypeChecker(validate);
   }
 
-  function invalidValidatorError(componentName, location, propFullName, key, type) {
+  function invalidValidatorError(
+    componentName,
+    location,
+    propFullName,
+    key,
+    type
+  ) {
     return new PropTypeError(
-      (componentName || 'React class') + ': ' + location + ' type `' + propFullName + '.' + key + '` is invalid; ' +
-      'it must be a function, usually from the `prop-types` package, but received `' + type + '`.'
+      (componentName || "React class") +
+        ": " +
+        location +
+        " type `" +
+        propFullName +
+        "." +
+        key +
+        "` is invalid; " +
+        "it must be a function, usually from the `prop-types` package, but received `" +
+        type +
+        "`."
     );
   }
 
@@ -6822,15 +7517,37 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
     function validate(props, propName, componentName, location, propFullName) {
       var propValue = props[propName];
       var propType = getPropType(propValue);
-      if (propType !== 'object') {
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type `' + propType + '` ' + ('supplied to `' + componentName + '`, expected `object`.'));
+      if (propType !== "object") {
+        return new PropTypeError(
+          "Invalid " +
+            location +
+            " `" +
+            propFullName +
+            "` of type `" +
+            propType +
+            "` " +
+            ("supplied to `" + componentName + "`, expected `object`.")
+        );
       }
       for (var key in shapeTypes) {
         var checker = shapeTypes[key];
-        if (typeof checker !== 'function') {
-          return invalidValidatorError(componentName, location, propFullName, key, getPreciseType(checker));
+        if (typeof checker !== "function") {
+          return invalidValidatorError(
+            componentName,
+            location,
+            propFullName,
+            key,
+            getPreciseType(checker)
+          );
         }
-        var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret$1);
+        var error = checker(
+          propValue,
+          key,
+          componentName,
+          location,
+          propFullName + "." + key,
+          ReactPropTypesSecret$1
+        );
         if (error) {
           return error;
         }
@@ -6844,24 +7561,56 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
     function validate(props, propName, componentName, location, propFullName) {
       var propValue = props[propName];
       var propType = getPropType(propValue);
-      if (propType !== 'object') {
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type `' + propType + '` ' + ('supplied to `' + componentName + '`, expected `object`.'));
+      if (propType !== "object") {
+        return new PropTypeError(
+          "Invalid " +
+            location +
+            " `" +
+            propFullName +
+            "` of type `" +
+            propType +
+            "` " +
+            ("supplied to `" + componentName + "`, expected `object`.")
+        );
       }
       // We need to check all keys in case some are required but missing from props.
       var allKeys = objectAssign({}, props[propName], shapeTypes);
       for (var key in allKeys) {
         var checker = shapeTypes[key];
-        if (has$1(shapeTypes, key) && typeof checker !== 'function') {
-          return invalidValidatorError(componentName, location, propFullName, key, getPreciseType(checker));
+        if (has$1(shapeTypes, key) && typeof checker !== "function") {
+          return invalidValidatorError(
+            componentName,
+            location,
+            propFullName,
+            key,
+            getPreciseType(checker)
+          );
         }
         if (!checker) {
           return new PropTypeError(
-            'Invalid ' + location + ' `' + propFullName + '` key `' + key + '` supplied to `' + componentName + '`.' +
-            '\nBad object: ' + JSON.stringify(props[propName], null, '  ') +
-            '\nValid keys: ' + JSON.stringify(Object.keys(shapeTypes), null, '  ')
+            "Invalid " +
+              location +
+              " `" +
+              propFullName +
+              "` key `" +
+              key +
+              "` supplied to `" +
+              componentName +
+              "`." +
+              "\nBad object: " +
+              JSON.stringify(props[propName], null, "  ") +
+              "\nValid keys: " +
+              JSON.stringify(Object.keys(shapeTypes), null, "  ")
           );
         }
-        var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret$1);
+        var error = checker(
+          propValue,
+          key,
+          componentName,
+          location,
+          propFullName + "." + key,
+          ReactPropTypesSecret$1
+        );
         if (error) {
           return error;
         }
@@ -6874,13 +7623,13 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
 
   function isNode(propValue) {
     switch (typeof propValue) {
-      case 'number':
-      case 'string':
-      case 'undefined':
+      case "number":
+      case "string":
+      case "undefined":
         return true;
-      case 'boolean':
+      case "boolean":
         return !propValue;
-      case 'object':
+      case "object":
         if (Array.isArray(propValue)) {
           return propValue.every(isNode);
         }
@@ -6921,7 +7670,7 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
 
   function isSymbol(propType, propValue) {
     // Native Symbol.
-    if (propType === 'symbol') {
+    if (propType === "symbol") {
       return true;
     }
 
@@ -6931,12 +7680,12 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
     }
 
     // 19.4.3.5 Symbol.prototype[@@toStringTag] === 'Symbol'
-    if (propValue['@@toStringTag'] === 'Symbol') {
+    if (propValue["@@toStringTag"] === "Symbol") {
       return true;
     }
 
     // Fallback for non-spec compliant Symbols which are polyfilled.
-    if (typeof Symbol === 'function' && propValue instanceof Symbol) {
+    if (typeof Symbol === "function" && propValue instanceof Symbol) {
       return true;
     }
 
@@ -6947,16 +7696,16 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
   function getPropType(propValue) {
     var propType = typeof propValue;
     if (Array.isArray(propValue)) {
-      return 'array';
+      return "array";
     }
     if (propValue instanceof RegExp) {
       // Old webkits (at least until Android 4.0) return 'function' rather than
       // 'object' for typeof a RegExp. We'll normalize this here so that /bla/
       // passes PropTypes.object.
-      return 'object';
+      return "object";
     }
     if (isSymbol(propType, propValue)) {
-      return 'symbol';
+      return "symbol";
     }
     return propType;
   }
@@ -6964,15 +7713,15 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
   // This handles more types than `getPropType`. Only used for error messages.
   // See `createPrimitiveTypeChecker`.
   function getPreciseType(propValue) {
-    if (typeof propValue === 'undefined' || propValue === null) {
-      return '' + propValue;
+    if (typeof propValue === "undefined" || propValue === null) {
+      return "" + propValue;
     }
     var propType = getPropType(propValue);
-    if (propType === 'object') {
+    if (propType === "object") {
       if (propValue instanceof Date) {
-        return 'date';
+        return "date";
       } else if (propValue instanceof RegExp) {
-        return 'regexp';
+        return "regexp";
       }
     }
     return propType;
@@ -6983,13 +7732,13 @@ var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
   function getPostfixForTypeWarning(value) {
     var type = getPreciseType(value);
     switch (type) {
-      case 'array':
-      case 'object':
-        return 'an ' + type;
-      case 'boolean':
-      case 'date':
-      case 'regexp':
-        return 'a ' + type;
+      case "array":
+      case "object":
+        return "an " + type;
+      case "boolean":
+      case "date":
+      case "regexp":
+        return "a " + type;
       default:
         return type;
     }
@@ -7014,23 +7763,31 @@ function emptyFunction() {}
 function emptyFunctionWithReset() {}
 emptyFunctionWithReset.resetWarningCache = emptyFunction;
 
-var factoryWithThrowingShims = function() {
-  function shim(props, propName, componentName, location, propFullName, secret) {
+var factoryWithThrowingShims = function () {
+  function shim(
+    props,
+    propName,
+    componentName,
+    location,
+    propFullName,
+    secret
+  ) {
     if (secret === ReactPropTypesSecret$1) {
       // It is still safe when called from React.
       return;
     }
     var err = new Error(
-      'Calling PropTypes validators directly is not supported by the `prop-types` package. ' +
-      'Use PropTypes.checkPropTypes() to call them. ' +
-      'Read more at http://fb.me/use-check-prop-types'
+      "Calling PropTypes validators directly is not supported by the `prop-types` package. " +
+        "Use PropTypes.checkPropTypes() to call them. " +
+        "Read more at http://fb.me/use-check-prop-types"
     );
-    err.name = 'Invariant Violation';
+    err.name = "Invariant Violation";
     throw err;
-  }  shim.isRequired = shim;
+  }
+  shim.isRequired = shim;
   function getShim() {
     return shim;
-  }  // Important!
+  } // Important!
   // Keep this list in sync with production version in `./factoryWithTypeCheckers.js`.
   var ReactPropTypes = {
     array: shim,
@@ -7055,7 +7812,7 @@ var factoryWithThrowingShims = function() {
     exact: getShim,
 
     checkPropTypes: emptyFunctionWithReset,
-    resetWarningCache: emptyFunction
+    resetWarningCache: emptyFunction,
   };
 
   ReactPropTypes.PropTypes = ReactPropTypes;
@@ -7068,182 +7825,242 @@ var require$$1 = factoryWithTypeCheckers;
 var require$$2 = factoryWithThrowingShims;
 
 var propTypes$1 = createCommonjsModule(function (module) {
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
+  /**
+   * Copyright (c) 2013-present, Facebook, Inc.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   */
 
-if (process.env.NODE_ENV !== 'production') {
-  var ReactIs = reactIs;
+  if (process.env.NODE_ENV !== "production") {
+    var ReactIs = reactIs;
 
-  // By explicitly using `prop-types` you are opting into new development behavior.
-  // http://fb.me/prop-types-in-prod
-  var throwOnDirectAccess = true;
-  module.exports = require$$1(ReactIs.isElement, throwOnDirectAccess);
-} else {
-  // By explicitly using `prop-types` you are opting into new production behavior.
-  // http://fb.me/prop-types-in-prod
-  module.exports = require$$2();
-}
+    // By explicitly using `prop-types` you are opting into new development behavior.
+    // http://fb.me/prop-types-in-prod
+    var throwOnDirectAccess = true;
+    module.exports = require$$1(ReactIs.isElement, throwOnDirectAccess);
+  } else {
+    // By explicitly using `prop-types` you are opting into new production behavior.
+    // http://fb.me/prop-types-in-prod
+    module.exports = require$$2();
+  }
 });
 
 var PropTypes = propTypes$1;
 
 //@ts-nocheck
 var propTypes = {
-    classSet: PropTypes.string,
-    time: PropTypes.string,
-    onTimeClick: PropTypes.func,
+  classSet: PropTypes.string,
+  time: PropTypes.string,
+  onTimeClick: PropTypes.func,
 };
 var defaultProps = {
-    classSet: '',
-    time: '12 - 30',
-    onTimeClick: null,
+  classSet: "",
+  time: "12 - 30",
+  onTimeClick: null,
 };
 function TimeSlot(props) {
-    var classSet = props.classSet, onTimeClick = props.onTimeClick, time = props.time;
-    return (React__default["default"].createElement("div", { className: "col cell " + classSet, onClick: onTimeClick, onKeyDown: onTimeClick, role: "button", tabIndex: 0 },
-        React__default["default"].createElement("p", null, time)));
+  var classSet = props.classSet,
+    onTimeClick = props.onTimeClick,
+    time = props.time;
+  return React__default["default"].createElement(
+    "div",
+    {
+      className: "col cell " + classSet,
+      onClick: onTimeClick,
+      onKeyDown: onTimeClick,
+      role: "button",
+      tabIndex: 0,
+    },
+    React__default["default"].createElement("p", null, time)
+  );
 }
 TimeSlot.propTypes = propTypes;
 TimeSlot.defaultProps = defaultProps;
 
 var TimeSelect = /** @class */ (function (_super) {
-    __extends(TimeSelect, _super);
-    function TimeSelect(props) {
-        var _this = _super.call(this, props) || this;
-        _this.state = { selectorClass: "inactive" };
-        _this.selectorClick = _this.selectorClick.bind(_this);
-        _this.generateOpenHours = _this.generateOpenHours.bind(_this);
-        _this.isTimeDisabled = _this.isTimeDisabled.bind(_this);
-        return _this;
+  __extends(TimeSelect, _super);
+  function TimeSelect(props) {
+    var _this = _super.call(this, props) || this;
+    _this.state = { selectorClass: "inactive" };
+    _this.selectorClick = _this.selectorClick.bind(_this);
+    _this.generateOpenHours = _this.generateOpenHours.bind(_this);
+    _this.isTimeDisabled = _this.isTimeDisabled.bind(_this);
+    return _this;
+  }
+  TimeSelect.prototype.selectorClick = function () {
+    var selectorClass = this.state.selectorClass;
+    this.setState({
+      selectorClass: selectorClass === "inactive" ? "active" : "inactive",
+    });
+  };
+  TimeSelect.prototype.generateOpenHours = function () {
+    var openTimes = [];
+    var _a = this.props,
+      openHours = _a.openHours,
+      selectedDate = _a.selectedDate;
+    // Start of the day (local timezone)
+    var dayStart = new Date(selectedDate);
+    dayStart.setHours(0, 0, 0, 0);
+    // Format date as "yyyy-MM-dd"
+    var formattedDate =
+      dayStart.getFullYear() +
+      "-" +
+      String(dayStart.getMonth() + 1).padStart(2, "0") +
+      "-" +
+      String(dayStart.getDate()).padStart(2, "0");
+    // Define override dates and their custom open hours
+    var overrideDates = {
+      "2024-12-23": [9, 18.59],
+      "2024-12-30": [9, 18.59],
+    };
+    // Check if the selected date matches the override dates
+    if (overrideDates[formattedDate]) {
+      openTimes[0] = new Date(dayStart);
+      openTimes[0].setHours(overrideDates[formattedDate][0]); // Start time
+      openTimes[1] = new Date(dayStart);
+      openTimes[1].setHours(overrideDates[formattedDate][1]); // End time
+      return openTimes;
     }
-    TimeSelect.prototype.selectorClick = function () {
-        var selectorClass = this.state.selectorClass;
-        this.setState({
-            selectorClass: selectorClass === "inactive" ? "active" : "inactive",
-        });
-    };
-    TimeSelect.prototype.generateOpenHours = function () {
-        var openTimes = [];
-        var _a = this.props, openHours = _a.openHours, selectedDate = _a.selectedDate;
-        // Start of the day (local timezone)
-        var dayStart = new Date(selectedDate);
-        dayStart.setHours(0, 0, 0, 0);
-        // Format date as "yyyy-MM-dd"
-        var formattedDate = dayStart.getFullYear() + "-" + String(dayStart.getMonth() + 1).padStart(2, "0") + "-" + String(dayStart.getDate()).padStart(2, "0");
-        // Define override dates and their custom open hours
-        var overrideDates = {
-            "2024-12-23": [9, 18.59],
-            "2024-12-30": [9, 18.59],
-        };
-        // Check if the selected date matches the override dates
-        if (overrideDates[formattedDate]) {
-            openTimes[0] = new Date(dayStart);
-            openTimes[0].setHours(overrideDates[formattedDate][0]); // Start time
-            openTimes[1] = new Date(dayStart);
-            openTimes[1].setHours(overrideDates[formattedDate][1]); // End time
-            return openTimes;
-        }
-        // Default behavior using `openHours`
-        var dayNum = dayStart.getDay(); // 0 (Sunday) - 6 (Saturday)
-        if (openHours.length === 7) {
-            var dayOpenHours = openHours[dayNum];
-            if (!dayOpenHours || dayOpenHours.length < 2) {
-                return [dayStart, dayStart]; // Return start of day if invalid
-            }
-            openTimes[0] = new Date(dayStart);
-            openTimes[0].setHours(dayOpenHours[0]); // Start time
-            openTimes[1] = new Date(dayStart);
-            openTimes[1].setHours(dayOpenHours[1]); // End time
-        }
-        else if (openHours.length === 2) {
-            if (dayNum === 0 || dayNum === 6) {
-                // Weekend hours
-                openTimes[0] = new Date(dayStart);
-                openTimes[0].setHours(openHours[1][0]);
-                openTimes[1] = new Date(dayStart);
-                openTimes[1].setHours(openHours[1][1]);
-            }
-            else {
-                // Weekday hours
-                openTimes[0] = new Date(dayStart);
-                openTimes[0].setHours(openHours[0][0]);
-                openTimes[1] = new Date(dayStart);
-                openTimes[1].setHours(openHours[0][1]);
-            }
-        }
-        else {
-            return [dayStart, dayStart]; // Return start of day if invalid
-        }
-        return openTimes;
-    };
-    TimeSelect.prototype.isTimeDisabled = function (time, openHours) {
-        var _a = this.props, bookings = _a.bookings, disableHistory = _a.disableHistory;
-        if ((disableHistory && dateFns.isBefore(time, new Date())) ||
-            !dateFns.isBefore(time, openHours[1])) {
-            return true;
-        }
-        for (var f = 0; f < bookings.length; f += 1) {
-            if (dateFns.isWithinRange(time, bookings[f].start_time, dateFns.subMinutes(bookings[f].end_time, 1))) {
-                return true;
-            }
-        }
-    };
-    TimeSelect.prototype.render = function () {
-        var _a = this.props, timeSlot = _a.timeSlot, selectedTime = _a.selectedTime, onTimeClick = _a.onTimeClick;
-        var selectorClass = this.state.selectorClass;
-        var openHours = this.generateOpenHours();
-        console.log(openHours);
-        var dateFormat = "HH-mm";
-        var rows = [];
-        var timeSlots = [];
-        var timePick = openHours[0];
-        // eslint-disable-next-line no-mixed-operators
-        var difference = (dateFns.differenceInMinutes(openHours[1], openHours[0]) / timeSlot) % 4;
-        while (timePick < dateFns.addMinutes(openHours[1], timeSlot * difference)) {
-            var _loop_1 = function (i) {
-                var classSet = "";
-                classSet += dateFns.isBefore(timePick, openHours[1])
-                    ? ""
-                    : " disabled t" + dateFns.format(timePick, dateFormat);
-                classSet += dateFns.isWithinRange(timePick, selectedTime.start, selectedTime.end)
-                    ? " selectedTime t" + dateFns.format(timePick, dateFormat)
-                    : "";
-                classSet += this_1.isTimeDisabled(timePick, openHours)
-                    ? " disabled t" + dateFns.format(timePick, dateFormat)
-                    : "t" + dateFns.format(timePick, dateFormat);
-                var cloneTime = timePick;
-                timeSlots.push(React__default["default"].createElement(TimeSlot, { key: String(cloneTime), time: dateFns.format(cloneTime, dateFormat), classSet: classSet, onTimeClick: function () { return onTimeClick(cloneTime); } }));
-                timePick = dateFns.addMinutes(timePick, timeSlot);
-            };
-            var this_1 = this;
-            for (var i = 0; i < 4; i += 1) {
-                _loop_1(i);
-            }
-            rows.push(React__default["default"].createElement("div", { className: "row", key: String(timePick) }, timeSlots));
-            timeSlots = [];
-        }
-        return (React__default["default"].createElement("div", { className: "timeSelector t" + this.props.day.replaceAll("/", "-") },
-            React__default["default"].createElement("div", { className: "optionSpacer body" },
-                React__default["default"].createElement("div", { className: "optionHolder " + selectorClass }, rows))));
-    };
-    return TimeSelect;
-}(React.PureComponent));
+    // Default behavior using `openHours`
+    var dayNum = dayStart.getDay(); // 0 (Sunday) - 6 (Saturday)
+    if (openHours.length === 7) {
+      var dayOpenHours = openHours[dayNum];
+      if (!dayOpenHours || dayOpenHours.length < 2) {
+        return [dayStart, dayStart]; // Return start of day if invalid
+      }
+      openTimes[0] = new Date(dayStart);
+      openTimes[0].setHours(dayOpenHours[0]); // Start time
+      openTimes[1] = new Date(dayStart);
+      openTimes[1].setHours(dayOpenHours[1]); // End time
+    } else if (openHours.length === 2) {
+      if (dayNum === 0 || dayNum === 6) {
+        // Weekend hours
+        openTimes[0] = new Date(dayStart);
+        openTimes[0].setHours(openHours[1][0]);
+        openTimes[1] = new Date(dayStart);
+        openTimes[1].setHours(openHours[1][1]);
+      } else {
+        // Weekday hours
+        openTimes[0] = new Date(dayStart);
+        openTimes[0].setHours(openHours[0][0]);
+        openTimes[1] = new Date(dayStart);
+        openTimes[1].setHours(openHours[0][1]);
+      }
+    } else {
+      return [dayStart, dayStart]; // Return start of day if invalid
+    }
+    return openTimes;
+  };
+  TimeSelect.prototype.isTimeDisabled = function (time, openHours) {
+    var _a = this.props,
+      bookings = _a.bookings,
+      disableHistory = _a.disableHistory;
+    if (
+      (disableHistory && dateFns.isBefore(time, new Date())) ||
+      !dateFns.isBefore(time, openHours[1])
+    ) {
+      return true;
+    }
+    for (var f = 0; f < bookings.length; f += 1) {
+      if (
+        dateFns.isWithinRange(
+          time,
+          bookings[f].start_time,
+          dateFns.subMinutes(bookings[f].end_time, 1)
+        )
+      ) {
+        return true;
+      }
+    }
+  };
+  TimeSelect.prototype.render = function () {
+    var _a = this.props,
+      timeSlot = _a.timeSlot,
+      selectedTime = _a.selectedTime,
+      onTimeClick = _a.onTimeClick;
+    var selectorClass = this.state.selectorClass;
+    var openHours = this.generateOpenHours();
+    console.log(openHours);
+    var dateFormat = "HH-mm";
+    var rows = [];
+    var timeSlots = [];
+    var timePick = openHours[0];
+    // eslint-disable-next-line no-mixed-operators
+    var difference =
+      (dateFns.differenceInMinutes(openHours[1], openHours[0]) / timeSlot) % 4;
+    while (timePick < dateFns.addMinutes(openHours[1], timeSlot * difference)) {
+      var _loop_1 = function (i) {
+        var classSet = "";
+        classSet += dateFns.isBefore(timePick, openHours[1])
+          ? ""
+          : " disabled t" + dateFns.format(timePick, dateFormat);
+        classSet += dateFns.isWithinRange(
+          timePick,
+          selectedTime.start,
+          selectedTime.end
+        )
+          ? " selectedTime t" + dateFns.format(timePick, dateFormat)
+          : "";
+        classSet += this_1.isTimeDisabled(timePick, openHours)
+          ? " disabled t" + dateFns.format(timePick, dateFormat)
+          : "t" + dateFns.format(timePick, dateFormat);
+        var cloneTime = timePick;
+        timeSlots.push(
+          React__default["default"].createElement(TimeSlot, {
+            key: String(cloneTime),
+            time: dateFns.format(cloneTime, dateFormat),
+            classSet: classSet,
+            onTimeClick: function () {
+              return onTimeClick(cloneTime);
+            },
+          })
+        );
+        timePick = dateFns.addMinutes(timePick, timeSlot);
+      };
+      var this_1 = this;
+      for (var i = 0; i < 4; i += 1) {
+        _loop_1(i);
+      }
+      rows.push(
+        React__default["default"].createElement(
+          "div",
+          { className: "row", key: String(timePick) },
+          timeSlots
+        )
+      );
+      timeSlots = [];
+    }
+    return React__default["default"].createElement(
+      "div",
+      { className: "timeSelector t" + this.props.day.replaceAll("/", "-") },
+      React__default["default"].createElement(
+        "div",
+        { className: "optionSpacer body" },
+        React__default["default"].createElement(
+          "div",
+          { className: "optionHolder " + selectorClass },
+          rows
+        )
+      )
+    );
+  };
+  return TimeSelect;
+})(React.PureComponent);
 
 function styleInject(css, ref) {
-  if ( ref === void 0 ) ref = {};
+  if (ref === void 0) ref = {};
   var insertAt = ref.insertAt;
 
-  if (!css || typeof document === 'undefined') { return; }
+  if (!css || typeof document === "undefined") {
+    return;
+  }
 
-  var head = document.head || document.getElementsByTagName('head')[0];
-  var style = document.createElement('style');
-  style.type = 'text/css';
+  var head = document.head || document.getElementsByTagName("head")[0];
+  var style = document.createElement("style");
+  style.type = "text/css";
 
-  if (insertAt === 'top') {
+  if (insertAt === "top") {
     if (head.firstChild) {
       head.insertBefore(style, head.firstChild);
     } else {
@@ -7260,77 +8077,139 @@ function styleInject(css, ref) {
   }
 }
 
-var css_248z = "/* FONT IMPORTS */\n@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,700);\n@import url(https://fonts.googleapis.com/icon?family=Material+Icons);\n.icon {\n  font-family: \"Material Icons\", serif;\n  font-style: normal;\n  display: inline-block;\n  vertical-align: middle;\n  line-height: 1;\n  text-transform: none;\n  letter-spacing: normal;\n  word-wrap: normal;\n  white-space: nowrap;\n  direction: ltr;\n  -webkit-font-smoothing: antialiased;\n  text-rendering: optimizeLegibility;\n  -moz-osx-font-smoothing: grayscale;\n  font-feature-settings: \"liga\";\n}\n\n/* VARIABLES */\n:root {\n  --main-color: #1a8fff;\n  --text-color: #777;\n  --text-color-light: #ccc;\n  --border-color: #eee;\n  --bg-color: #f5f5f5;\n  --neutral-color: #fff;\n}\n\n/* GENERAL */\n* {\n  box-sizing: border-box;\n}\n\n.calendar {\n  display: block;\n  position: relative;\n  width: 100%;\n  background: var(--neutral-color);\n  border: 1px solid var(--border-color);\n  font-family: \"Open Sans\", \"Helvetica Neue\", \"Helvetica\", \"Arial\", sans-serif;\n  font-size: 1em;\n  font-weight: 300;\n  line-height: 1.5;\n  color: var(--text-color);\n}\n.calendar header {\n  display: block;\n  width: 100%;\n  padding: 1.75em 0;\n  border-bottom: 1px solid var(--border-color);\n  background: var(--neutral-color);\n}\n.calendar header #logo {\n  font-size: 175%;\n  text-align: center;\n  color: var(--main-color);\n  line-height: 1;\n}\n.calendar header #logo .icon {\n  padding-right: 0.25em;\n}\n.calendar .row {\n  margin: 0;\n  padding: 0;\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n  width: 100%;\n}\n.calendar .row-middle {\n  align-items: center;\n}\n.calendar .col {\n  flex-grow: 1;\n  flex-basis: 0;\n  max-width: 100%;\n}\n.calendar .col-start {\n  justify-content: flex-start;\n  text-align: left;\n}\n.calendar .col-center {\n  justify-content: center;\n  text-align: center;\n}\n.calendar .col-end {\n  justify-content: flex-end;\n  text-align: right;\n}\n.calendar .header {\n  text-transform: capitalize;\n  font-weight: 700;\n  font-size: 115%;\n  padding: 1.5em 0;\n  border-bottom: 1px solid var(--border-color);\n}\n.calendar .header .icon {\n  cursor: pointer;\n  transition: 0.15s ease-out;\n}\n.calendar .header .icon:hover {\n  transform: scale(1.75);\n  transition: 0.25s ease-out;\n  color: var(--main-color);\n}\n.calendar .header .icon:first-of-type {\n  margin-left: 1em;\n}\n.calendar .header .icon:last-of-type {\n  margin-right: 1em;\n}\n.calendar .days {\n  text-transform: uppercase;\n  font-weight: 400;\n  color: var(--text-color-light);\n  font-size: 70%;\n  padding: 0.75em 0;\n  border-bottom: 1px solid var(--border-color);\n}\n.calendar .body .row {\n  border-bottom: 1px solid var(--border-color);\n}\n.calendar .body .row .cell {\n  position: relative;\n  height: 5em;\n  border-right: 1px solid var(--border-color);\n  overflow: hidden;\n  cursor: pointer;\n  background: var(--neutral-color);\n  transition: 0.25s ease-out;\n}\n.calendar .body .row .cell:hover {\n  background: var(--bg-color);\n  transition: 0.5s ease-out;\n}\n.calendar .body .row .cell .number {\n  position: absolute;\n  font-size: 82.5%;\n  line-height: 1;\n  top: 0.75em;\n  right: 0.75em;\n  font-weight: 700;\n}\n.calendar .body .row .selected {\n  border-left: 10px solid transparent;\n  border-image: linear-gradient(45deg, #1a8fff 0%, #53cbf1 40%);\n  border-image-slice: 1;\n}\n.calendar .body .row .disabled {\n  color: var(--text-color-light);\n  pointer-events: none;\n}\n.calendar .body .row .selectedTime {\n  color: var(--main-color);\n}\n.calendar .body .cell .bg {\n  font-weight: 700;\n  line-height: 1;\n  color: var(--main-color);\n  opacity: 0;\n  font-size: 8em;\n  position: absolute;\n  top: -0.2em;\n  right: -0.05em;\n  transition: 0.25s ease-out;\n  letter-spacing: -0.07em;\n}\n.calendar .body .row .cell:hover .bg, .calendar .body .selected .bg {\n  opacity: 0.05;\n  transition: 0.5s ease-in;\n}\n.calendar .body .row .col {\n  flex-grow: 0;\n  flex-basis: 14.2857142857%;\n  width: 14.2857142857%;\n}\n.calendar .timeSelector {\n  position: relative;\n  float: left;\n  width: 100%;\n  text-align: center;\n  font-family: \"Open Sans\", \"Helvetica Neue\", \"Helvetica\", \"Arial\", sans-serif;\n  color: #777;\n  cursor: pointer;\n  font-weight: 300;\n  background-color: #fff;\n  box-shadow: 4px 4px 4px -2px rgba(0, 0, 0, 0.3);\n  border-radius: 3px;\n}\n.calendar .timeSelector p {\n  font-weight: 700;\n  border-bottom: 1px solid #E0E0E0;\n  padding: 20px 2%;\n  width: 100%;\n  display: block;\n  font-size: 82.5%;\n  line-height: 1;\n  top: 0.75em;\n  right: 0.75em;\n  margin: 0px;\n  cursor: pointer;\n}\n.calendar .timeSelector .optionHolder .col {\n  text-align: center;\n  font-weight: 700;\n  flex-grow: 0;\n  flex-basis: 25%;\n  width: 25%;\n}\n.calendar .timeSelector .optionHolder .col:hover {\n  background: var(--bg-color);\n  transition: 0.5s ease-out;\n}\n.calendar .timeSelector .optionHolder {\n  left: 0px;\n  top: 0px;\n  z-index: 999;\n  overflow: hidden;\n  width: 100%;\n  background-color: var(--neutral-color);\n  height: auto;\n  padding: 0px;\n  margin-bottom: 0px;\n  margin-top: 0px;\n  transition: all 375ms ease-in-out;\n}";
+var css_248z =
+  '/* FONT IMPORTS */\n@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,700);\n@import url(https://fonts.googleapis.com/icon?family=Material+Icons);\n.icon {\n  font-family: "Material Icons", serif;\n  font-style: normal;\n  display: inline-block;\n  vertical-align: middle;\n  line-height: 1;\n  text-transform: none;\n  letter-spacing: normal;\n  word-wrap: normal;\n  white-space: nowrap;\n  direction: ltr;\n  -webkit-font-smoothing: antialiased;\n  text-rendering: optimizeLegibility;\n  -moz-osx-font-smoothing: grayscale;\n  font-feature-settings: "liga";\n}\n\n/* VARIABLES */\n:root {\n  --main-color: #1a8fff;\n  --text-color: #777;\n  --text-color-light: #ccc;\n  --border-color: #eee;\n  --bg-color: #f5f5f5;\n  --neutral-color: #fff;\n}\n\n/* GENERAL */\n* {\n  box-sizing: border-box;\n}\n\n.calendar {\n  display: block;\n  position: relative;\n  width: 100%;\n  background: var(--neutral-color);\n  border: 1px solid var(--border-color);\n  font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;\n  font-size: 1em;\n  font-weight: 300;\n  line-height: 1.5;\n  color: var(--text-color);\n}\n.calendar header {\n  display: block;\n  width: 100%;\n  padding: 1.75em 0;\n  border-bottom: 1px solid var(--border-color);\n  background: var(--neutral-color);\n}\n.calendar header #logo {\n  font-size: 175%;\n  text-align: center;\n  color: var(--main-color);\n  line-height: 1;\n}\n.calendar header #logo .icon {\n  padding-right: 0.25em;\n}\n.calendar .row {\n  margin: 0;\n  padding: 0;\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n  width: 100%;\n}\n.calendar .row-middle {\n  align-items: center;\n}\n.calendar .col {\n  flex-grow: 1;\n  flex-basis: 0;\n  max-width: 100%;\n}\n.calendar .col-start {\n  justify-content: flex-start;\n  text-align: left;\n}\n.calendar .col-center {\n  justify-content: center;\n  text-align: center;\n}\n.calendar .col-end {\n  justify-content: flex-end;\n  text-align: right;\n}\n.calendar .header {\n  text-transform: capitalize;\n  font-weight: 700;\n  font-size: 115%;\n  padding: 1.5em 0;\n  border-bottom: 1px solid var(--border-color);\n}\n.calendar .header .icon {\n  cursor: pointer;\n  transition: 0.15s ease-out;\n}\n.calendar .header .icon:hover {\n  transform: scale(1.75);\n  transition: 0.25s ease-out;\n  color: var(--main-color);\n}\n.calendar .header .icon:first-of-type {\n  margin-left: 1em;\n}\n.calendar .header .icon:last-of-type {\n  margin-right: 1em;\n}\n.calendar .days {\n  text-transform: uppercase;\n  font-weight: 400;\n  color: var(--text-color-light);\n  font-size: 70%;\n  padding: 0.75em 0;\n  border-bottom: 1px solid var(--border-color);\n}\n.calendar .body .row {\n  border-bottom: 1px solid var(--border-color);\n}\n.calendar .body .row .cell {\n  position: relative;\n  height: 5em;\n  border-right: 1px solid var(--border-color);\n  overflow: hidden;\n  cursor: pointer;\n  background: var(--neutral-color);\n  transition: 0.25s ease-out;\n}\n.calendar .body .row .cell:hover {\n  background: var(--bg-color);\n  transition: 0.5s ease-out;\n}\n.calendar .body .row .cell .number {\n  position: absolute;\n  font-size: 82.5%;\n  line-height: 1;\n  top: 0.75em;\n  right: 0.75em;\n  font-weight: 700;\n}\n.calendar .body .row .selected {\n  border-left: 10px solid transparent;\n  border-image: linear-gradient(45deg, #1a8fff 0%, #53cbf1 40%);\n  border-image-slice: 1;\n}\n.calendar .body .row .disabled {\n  color: var(--text-color-light);\n  pointer-events: none;\n}\n.calendar .body .row .selectedTime {\n  color: var(--main-color);\n}\n.calendar .body .cell .bg {\n  font-weight: 700;\n  line-height: 1;\n  color: var(--main-color);\n  opacity: 0;\n  font-size: 8em;\n  position: absolute;\n  top: -0.2em;\n  right: -0.05em;\n  transition: 0.25s ease-out;\n  letter-spacing: -0.07em;\n}\n.calendar .body .row .cell:hover .bg, .calendar .body .selected .bg {\n  opacity: 0.05;\n  transition: 0.5s ease-in;\n}\n.calendar .body .row .col {\n  flex-grow: 0;\n  flex-basis: 14.2857142857%;\n  width: 14.2857142857%;\n}\n.calendar .timeSelector {\n  position: relative;\n  float: left;\n  width: 100%;\n  text-align: center;\n  font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;\n  color: #777;\n  cursor: pointer;\n  font-weight: 300;\n  background-color: #fff;\n  box-shadow: 4px 4px 4px -2px rgba(0, 0, 0, 0.3);\n  border-radius: 3px;\n}\n.calendar .timeSelector p {\n  font-weight: 700;\n  border-bottom: 1px solid #E0E0E0;\n  padding: 20px 2%;\n  width: 100%;\n  display: block;\n  font-size: 82.5%;\n  line-height: 1;\n  top: 0.75em;\n  right: 0.75em;\n  margin: 0px;\n  cursor: pointer;\n}\n.calendar .timeSelector .optionHolder .col {\n  text-align: center;\n  font-weight: 700;\n  flex-grow: 0;\n  flex-basis: 25%;\n  width: 25%;\n}\n.calendar .timeSelector .optionHolder .col:hover {\n  background: var(--bg-color);\n  transition: 0.5s ease-out;\n}\n.calendar .timeSelector .optionHolder {\n  left: 0px;\n  top: 0px;\n  z-index: 999;\n  overflow: hidden;\n  width: 100%;\n  background-color: var(--neutral-color);\n  height: auto;\n  padding: 0px;\n  margin-bottom: 0px;\n  margin-top: 0px;\n  transition: all 375ms ease-in-out;\n}';
 styleInject(css_248z);
 
 var TimeCalendar = /** @class */ (function (_super) {
-    __extends(TimeCalendar, _super);
-    function TimeCalendar(props) {
-        var _this = _super.call(this, props) || this;
-        _this.state = {
-            selectedDate: new Date(),
-            timeSelect: false,
-        };
-        _this.onDateClick = _this.onDateClick.bind(_this);
-        _this.nextTime = _this.nextTime.bind(_this);
-        _this.prevTime = _this.prevTime.bind(_this);
-        _this.timeSelectToggle = _this.timeSelectToggle.bind(_this);
-        return _this;
-    }
-    TimeCalendar.prototype.onDateClick = function (day) {
-        var onDateFunction = this.props.onDateFunction;
-        this.setState({
-            selectedDate: day,
-        });
-        if (onDateFunction)
-            onDateFunction(day);
+  __extends(TimeCalendar, _super);
+  function TimeCalendar(props) {
+    var _this = _super.call(this, props) || this;
+    _this.state = {
+      selectedDate: new Date(),
+      timeSelect: false,
     };
-    TimeCalendar.prototype.nextTime = function () {
-        var _a = this.state, selectedDate = _a.selectedDate, timeSelect = _a.timeSelect;
-        this.setState({
-            selectedDate: timeSelect
-                ? dateFns.addDays(selectedDate, 1)
-                : dateFns.addMonths(selectedDate, 1),
-        });
-    };
-    TimeCalendar.prototype.prevTime = function () {
-        var _a = this.state, selectedDate = _a.selectedDate, timeSelect = _a.timeSelect;
-        var disableHistory = this.props.disableHistory;
-        if (disableHistory &&
-            ((dateFns.isPast(dateFns.startOfMonth(selectedDate)) && !timeSelect) ||
-                (dateFns.isPast(dateFns.startOfDay(selectedDate)) && timeSelect)))
-            return;
-        this.setState({
-            selectedDate: timeSelect
-                ? dateFns.subDays(selectedDate, 1)
-                : dateFns.subMonths(selectedDate, 1),
-        });
-    };
-    TimeCalendar.prototype.timeSelectToggle = function () {
-        var timeSelect = this.state.timeSelect;
-        this.setState({
-            timeSelect: !timeSelect,
-        });
-    };
-    TimeCalendar.prototype.render = function () {
-        var _a = this.props, disableHistory = _a.disableHistory, timeSlot = _a.timeSlot, openHours = _a.openHours, onTimeClick = _a.onTimeClick, bookings = _a.bookings, startTime = _a.startTime, endTime = _a.endTime, clickable = _a.clickable;
-        var _b = this.state, selectedDate = _b.selectedDate, timeSelect = _b.timeSelect;
-        return (React__default["default"].createElement("div", { className: "calendar" },
-            React__default["default"].createElement(Header, { selectedDate: !timeSelect
-                    ? dateFns.format(selectedDate, "MMMM YYYY", {
-                        locale: it,
-                    })
-                    : dateFns.format(selectedDate, "dddd D MMMM", {
-                        locale: it,
-                    }), nextTime: this.nextTime, prevTime: this.prevTime, timeSelect: timeSelect }),
-            timeSelect ? (React__default["default"].createElement(React__default["default"].Fragment, null,
-                React__default["default"].createElement(TimeSelect, { selectedDate: selectedDate, disableHistory: disableHistory, timeSlot: timeSlot, openHours: openHours, onTimeClick: onTimeClick, bookings: bookings, selectedTime: { start: startTime, end: endTime }, day: dateFns.format(this.state.selectedDate, "DD/MM") }))) : (React__default["default"].createElement(React__default["default"].Fragment, null,
-                React__default["default"].createElement(Weeks, { selectedDate: selectedDate, disableHistory: disableHistory, onDateClick: this.onDateClick, bookings: bookings, timeSlot: timeSlot, clickable: clickable, selectedTime: { start: startTime, end: endTime } }))),
-            timeSlot && openHours && (React__default["default"].createElement("button", { className: "timeSelector", onClick: this.timeSelectToggle, type: "button" },
-                React__default["default"].createElement("p", null, timeSelect ? "Scegli un'altra data" : "Select Time")))));
-    };
-    return TimeCalendar;
-}(React.PureComponent));
+    _this.onDateClick = _this.onDateClick.bind(_this);
+    _this.nextTime = _this.nextTime.bind(_this);
+    _this.prevTime = _this.prevTime.bind(_this);
+    _this.timeSelectToggle = _this.timeSelectToggle.bind(_this);
+    return _this;
+  }
+  TimeCalendar.prototype.onDateClick = function (day) {
+    var onDateFunction = this.props.onDateFunction;
+    this.setState({
+      selectedDate: day,
+    });
+    if (onDateFunction) onDateFunction(day);
+  };
+  TimeCalendar.prototype.nextTime = function () {
+    var _a = this.state,
+      selectedDate = _a.selectedDate,
+      timeSelect = _a.timeSelect;
+    this.setState({
+      selectedDate: timeSelect
+        ? dateFns.addDays(selectedDate, 1)
+        : dateFns.addMonths(selectedDate, 1),
+    });
+  };
+  TimeCalendar.prototype.prevTime = function () {
+    var _a = this.state,
+      selectedDate = _a.selectedDate,
+      timeSelect = _a.timeSelect;
+    var disableHistory = this.props.disableHistory;
+    if (
+      disableHistory &&
+      ((dateFns.isPast(dateFns.startOfMonth(selectedDate)) && !timeSelect) ||
+        (dateFns.isPast(dateFns.startOfDay(selectedDate)) && timeSelect))
+    )
+      return;
+    this.setState({
+      selectedDate: timeSelect
+        ? dateFns.subDays(selectedDate, 1)
+        : dateFns.subMonths(selectedDate, 1),
+    });
+  };
+  TimeCalendar.prototype.timeSelectToggle = function () {
+    var timeSelect = this.state.timeSelect;
+    this.setState({
+      timeSelect: !timeSelect,
+    });
+  };
+  TimeCalendar.prototype.render = function () {
+    var _a = this.props,
+      disableHistory = _a.disableHistory,
+      timeSlot = _a.timeSlot,
+      openHours = _a.openHours,
+      onTimeClick = _a.onTimeClick,
+      bookings = _a.bookings,
+      startTime = _a.startTime,
+      endTime = _a.endTime,
+      clickable = _a.clickable;
+    var _b = this.state,
+      selectedDate = _b.selectedDate,
+      timeSelect = _b.timeSelect;
+    return React__default["default"].createElement(
+      "div",
+      { className: "calendar" },
+      React__default["default"].createElement(Header, {
+        selectedDate: !timeSelect
+          ? dateFns.format(selectedDate, "MMMM YYYY", {
+              locale: it,
+            })
+          : dateFns.format(selectedDate, "dddd D MMMM", {
+              locale: it,
+            }),
+        nextTime: this.nextTime,
+        prevTime: this.prevTime,
+        timeSelect: timeSelect,
+      }),
+      timeSelect
+        ? React__default["default"].createElement(
+            React__default["default"].Fragment,
+            null,
+            React__default["default"].createElement(TimeSelect, {
+              selectedDate: selectedDate,
+              disableHistory: disableHistory,
+              timeSlot: timeSlot,
+              openHours: openHours,
+              onTimeClick: onTimeClick,
+              bookings: bookings,
+              selectedTime: { start: startTime, end: endTime },
+              day: dateFns.format(this.state.selectedDate, "DD/MM"),
+            })
+          )
+        : React__default["default"].createElement(
+            React__default["default"].Fragment,
+            null,
+            React__default["default"].createElement(Weeks, {
+              selectedDate: selectedDate,
+              disableHistory: disableHistory,
+              onDateClick: this.onDateClick,
+              bookings: bookings,
+              timeSlot: timeSlot,
+              clickable: clickable,
+              selectedTime: { start: startTime, end: endTime },
+            })
+          ),
+      timeSlot &&
+        openHours &&
+        React__default["default"].createElement(
+          "button",
+          {
+            className: "timeSelector",
+            onClick: this.timeSelectToggle,
+            type: "button",
+          },
+          React__default["default"].createElement(
+            "p",
+            null,
+            timeSelect ? "Scegli un'altra data" : "Select Time"
+          )
+        )
+    );
+  };
+  return TimeCalendar;
+})(React.PureComponent);
 
 module.exports = TimeCalendar;
 //# sourceMappingURL=index.js.map
