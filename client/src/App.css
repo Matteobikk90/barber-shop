@@ -243,3 +243,32 @@ body {
 .leaflet-control-attribution {
   filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
 }
+
+/* Days off */
+.t30-08,
+.t11-09,
+.t12-09,
+.t13-09,
+.t09-10,
+.t10-10,
+.t11-10,
+.t30-08 p,
+.t11-09 p,
+.t12-09 p,
+.t13-09 p,
+.t09-10 p,
+.t10-10 p,
+.t11-10 p {
+  cursor: not-allowed !important;
+  color: #e52b50 !important;
+  pointer-events: none;
+}
+.timeselector.t30-08 .tbody,
+.timeselector.t11-09 .tbody,
+.timeselector.t12-09 .tbody,
+.timeselector.t13-09 .tbody,
+.timeselector.t09-10 .tbody,
+.timeselector.t10-10 .tbody,
+.timeselector.t11-10 .tbody {
+  display: none;
+}
