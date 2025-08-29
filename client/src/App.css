@@ -269,6 +269,7 @@ body {
 .timeselector.t13-09 .tbody,
 .timeselector.t09-10 .tbody,
 .timeselector.t10-10 .tbody,
-.timeselector.t11-10 .tbody {
+.timeselector.t11-10 .tbody,
+.t20-30 {
   display: none;
 }
