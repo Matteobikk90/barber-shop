@@ -1,8 +1,8 @@
-import { memo, useEffect, useState } from "react";
 import useLeaflet from "hooks/useLeaflet";
-import { MapContainer, Marker, Popup } from "react-leaflet";
 import { LeafletEvent } from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { memo, useEffect, useState } from "react";
+import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import { centerMap, defaultMapZoom } from "utils/map";
 /** @jsxImportSource @emotion/react */
 import "twin.macro";
@@ -29,6 +29,10 @@ const Map = () => {
       touchZoom={false}
       scrollWheelZoom={false}
       dragging={false}>
+      <TileLayer
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      />
       <Marker position={centerMap} icon={marker}>
         <Popup>
           Blendon Barber Shop <br /> Ti aspettiamo !
