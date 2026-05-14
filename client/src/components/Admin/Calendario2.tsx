@@ -74,10 +74,13 @@ const AdminPanel = () => {
       </div>
       <div tw="flex gap-[0.5rem] overflow-x-auto pb-[0.25rem]">
         {groups.map((item) => {
-          const [, , day] = item.date.split("-");
-          const dateObj = new Date(item.date + "T00:00:00");
+          const [year, month, day] = item.date.split("-");
+          const dateObj = new Date(`${year}-${month}-${day}T00:00:00`);
           const dayName = dateObj.toLocaleDateString("it-IT", {
             weekday: "short",
+          });
+          const monthName = dateObj.toLocaleDateString("it-IT", {
+            month: "short",
           });
           const isSelected = selectedDate === item.date;
           return (
@@ -85,20 +88,16 @@ const AdminPanel = () => {
               key={item.date}
               type="button"
               onClick={() => setSelectedDate(item.date)}
-              tw="flex flex-col items-center p-[0.5rem 1rem] rounded border min-w-[4.5rem] 
-              transition-colors"
+              tw="flex flex-col items-center p-[0.5rem 0.75rem] rounded border min-w-[5rem] transition-colors"
               style={{
                 backgroundColor: isSelected ? "#334a3b" : "#efece8",
                 borderColor: "#334a3b",
                 color: isSelected ? "#efece8" : "#160f0f",
               }}>
               <span tw="text-xs uppercase">{dayName}</span>
-              <span tw="text-xl font-bold leading-none">{day}</span>
-              <span tw="text-xs">
-                {new Date(dateObj).toLocaleDateString("it-IT", {
-                  month: "short",
-                })}
-              </span>
+              <span tw="text-xxl font-bold leading-none">{day}</span>
+              <span tw="text-xs uppercase">{monthName}</span>
+              <span tw="text-xs">{year}</span>
               <span
                 tw="mt-[0.25rem] text-xs rounded-full w-[1.2rem] h-[1.2rem] flex items-center justify-center font-bold"
                 style={{
