@@ -15,8 +15,8 @@ const Main = ({ toggleState, handleToggleState }: any) => (
     )}
     <main
       css={[
-        tw`pt-[8.75rem] md:pt-[4rem]`,
-        toggleState.isBooking && tw`pt-0 md:pt-0`,
+        tw`pt-[8.75rem] md:pt-[4rem] flex-1`,
+        toggleState.isBooking && tw`pt-0 md:pt-0 flex flex-col`,
       ]}>
       {toggleState.isBooking ? (
         <Booking handleToggleState={handleToggleState} />

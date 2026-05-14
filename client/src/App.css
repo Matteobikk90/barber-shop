@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Tulpen+One&display=swap");
 
 @tailwind base;
@@ -6,8 +6,8 @@
 @tailwind utilities;
 
 html {
-  /* font-family: "Work Sans", sans-serif !important; */
-  font-family: "Tulpen One", cursive !important;
+  font-family: "Jost", sans-serif !important;
+  font-size: 100%;
   scroll-behavior: smooth;
   scroll-padding-top: 7.875rem;
 }
@@ -59,10 +59,6 @@ html {
 
 #prodotti .react-multi-carousel-dot-list {
   gap: 0.5rem;
-}
-
-#calendar {
-  font-family: "Work Sans", sans-serif !important;
 }
 
 body {

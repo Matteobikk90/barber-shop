@@ -1,11 +1,11 @@
+/** @jsxImportSource @emotion/react */
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { addBlockedDate } from "services/addBlockedDate";
 import { deleteBlockedDate } from "services/deleteBlockedDate";
 import { getBlockedDates } from "services/getBlockedDates";
-import { today } from "utils/utilities";
-/** @jsxImportSource @emotion/react */
 import "twin.macro";
+import { today } from "utils/utilities";
 
 const BlockDate = () => {
   const navigate = useNavigate();
@@ -27,8 +27,7 @@ const BlockDate = () => {
       alert("Questa data è già bloccata");
       return;
     }
-    const confirmation = window.confirm(`Bloccare il giorno ${selectedDate}?`);
-    if (!confirmation) return;
+    if (!window.confirm(`Bloccare il giorno ${selectedDate}?`)) return;
     addBlockedDate(selectedDate)
       .then(() => {
         alert(`${selectedDate} bloccato correttamente`);
@@ -39,10 +38,7 @@ const BlockDate = () => {
   };
 
   const handleDelete = (date: string) => {
-    const confirmation = window.confirm(
-      `Rimuovere il blocco per il giorno ${date}?`
-    );
-    if (!confirmation) return;
+    if (!window.confirm(`Sbloccare il giorno ${date}?`)) return;
     deleteBlockedDate(date)
       .then(() => {
         alert(`${date} sbloccato correttamente`);
@@ -51,76 +47,93 @@ const BlockDate = () => {
       .catch(() => alert("Qualcosa è andato storto, riprova"));
   };
 
-  const formatReadable = (date: string) => {
-    const [year, month, day] = date.split("-");
-    return `${day}/${month}/${year}`;
+  const formatDate = (date: string) => {
+    const [y, m, d] = date.split("-");
+    const obj = new Date(`${y}-${m}-${d}T00:00:00`);
+    return {
+      day: d,
+      month: obj.toLocaleDateString("it-IT", { month: "short" }),
+      year: y,
+      weekday: obj.toLocaleDateString("it-IT", { weekday: "short" }),
+    };
   };
 
   return (
-    <section id="calendar" tw="flex flex-col gap-[2rem] m-[2rem 1rem]">
-      <div tw="flex gap-[1rem]">
+    <section
+      id="calendar"
+      tw="flex flex-col gap-[1.75rem] p-[2rem 1.5rem] max-w-[64rem] mx-auto">
+      {/* Tab bar */}
+      <div tw="flex bg-cream rounded-lg p-[0.25rem] gap-[0.25rem] self-start border border-[#334a3b22]">
         <button
-          tw="border border-black p-[0.25rem 0.75rem] rounded-[0.25rem]"
-          onClick={() => navigate("/calendario2")}
           type="button"
-        >
+          tw="px-5 py-[0.4rem] rounded text-sm font-bold border-none cursor-pointer tracking-wide transition-all text-green"
+          onClick={() => navigate("/calendario2")}>
           Prenotazioni
         </button>
         <button
-          tw="border border-black p-[0.25rem 0.75rem] rounded-[0.25rem]"
-          onClick={() => navigate("/blocco-date")}
           type="button"
-        >
+          tw="px-5 py-[0.4rem] rounded text-sm font-bold border-none cursor-pointer tracking-wide transition-all bg-green text-cream"
+          onClick={() => navigate("/blocco-date")}>
           Blocco date
         </button>
       </div>
-      <form onSubmit={handleAdd} tw="flex gap-[1rem] items-center flex-wrap">
-        <label htmlFor="blockDate">Blocca giorno</label>
+
+      <form onSubmit={handleAdd} tw="flex gap-[0.75rem] items-center flex-wrap">
         <button
           type="button"
-          tw="border border-black rounded p-[0.25rem 0.75rem]"
           onClick={() => dateInputRef.current?.showPicker()}
-        >
-          {selectedDate ? formatReadable(selectedDate) : "Scegli data 📅"}
+          tw="px-4 py-2 rounded-lg border-2 border-green bg-white cursor-pointer text-sm font-medium text-green hover:bg-cream transition-all">
+          {selectedDate
+            ? (() => {
+                const { day, month, year } = formatDate(selectedDate);
+                return `${day} ${month} ${year}`;
+              })()
+            : "Scegli data 📅"}
         </button>
         <input
           ref={dateInputRef}
-          tw="sr-only"
           type="date"
           id="blockDate"
           min={today}
           value={selectedDate}
           onChange={(e) => setSelectedDate(e.target.value)}
+          tw="sr-only"
         />
         <button
-          tw="bg-green border border-[#D7D7D7] p-[0.25rem 0.75rem] text-cream text-center rounded-[0.25rem]"
-          type="submit">
+          type="submit"
+          tw="px-5 py-2 rounded-lg bg-green text-cream border-none cursor-pointer text-sm font-bold hover:opacity-90 transition-all">
           Blocca
         </button>
       </form>
 
-      {blockedDates.length > 0 && (
-        <>
-          <h3 tw="font-bold">Giorni bloccati</h3>
-          <article tw="flex flex-row flex-wrap gap-[0.25rem]">
-            {blockedDates.map((date) => (
+      {blockedDates.length === 0 ? (
+        <p tw="text-sm text-[#999]">Nessun giorno bloccato.</p>
+      ) : (
+        <div tw="flex flex-wrap gap-[0.5rem]">
+          {blockedDates.map((date) => {
+            const { day, month, year, weekday } = formatDate(date);
+            return (
               <div
                 key={date}
-                tw="w-[10rem] h-[4rem] p-[0.5rem] flex flex-col justify-between border border-black rounded">
-                <strong>{formatReadable(date)}</strong>
+                tw="flex flex-col items-center justify-between p-3 rounded-xl min-w-[7rem] border border-[#e2ded9] bg-white shadow-sm gap-[0.15rem]">
+                <span tw="text-[0.6rem] font-bold uppercase opacity-60">
+                  {weekday}
+                </span>
+                <span tw="text-[1.4rem] font-bold leading-none">{day}</span>
+                <span tw="text-[0.6rem] font-bold uppercase">
+                  {month} {year}
+                </span>
                 <button
-                  tw="text-left text-[#e52b50] text-sm"
+                  type="button"
                   onClick={() => handleDelete(date)}
-                  type="button">
+                  tw="mt-2 text-sm font-bold text-red border-none cursor-pointer hover:opacity-70 transition-all">
                   Sblocca
                 </button>
               </div>
-            ))}
-          </article>
-        </>
+            );
+          })}
+        </div>
       )}
-
-      {blockedDates.length === 0 && <p>Nessun giorno bloccato</p>}
     </section>
   );
 };

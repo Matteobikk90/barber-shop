@@ -1,37 +1,53 @@
+/** @jsxImportSource @emotion/react */
 import { db } from "db/firebase";
 import { deleteDoc, doc } from "firebase/firestore";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { addBlockedDate } from "services/addBlockedDate";
+import { deleteBlockedDate } from "services/deleteBlockedDate";
+import { getBlockedDates } from "services/getBlockedDates";
 import { getBookings } from "services/getBookings";
+import tw from "twin.macro";
 import { BookingTypes } from "types/booking.types";
 import { today } from "utils/utilities";
-/** @jsxImportSource @emotion/react */
-import "twin.macro";
+
+type Tab = "prenotazioni" | "blocco-date";
+
+const TrashIcon = () => (
+  <svg
+    width="12"
+    height="12"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round">
+    <polyline points="3 6 5 6 21 6" />
+    <path d="M19 6l-1 14H6L5 6" />
+    <path d="M10 11v6M14 11v6" />
+    <path d="M9 6V4h6v2" />
+  </svg>
+);
 
 const AdminPanel = () => {
-  const navigate = useNavigate();
+  const [tab, setTab] = useState<Tab>("prenotazioni");
+
+  // — Prenotazioni —
   const [bookedBookings, setBookedBookings] = useState<BookingTypes[]>([]);
   const [selectedDate, setSelectedDate] = useState(today);
 
-  const reload = () =>
-    getBookings().then((bookings: any) => setBookedBookings(bookings));
-
-  useEffect(() => {
-    reload();
-  }, []);
+  const reloadBookings = () =>
+    getBookings().then((b: any) => setBookedBookings(b));
 
   const handleDelete = (booking: BookingTypes) => {
     const label = `${booking.name} ${booking.surname} - ${
       booking.start_time.split(" ")[1]
     }`;
-    const confirmation = window.confirm(
-      `Cancellare la prenotazione di ${label}?`
-    );
-    if (!confirmation) return;
+    if (!window.confirm(`Cancellare la prenotazione di ${label}?`)) return;
     deleteDoc(doc(db, "bookings", booking.id!))
       .then(() => {
-        alert(`Prenotazione di ${label} cancellata`);
-        reload();
+        alert(`${label} cancellata`);
+        reloadBookings();
       })
       .catch(() => alert("Qualcosa è andato storto, riprova"));
   };
@@ -52,117 +68,238 @@ const AdminPanel = () => {
     }));
   };
 
+  // — Blocco date —
+  const [blockedDates, setBlockedDates] = useState<string[]>([]);
+  const [newDate, setNewDate] = useState("");
+  const dateInputRef = useRef<HTMLInputElement>(null);
+
+  const reloadBlocked = () =>
+    getBlockedDates().then((d) => setBlockedDates(d.sort()));
+
+  const handleAddBlock = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newDate) return;
+    if (blockedDates.includes(newDate)) {
+      alert("Data già bloccata");
+      return;
+    }
+    if (!window.confirm(`Bloccare il giorno ${newDate}?`)) return;
+    addBlockedDate(newDate)
+      .then(() => {
+        alert(`${newDate} bloccato`);
+        setNewDate("");
+        reloadBlocked();
+      })
+      .catch(() => alert("Qualcosa è andato storto, riprova"));
+  };
+
+  const handleRemoveBlock = (date: string) => {
+    if (!window.confirm(`Sbloccare il giorno ${date}?`)) return;
+    deleteBlockedDate(date)
+      .then(() => {
+        alert(`${date} sbloccato`);
+        reloadBlocked();
+      })
+      .catch(() => alert("Qualcosa è andato storto, riprova"));
+  };
+
+  const formatDate = (date: string) => {
+    const [y, m, d] = date.split("-");
+    const obj = new Date(`${y}-${m}-${d}T00:00:00`);
+    return {
+      day: d,
+      month: obj.toLocaleDateString("it-IT", { month: "short" }),
+      year: y,
+      weekday: obj.toLocaleDateString("it-IT", { weekday: "short" }),
+    };
+  };
+
+  useEffect(() => {
+    reloadBookings();
+    reloadBlocked();
+  }, []);
+
   const groups = groupedBookings();
   const selectedBookings =
     groups.find((g) => g.date === selectedDate)?.bookings ?? [];
 
   return (
-    <section id="calendar" tw="flex flex-col gap-[2rem] m-[2rem 1rem]">
-      <div tw="flex gap-[1rem]">
+    <section
+      id="calendar"
+      tw="flex flex-col gap-[1.75rem] p-[2rem 1.5rem] max-w-[64rem] mx-auto">
+      {/* Tab bar */}
+      <div tw="flex bg-cream rounded-lg p-[0.25rem] gap-[0.25rem] self-start border border-[#334a3b22]">
         <button
-          tw="border border-black p-[0.25rem 0.75rem] rounded-[0.25rem]"
-          onClick={() => navigate("/calendario2")}
-          type="button">
+          type="button"
+          tw="px-5 py-[0.4rem] rounded text-sm font-bold border-none cursor-pointer tracking-wide transition-all"
+          css={
+            tab === "prenotazioni" ? tw`bg-green text-cream` : tw` text-green`
+          }
+          onClick={() => setTab("prenotazioni")}>
           Prenotazioni
         </button>
         <button
-          tw="border border-black p-[0.25rem 0.75rem] rounded-[0.25rem]"
-          onClick={() => navigate("/blocco-date")}
-          type="button">
+          type="button"
+          tw="px-5 py-[0.4rem] rounded text-sm font-bold border-none cursor-pointer tracking-wide transition-all"
+          css={
+            tab === "blocco-date" ? tw`bg-green text-cream` : tw` text-green`
+          }
+          onClick={() => setTab("blocco-date")}>
           Blocco date
         </button>
       </div>
-      <div tw="flex gap-[0.5rem] overflow-x-auto pb-[0.25rem]">
-        {groups.map((item) => {
-          const [year, month, day] = item.date.split("-");
-          const dateObj = new Date(`${year}-${month}-${day}T00:00:00`);
-          const dayName = dateObj.toLocaleDateString("it-IT", {
-            weekday: "short",
-          });
-          const monthName = dateObj.toLocaleDateString("it-IT", {
-            month: "short",
-          });
-          const isSelected = selectedDate === item.date;
-          return (
+
+      {/* ── PRENOTAZIONI ── */}
+      {tab === "prenotazioni" && (
+        <>
+          <div tw="flex gap-[0.5rem] overflow-x-auto pb-[0.5rem]">
+            {groups.map((item) => {
+              const { day, month, year, weekday } = formatDate(item.date);
+              const active = selectedDate === item.date;
+              return (
+                <button
+                  key={item.date}
+                  type="button"
+                  onClick={() => setSelectedDate(item.date)}
+                  tw="flex flex-col items-center px-[0.85rem] py-[0.6rem] rounded-xl min-w-[4.5rem] border-2 cursor-pointer transition-all"
+                  css={
+                    active
+                      ? tw`border-green bg-green text-cream shadow-[0_2px_8px_rgba(51,74,59,0.25)]`
+                      : tw`border-[#c8c3bc] bg-white text-black shadow-sm`
+                  }>
+                  <span tw="text-[0.6rem] font-bold tracking-widest uppercase opacity-70">
+                    {weekday}
+                  </span>
+                  <span tw="text-[1.6rem] font-bold leading-none">{day}</span>
+                  <span tw="text-[0.6rem] font-bold tracking-wider uppercase">
+                    {month} {year}
+                  </span>
+                  <span
+                    tw="mt-[0.35rem] text-[0.65rem] font-bold rounded-full w-5 h-5 flex items-center justify-center"
+                    css={
+                      active
+                        ? tw`bg-[rgba(239,236,232,0.3)] text-cream`
+                        : tw`bg-green text-cream`
+                    }>
+                    {item.bookings.length}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          {selectedBookings.length === 0 ? (
+            <p tw="text-sm text-[#999]">
+              Nessuna prenotazione per questo giorno.
+            </p>
+          ) : (
+            <div tw="overflow-x-auto rounded-xl border border-[#e2ded9] shadow-sm">
+              <table tw="w-full border-collapse text-sm">
+                <thead>
+                  <tr tw="bg-green text-cream">
+                    {["Ora", "Cliente", "Servizio", "Telefono", ""].map((h) => (
+                      <th
+                        key={h}
+                        tw="p-[0.75rem 1.1rem] text-left font-bold tracking-wider text-[0.7rem] uppercase">
+                        {h}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {selectedBookings.map((booking: BookingTypes, i: number) => (
+                    <tr
+                      key={booking.start_time + booking.phone}
+                      tw="border-t border-[#ede9e3]"
+                      css={i % 2 === 0 ? tw`bg-[#faf9f7]` : tw`bg-white`}>
+                      <td tw="p-[0.85rem 1.1rem] font-bold text-green text-regular">
+                        {booking.start_time.split(" ")[1].slice(0, 5)}
+                      </td>
+                      <td tw="p-[0.85rem 1.1rem] font-medium">{`${booking.name} ${booking.surname}`}</td>
+                      <td tw="p-[0.85rem 1.1rem] font-medium">
+                        {booking.service}
+                      </td>
+                      <td tw="p-[0.85rem 1.1rem] font-medium">
+                        {booking.phone}
+                      </td>
+                      <td tw="p-[0.85rem 1.1rem]">
+                        <button
+                          type="button"
+                          onClick={() => handleDelete(booking)}
+                          tw="flex items-center gap-[0.3rem] text-red border-2 border-red rounded-lg p-[0.25rem 0.65rem]  cursor-pointer text-sm font-bold whitespace-nowrap hover:bg-red hover:text-white transition-all">
+                          <TrashIcon /> Cancella
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </>
+      )}
+
+      {/* ── BLOCCO DATE ── */}
+      {tab === "blocco-date" && (
+        <>
+          <form
+            onSubmit={handleAddBlock}
+            tw="flex gap-[0.75rem] items-center flex-wrap">
             <button
-              key={item.date}
               type="button"
-              onClick={() => setSelectedDate(item.date)}
-              tw="flex flex-col items-center p-[0.5rem 0.75rem] rounded border min-w-[5rem] transition-colors"
-              style={{
-                backgroundColor: isSelected ? "#334a3b" : "#efece8",
-                borderColor: "#334a3b",
-                color: isSelected ? "#efece8" : "#160f0f",
-              }}>
-              <span tw="text-xs uppercase">{dayName}</span>
-              <span tw="text-xxl font-bold leading-none">{day}</span>
-              <span tw="text-xs uppercase">{monthName}</span>
-              <span tw="text-xs">{year}</span>
-              <span
-                tw="mt-[0.25rem] text-xs rounded-full w-[1.2rem] h-[1.2rem] flex items-center justify-center font-bold"
-                style={{
-                  backgroundColor: isSelected ? "#efece8" : "#334a3b",
-                  color: isSelected ? "#334a3b" : "#efece8",
-                }}>
-                {item.bookings.length}
-              </span>
+              onClick={() => dateInputRef.current?.showPicker()}
+              tw="px-4 py-2 rounded-lg border-2 border-green bg-white cursor-pointer text-sm font-medium text-green hover:bg-cream transition-all">
+              {newDate
+                ? (() => {
+                    const { day, month, year } = formatDate(newDate);
+                    return `${day} ${month} ${year}`;
+                  })()
+                : "Scegli data 📅"}
             </button>
-          );
-        })}
-      </div>
-      {selectedBookings.length === 0 ? (
-        <p tw="text-sm">Nessuna prenotazione per questo giorno</p>
-      ) : (
-        <div tw="overflow-x-auto rounded border border-green">
-          <table tw="w-full border-collapse text-sm">
-            <thead>
-              <tr tw="bg-green text-cream text-left">
-                <th tw="p-[0.6rem 1rem]">Ora</th>
-                <th tw="p-[0.6rem 1rem]">Cliente</th>
-                <th tw="p-[0.6rem 1rem]">Servizio</th>
-                <th tw="p-[0.6rem 1rem]">Telefono</th>
-                <th tw="p-[0.6rem 1rem]"></th>
-              </tr>
-            </thead>
-            <tbody>
-              {selectedBookings.map((booking: BookingTypes, i: number) => (
-                <tr
-                  key={booking.start_time + booking.phone}
-                  tw="border-t border-green"
-                  style={{ backgroundColor: i % 2 === 0 ? "#efece8" : "#fff" }}>
-                  <td tw="p-[0.6rem 1rem] font-bold text-green">
-                    {booking.start_time.split(" ")[1].slice(0, 5)}
-                  </td>
-                  <td tw="p-[0.6rem 1rem]">{`${booking.name} ${booking.surname}`}</td>
-                  <td tw="p-[0.6rem 1rem]">{booking.service}</td>
-                  <td tw="p-[0.6rem 1rem]">{booking.phone}</td>
-                  <td tw="p-[0.6rem 1rem]">
+            <input
+              ref={dateInputRef}
+              type="date"
+              min={today}
+              value={newDate}
+              onChange={(e) => setNewDate(e.target.value)}
+              tw="sr-only"
+            />
+            <button
+              type="submit"
+              tw="px-5 py-2 rounded-lg bg-green text-cream border-none cursor-pointer text-sm font-bold hover:opacity-90 transition-all">
+              Blocca
+            </button>
+          </form>
+
+          {blockedDates.length === 0 ? (
+            <p tw="text-sm text-[#999]">Nessun giorno bloccato.</p>
+          ) : (
+            <div tw="flex flex-wrap gap-[0.5rem]">
+              {blockedDates.map((date) => {
+                const { day, month, year, weekday } = formatDate(date);
+                return (
+                  <div
+                    key={date}
+                    tw="flex flex-col items-center justify-between p-3 rounded-xl min-w-[7rem] border border-[#e2ded9] bg-white shadow-sm gap-[0.15rem]">
+                    <span tw="text-[0.6rem] font-bold uppercase opacity-60">
+                      {weekday}
+                    </span>
+                    <span tw="text-[1.4rem] font-bold leading-none">{day}</span>
+                    <span tw="text-[0.6rem] font-bold uppercase">
+                      {month} {year}
+                    </span>
                     <button
-                      tw="flex items-center gap-[0.3rem] text-red border border-red rounded p-[0.2rem 0.6rem] hover:bg-red hover:text-white transition-colors whitespace-nowrap"
                       type="button"
-                      onClick={() => handleDelete(booking)}>
-                      <svg
-                        width="12"
-                        height="12"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round">
-                        <polyline points="3 6 5 6 21 6" />
-                        <path d="M19 6l-1 14H6L5 6" />
-                        <path d="M10 11v6M14 11v6" />
-                        <path d="M9 6V4h6v2" />
-                      </svg>
-                      Cancella
+                      onClick={() => handleRemoveBlock(date)}
+                      tw="mt-2 text-sm font-bold text-red  border-none cursor-pointer hover:opacity-70 transition-all">
+                      Sblocca
                     </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </>
       )}
     </section>
   );

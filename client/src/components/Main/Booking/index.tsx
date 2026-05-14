@@ -69,8 +69,9 @@ const Booking = ({ handleToggleState }: any) => {
     <form
       ref={bookingFormRef}
       onSubmit={submitBooking}
+      id="booking"
       css={[
-        tw`relative text-center bg-green text-cream shadow min-h-[450px] p-[2rem 5rem 4rem] md:p-[2rem 1rem 4rem] sm:p-[4rem 1rem]`,
+        tw`relative text-center bg-green text-cream shadow flex-1 min-h-[450px] p-[2rem 5rem 4rem] md:p-[2rem 1rem 4rem] sm:p-[4rem 1rem]`,
         currentStepIndex === 1 && tw`p-[2rem 5rem 5rem]`,
       ]}>
       <button
