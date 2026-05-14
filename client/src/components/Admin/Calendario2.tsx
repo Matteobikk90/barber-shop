@@ -85,45 +85,61 @@ const AdminPanel = () => {
           ))}
         </select>
       </div>
-      <article tw="flex flex-row flex-wrap gap-[0.5rem]">
-        {selectedBookings.map((booking: BookingTypes) => (
-          <div
-            key={booking.start_time + booking.phone}
-            tw="w-[14rem] p-[1rem] flex flex-col gap-[0.5rem] bg-cream border border-green rounded shadow justify-between">
-            <div tw="flex flex-col gap-[0.25rem]">
-              <span tw="text-xl text-green font-bold">
-                {booking.start_time.split(" ")[1].slice(0, 5)}
-              </span>
-              <p>{`${booking.name} ${booking.surname}`}</p>
-              <p tw="text-sm">{booking.service}</p>
-              <p tw="text-sm">{booking.phone}</p>
-            </div>
-            <button
-              tw="mt-[0.5rem] flex items-center justify-center gap-[0.4rem] text-red text-sm border border-red rounded p-[0.3rem 0.75rem] w-full hover:bg-red hover:text-white transition-colors"
-              type="button"
-              onClick={() => handleDelete(booking)}>
-              <svg
-                width="13"
-                height="13"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round">
-                <polyline points="3 6 5 6 21 6" />
-                <path d="M19 6l-1 14H6L5 6" />
-                <path d="M10 11v6M14 11v6" />
-                <path d="M9 6V4h6v2" />
-              </svg>
-              Cancella
-            </button>
-          </div>
-        ))}
-        {selectedBookings.length === 0 && selectedDate && (
-          <p>Nessuna prenotazione per questo giorno</p>
-        )}
-      </article>
+      {selectedBookings.length === 0 ? (
+        <p tw="text-sm">Nessuna prenotazione per questo giorno</p>
+      ) : (
+        <div tw="overflow-x-auto rounded border border-green">
+          <table tw="w-full border-collapse text-sm">
+            <thead>
+              <tr tw="bg-green text-cream text-left">
+                <th tw="p-[0.6rem 1rem]">Ora</th>
+                <th tw="p-[0.6rem 1rem]">Cliente</th>
+                <th tw="p-[0.6rem 1rem]">Servizio</th>
+                <th tw="p-[0.6rem 1rem]">Telefono</th>
+                <th tw="p-[0.6rem 1rem]"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {selectedBookings.map((booking: BookingTypes, i: number) => (
+                <tr
+                  key={booking.start_time + booking.phone}
+                  tw="border-t border-green"
+                  style={{ backgroundColor: i % 2 === 0 ? "#efece8" : "#fff" }}
+                >
+                  <td tw="p-[0.6rem 1rem] font-bold text-green">
+                    {booking.start_time.split(" ")[1].slice(0, 5)}
+                  </td>
+                  <td tw="p-[0.6rem 1rem]">{`${booking.name} ${booking.surname}`}</td>
+                  <td tw="p-[0.6rem 1rem]">{booking.service}</td>
+                  <td tw="p-[0.6rem 1rem]">{booking.phone}</td>
+                  <td tw="p-[0.6rem 1rem]">
+                    <button
+                      tw="flex items-center gap-[0.3rem] text-red border border-red rounded p-[0.2rem 0.6rem] hover:bg-red hover:text-white transition-colors whitespace-nowrap"
+                      type="button"
+                      onClick={() => handleDelete(booking)}>
+                      <svg
+                        width="12"
+                        height="12"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round">
+                        <polyline points="3 6 5 6 21 6" />
+                        <path d="M19 6l-1 14H6L5 6" />
+                        <path d="M10 11v6M14 11v6" />
+                        <path d="M9 6V4h6v2" />
+                      </svg>
+                      Cancella
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </section>
   );
 };
