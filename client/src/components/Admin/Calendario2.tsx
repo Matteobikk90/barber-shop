@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getBookings } from "services/getBookings";
 import { BookingTypes } from "types/booking.types";
 import { today } from "utils/utilities";
@@ -7,6 +8,7 @@ import { deleteBooking } from "services/deleteBooking";
 import "twin.macro";
 
 const AdminPanel = () => {
+    const navigate = useNavigate();
     const [bookedBookings, setBookedBookings] = useState<BookingTypes[]>([]);
     const [selectedDate, setSelectedDate] = useState(today);
     const [deleteDocID, setDeleteDocID] = useState("");
@@ -41,6 +43,22 @@ const AdminPanel = () => {
 
     return (
         <section id="calendar" tw="flex flex-col gap-[2rem] m-[2rem 1rem]">
+            <div tw="flex gap-[1rem]">
+                <button
+                    tw="border border-black p-[0.25rem 0.75rem] rounded-[0.25rem]"
+                    onClick={() => navigate("/calendario2")}
+                    type="button"
+                >
+                    Prenotazioni
+                </button>
+                <button
+                    tw="border border-black p-[0.25rem 0.75rem] rounded-[0.25rem]"
+                    onClick={() => navigate("/blocco-date")}
+                    type="button"
+                >
+                    Blocco date
+                </button>
+            </div>
             <form
                 onSubmit={(e) => deleteBooking(e, bookedBookings, deleteDocID)}
                 tw="flex gap-[1rem] items-center"

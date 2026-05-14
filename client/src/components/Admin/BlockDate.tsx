@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { addBlockedDate } from "services/addBlockedDate";
 import { deleteBlockedDate } from "services/deleteBlockedDate";
 import { getBlockedDates } from "services/getBlockedDates";
@@ -7,8 +8,10 @@ import { today } from "utils/utilities";
 import "twin.macro";
 
 const BlockDate = () => {
+  const navigate = useNavigate();
   const [blockedDates, setBlockedDates] = useState<string[]>([]);
   const [selectedDate, setSelectedDate] = useState("");
+  const dateInputRef = useRef<HTMLInputElement>(null);
 
   const reload = () =>
     getBlockedDates().then((dates) => setBlockedDates(dates.sort()));
@@ -55,10 +58,34 @@ const BlockDate = () => {
 
   return (
     <section id="calendar" tw="flex flex-col gap-[2rem] m-[2rem 1rem]">
+      <div tw="flex gap-[1rem]">
+        <button
+          tw="border border-black p-[0.25rem 0.75rem] rounded-[0.25rem]"
+          onClick={() => navigate("/calendario2")}
+          type="button"
+        >
+          Prenotazioni
+        </button>
+        <button
+          tw="border border-black p-[0.25rem 0.75rem] rounded-[0.25rem]"
+          onClick={() => navigate("/blocco-date")}
+          type="button"
+        >
+          Blocco date
+        </button>
+      </div>
       <form onSubmit={handleAdd} tw="flex gap-[1rem] items-center flex-wrap">
         <label htmlFor="blockDate">Blocca giorno</label>
+        <button
+          type="button"
+          tw="border border-black rounded p-[0.25rem 0.75rem]"
+          onClick={() => dateInputRef.current?.showPicker()}
+        >
+          {selectedDate ? formatReadable(selectedDate) : "Scegli data 📅"}
+        </button>
         <input
-          tw="rounded border border-black p-[0.25rem]"
+          ref={dateInputRef}
+          tw="sr-only"
           type="date"
           id="blockDate"
           min={today}
