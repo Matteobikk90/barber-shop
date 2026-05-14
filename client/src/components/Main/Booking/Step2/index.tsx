@@ -2,12 +2,36 @@ import { useEffect, useState } from "react";
 import BookingFormContainer from "components/Main/Booking/Container";
 import useCalendar from "hooks/useCalendar";
 import { getBookings } from "services/getBookings";
+import { getBlockedDates } from "services/getBlockedDates";
 import { thirtyMinutes, formatOptions } from "utils/utilities";
 import { openHours } from "utils/calendar";
 import TimeCalendar from "libs/react-timecalendar/build";
 import { BookingTypes } from "types/booking.types";
 /** @jsxImportSource @emotion/react */
 import "twin.macro";
+
+const BLOCKED_STYLE_ID = "dynamic-blocked-dates";
+
+const injectBlockedDatesCss = (dates: string[]) => {
+  let styleEl = document.getElementById(BLOCKED_STYLE_ID) as HTMLStyleElement | null;
+  if (!styleEl) {
+    styleEl = document.createElement("style");
+    styleEl.id = BLOCKED_STYLE_ID;
+    document.head.appendChild(styleEl);
+  }
+  if (dates.length === 0) {
+    styleEl.textContent = "";
+    return;
+  }
+  const rules = dates
+    .map((date) => {
+      const [, month, day] = date.split("-");
+      const cls = `t${day}-${month}`;
+      return `.${cls}, .${cls} p { cursor: not-allowed !important; color: #e52b50 !important; pointer-events: none; }\n.timeSelector.${cls} .tbody { display: none; }`;
+    })
+    .join("\n");
+  styleEl.textContent = rules;
+};
 
 const Step2 = ({ handleBookingInfo }: Partial<BookingTypes>) => {
   const { goToTimeSelection } = useCalendar();
@@ -32,6 +56,10 @@ const Step2 = ({ handleBookingInfo }: Partial<BookingTypes>) => {
 
   useEffect(() => {
     getBookings().then((item) => setBookedBookings(item));
+    getBlockedDates().then((dates) => injectBlockedDatesCss(dates));
+    return () => {
+      document.getElementById(BLOCKED_STYLE_ID)?.remove();
+    };
   }, []);
 
   return (

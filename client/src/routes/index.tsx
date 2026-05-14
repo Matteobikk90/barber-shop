@@ -17,6 +17,10 @@ export const routers = createBrowserRouter([
                 Component: lazy(() => import("components/Admin/Calendario2"))
             },
             {
+                path: "/blocco-date",
+                Component: lazy(() => import("components/Admin/BlockDate"))
+            },
+            {
                 path: "/terms-and-conditions",
                 Component: lazy(
                     () => import("components/Main/TermsAndConditions")
