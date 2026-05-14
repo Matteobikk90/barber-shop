@@ -72,18 +72,44 @@ const AdminPanel = () => {
           Blocco date
         </button>
       </div>
-      <div tw="flex flex-col gap-[0.5rem]">
-        <label htmlFor="bookings">Scegli un giorno:</label>
-        <select
-          tw="max-w-[13rem] w-full p-[1rem] rounded border border-black"
-          onChange={(e) => setSelectedDate(e.target.value)}
-          id="bookings">
-          {groups.map((item) => (
-            <option key={item.date} value={item.date}>
-              {item.date}
-            </option>
-          ))}
-        </select>
+      <div tw="flex gap-[0.5rem] overflow-x-auto pb-[0.25rem]">
+        {groups.map((item) => {
+          const [, , day] = item.date.split("-");
+          const dateObj = new Date(item.date + "T00:00:00");
+          const dayName = dateObj.toLocaleDateString("it-IT", {
+            weekday: "short",
+          });
+          const isSelected = selectedDate === item.date;
+          return (
+            <button
+              key={item.date}
+              type="button"
+              onClick={() => setSelectedDate(item.date)}
+              tw="flex flex-col items-center p-[0.5rem 1rem] rounded border min-w-[4.5rem] 
+              transition-colors"
+              style={{
+                backgroundColor: isSelected ? "#334a3b" : "#efece8",
+                borderColor: "#334a3b",
+                color: isSelected ? "#efece8" : "#160f0f",
+              }}>
+              <span tw="text-xs uppercase">{dayName}</span>
+              <span tw="text-xl font-bold leading-none">{day}</span>
+              <span tw="text-xs">
+                {new Date(dateObj).toLocaleDateString("it-IT", {
+                  month: "short",
+                })}
+              </span>
+              <span
+                tw="mt-[0.25rem] text-xs rounded-full w-[1.2rem] h-[1.2rem] flex items-center justify-center font-bold"
+                style={{
+                  backgroundColor: isSelected ? "#efece8" : "#334a3b",
+                  color: isSelected ? "#334a3b" : "#efece8",
+                }}>
+                {item.bookings.length}
+              </span>
+            </button>
+          );
+        })}
       </div>
       {selectedBookings.length === 0 ? (
         <p tw="text-sm">Nessuna prenotazione per questo giorno</p>
@@ -104,8 +130,7 @@ const AdminPanel = () => {
                 <tr
                   key={booking.start_time + booking.phone}
                   tw="border-t border-green"
-                  style={{ backgroundColor: i % 2 === 0 ? "#efece8" : "#fff" }}
-                >
+                  style={{ backgroundColor: i % 2 === 0 ? "#efece8" : "#fff" }}>
                   <td tw="p-[0.6rem 1rem] font-bold text-green">
                     {booking.start_time.split(" ")[1].slice(0, 5)}
                   </td>
