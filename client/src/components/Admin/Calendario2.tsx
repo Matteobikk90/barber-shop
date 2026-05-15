@@ -12,6 +12,26 @@ import { today } from "utils/utilities";
 
 type Tab = "prenotazioni" | "blocco-date";
 
+const TZ = "Europe/Rome";
+
+// Works for both old format ("2026-10-25 10:00:00") and new ISO ("2026-10-25T09:00:00.000Z")
+// "fr-CA" locale produces YYYY-MM-DD format, used as grouping key
+const getDateKey = (start_time: string): string =>
+  new Intl.DateTimeFormat("fr-CA", {
+    timeZone: TZ,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(new Date(start_time));
+
+const getTimeDisplay = (start_time: string): string =>
+  new Intl.DateTimeFormat("it-IT", {
+    timeZone: TZ,
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).format(new Date(start_time));
+
 const TrashIcon = () => (
   <svg
     width="12"
@@ -40,9 +60,7 @@ const AdminPanel = () => {
     getBookings().then((b: any) => setBookedBookings(b));
 
   const handleDelete = (booking: BookingTypes) => {
-    const label = `${booking.name} ${booking.surname} - ${
-      booking.start_time.split(" ")[1]
-    }`;
+    const label = `${booking.name} ${booking.surname} - ${getTimeDisplay(booking.start_time)}`;
     if (!window.confirm(`Cancellare la prenotazione di ${label}?`)) return;
     deleteDoc(doc(db, "bookings", booking.id!))
       .then(() => {
@@ -57,7 +75,7 @@ const AdminPanel = () => {
       (a, b) => +new Date(a.start_time) - +new Date(b.start_time)
     );
     const groups = sorted.reduce((acc: any, booking) => {
-      const date = booking.start_time.split(" ")[0];
+      const date = getDateKey(booking.start_time);
       if (!acc[date]) acc[date] = [];
       acc[date].push(booking);
       return acc;
@@ -213,7 +231,7 @@ const AdminPanel = () => {
                       tw="border-t border-[#ede9e3]"
                       css={i % 2 === 0 ? tw`bg-[#faf9f7]` : tw`bg-white`}>
                       <td tw="p-[0.85rem 1.1rem] font-bold text-green text-regular">
-                        {booking.start_time.split(" ")[1].slice(0, 5)}
+                        {getTimeDisplay(booking.start_time)}
                       </td>
                       <td tw="p-[0.85rem 1.1rem] font-medium">{`${booking.name} ${booking.surname}`}</td>
                       <td tw="p-[0.85rem 1.1rem] font-medium">
