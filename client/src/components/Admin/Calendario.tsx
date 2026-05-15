@@ -60,7 +60,9 @@ const AdminPanel = () => {
     getBookings().then((b: any) => setBookedBookings(b));
 
   const handleDelete = (booking: BookingTypes) => {
-    const label = `${booking.name} ${booking.surname} - ${getTimeDisplay(booking.start_time)}`;
+    const label = `${booking.name} ${booking.surname} - ${getTimeDisplay(
+      booking.start_time
+    )}`;
     if (!window.confirm(`Cancellare la prenotazione di ${label}?`)) return;
     deleteDoc(doc(db, "bookings", booking.id!))
       .then(() => {
@@ -244,7 +246,7 @@ const AdminPanel = () => {
                         <button
                           type="button"
                           onClick={() => handleDelete(booking)}
-                          tw="flex items-center gap-[0.3rem] text-red border-2 border-red rounded-lg p-[0.25rem 0.65rem]  cursor-pointer text-sm font-bold whitespace-nowrap hover:bg-red hover:text-white transition-all">
+                          tw="flex items-center gap-[0.3rem] text-red border-2 border-red rounded-lg p-[0.75rem]  cursor-pointer text-sm font-bold whitespace-nowrap hover:bg-red hover:text-white transition-all">
                           <TrashIcon /> Cancella
                         </button>
                       </td>
