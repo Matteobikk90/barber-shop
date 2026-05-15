@@ -8,7 +8,7 @@ const Footer = () => {
       <div tw="grid grid-cols-4 lg:grid-cols-2 sm:grid-cols-1 gap-[3rem] p-[2rem 4rem] md:p-[3rem 2rem] sm:p-[2.5rem 1.5rem]">
         <div>
           <img
-            width={180}
+            width={200}
             src="https://blendon-barber-shop.it/assets/images/logo-footer.png"
             alt="Blendon Barber Shop"
           />

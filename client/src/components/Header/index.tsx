@@ -6,7 +6,7 @@ import tw from "twin.macro";
 const Header = ({ toggleState, handleToggleState }: any) => (
     <header
         css={[
-            tw`bg-white fixed top-0 shadow w-full text-black z-[1001] text-xxl sm:text-[1.5rem] p-[0.5rem 1rem]`,
+            tw`bg-white fixed top-0 shadow w-full text-black z-[1001] text-lg sm:text-[1.5rem] p-[0.5rem 1rem]`,
             toggleState.isBooking && tw`relative`
         ]}
     >
