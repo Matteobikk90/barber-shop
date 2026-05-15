@@ -4,7 +4,7 @@ import "twin.macro";
 
 const Footer = () => {
   return (
-    <footer tw="bg-green text-cream">
+    <footer tw="bg-green text-cream text-[1.75rem]">
       <div tw="grid grid-cols-4 lg:grid-cols-2 sm:grid-cols-1 gap-[3rem] p-[2rem 4rem] md:p-[3rem 2rem] sm:p-[2.5rem 1.5rem]">
         <div>
           <img
@@ -15,7 +15,7 @@ const Footer = () => {
         </div>
 
         <div tw="flex flex-col gap-[0.4rem]">
-          <p tw="text-xs font-bold uppercase tracking-widest opacity-50 mb-[0.5rem]">
+          <p tw="text-lg font-bold uppercase tracking-widest opacity-50 mb-[0.5rem]">
             Dove siamo
           </p>
           <p>Via Manzoni 21/A</p>
@@ -31,7 +31,7 @@ const Footer = () => {
         </div>
 
         <div tw="flex flex-col gap-[0.4rem]">
-          <p tw="text-xs font-bold uppercase tracking-widest opacity-50 mb-[0.5rem]">
+          <p tw="text-lg font-bold uppercase tracking-widest opacity-50 mb-[0.5rem]">
             Orari
           </p>
           <p>Lunedì - Domenica chiuso</p>
@@ -40,7 +40,7 @@ const Footer = () => {
         </div>
 
         <div tw="flex flex-col gap-[0.75rem]">
-          <p tw="text-xs font-bold uppercase tracking-widest opacity-50">
+          <p tw="text-lg font-bold uppercase tracking-widest opacity-50">
             Seguici su
           </p>
           <div tw="flex gap-[1rem]">
@@ -58,7 +58,7 @@ const Footer = () => {
         </div>
       </div>
 
-      <div tw="border-t border-[rgba(255,255,255,0.12)] px-[4rem] py-[1.25rem] md:px-[2rem] sm:px-[1.5rem] text-xs opacity-50 text-center">
+      <div tw="border-t border-[rgba(255,255,255,0.12)] px-[4rem] py-[1.25rem] md:px-[2rem] sm:px-[1.5rem] text-xl opacity-50 text-center">
         © {new Date().getFullYear()} Blendon Barbershop. Tutti i diritti
         riservati.
       </div>

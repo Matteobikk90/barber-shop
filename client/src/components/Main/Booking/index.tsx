@@ -1,11 +1,11 @@
-import { FormEvent, useState, useRef } from "react";
 import Step1 from "components/Main/Booking/Step1";
 import Step2 from "components/Main/Booking/Step2";
 import Step3 from "components/Main/Booking/Step3";
 import Success from "components/Main/Booking/Success";
+import useMultiStepForm from "hooks/useMultiStepForm";
+import { FormEvent, useRef, useState } from "react";
 import { handleSubmitBooking } from "services/addBooking";
 import { BookingTypes } from "types/booking.types";
-import useMultiStepForm from "hooks/useMultiStepForm";
 /** @jsxImportSource @emotion/react */
 import tw from "twin.macro";
 
@@ -75,16 +75,16 @@ const Booking = ({ handleToggleState }: any) => {
         currentStepIndex === 1 && tw`p-[2rem 5rem 5rem]`,
       ]}>
       <button
-        tw="absolute top-[1rem] left-[1rem] text-lg"
+        tw="absolute top-[1rem] left-[1rem] text-xxl"
         onClick={() => handleToggleState("isBooking")}
         type="button">
         Chiudi X
       </button>
-      <div tw="absolute top-[1rem] right-[1rem] text-lg">
+      <div tw="absolute top-[1rem] right-[1rem] text-xxl">
         {currentStepIndex + 1} / {steps.length}
       </div>
       {step}
-      <div tw="text-lg flex gap-[1rem] absolute bottom-[1rem] right-[1rem] mt-[1rem]">
+      <div tw="text-xxl flex gap-[1rem] absolute bottom-[1rem] right-[1rem] mt-[1rem]">
         {!isFirstStep && !isLastStep && !isLoading && (
           <button type="button" onClick={back}>
             Indietro
