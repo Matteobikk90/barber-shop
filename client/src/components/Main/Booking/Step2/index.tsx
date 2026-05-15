@@ -6,7 +6,7 @@ import { getBlockedDates } from "services/getBlockedDates";
 import { getBookings } from "services/getBookings";
 import { BookingTypes } from "types/booking.types";
 import { openHours } from "utils/calendar";
-import { formatOptions, thirtyMinutes } from "utils/utilities";
+import { thirtyMinutes } from "utils/utilities";
 /** @jsxImportSource @emotion/react */
 import "twin.macro";
 
@@ -42,17 +42,12 @@ const Step2 = ({ handleBookingInfo }: Partial<BookingTypes>) => {
 
   const formatDateTime = (bookingDateTime: any) => {
     const serviceDuration = new Date(bookingDateTime.getTime() + thirtyMinutes);
-    const readable_start_time = `${new Intl.DateTimeFormat(
-      undefined,
-      formatOptions
-    ).format(bookingDateTime)} ${bookingDateTime.toLocaleTimeString("it-IT")}`;
-    const start_time = `${new Intl.DateTimeFormat(
-      "fr-CA",
-      formatOptions
-    ).format(bookingDateTime)} ${bookingDateTime.toLocaleTimeString("it-IT")}`;
-    const end_time = `${new Intl.DateTimeFormat("fr-CA", formatOptions).format(
-      serviceDuration
-    )} ${serviceDuration.toLocaleTimeString("it-IT")}`;
+    const tz = "Europe/Rome";
+    const datePart = new Intl.DateTimeFormat("it-IT", { timeZone: tz, year: "numeric", month: "2-digit", day: "2-digit" }).format(bookingDateTime);
+    const timePart = new Intl.DateTimeFormat("it-IT", { timeZone: tz, hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false }).format(bookingDateTime);
+    const readable_start_time = `${datePart} ${timePart}`;
+    const start_time = bookingDateTime.toISOString();
+    const end_time = serviceDuration.toISOString();
     handleBookingInfo!({ start_time, end_time, readable_start_time });
   };
 
