@@ -103,10 +103,12 @@ const AdminPanel = () => {
       alert("Data già bloccata");
       return;
     }
-    if (!window.confirm(`Bloccare il giorno ${newDate}?`)) return;
+    const { day, month, year } = formatDate(newDate);
+    const label = `${day} ${month} ${year}`;
+    if (!window.confirm(`Bloccare il giorno ${label}?`)) return;
     addBlockedDate(newDate)
       .then(() => {
-        alert(`${newDate} bloccato`);
+        alert(`${label} bloccato`);
         setNewDate("");
         reloadBlocked();
       })
@@ -114,10 +116,12 @@ const AdminPanel = () => {
   };
 
   const handleRemoveBlock = (date: string) => {
-    if (!window.confirm(`Sbloccare il giorno ${date}?`)) return;
+    const { day, month, year } = formatDate(date);
+    const label = `${day} ${month} ${year}`;
+    if (!window.confirm(`Sbloccare il giorno ${label}?`)) return;
     deleteBlockedDate(date)
       .then(() => {
-        alert(`${date} sbloccato`);
+        alert(`${label} sbloccato`);
         reloadBlocked();
       })
       .catch(() => alert("Qualcosa è andato storto, riprova"));
@@ -298,9 +302,11 @@ const AdminPanel = () => {
               {blockedDates.map((date) => {
                 const { day, month, year, weekday } = formatDate(date);
                 return (
-                  <div
+                  <button
                     key={date}
-                    tw="flex flex-col items-center justify-between p-3 rounded-xl min-w-[7rem] border border-[#e2ded9] bg-white shadow-sm gap-[0.15rem]">
+                    type="button"
+                    onClick={() => handleRemoveBlock(date)}
+                    tw="flex flex-col items-center justify-between p-3 rounded-xl min-w-[7rem] border border-[#e2ded9] bg-white shadow-sm gap-[0.15rem] cursor-pointer hover:border-red hover:shadow-md transition-all">
                     <span tw="text-[0.6rem] font-bold uppercase opacity-60">
                       {weekday}
                     </span>
@@ -308,13 +314,8 @@ const AdminPanel = () => {
                     <span tw="text-[0.6rem] font-bold uppercase">
                       {month} {year}
                     </span>
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveBlock(date)}
-                      tw="mt-2 text-sm font-bold text-red  border-none cursor-pointer hover:opacity-70 transition-all">
-                      Sblocca
-                    </button>
-                  </div>
+                    <span tw="mt-2 text-sm font-bold text-red">Sblocca</span>
+                  </button>
                 );
               })}
             </div>
