@@ -8,7 +8,7 @@ const BookingFormContainer = ({
     children
 }: BookingFormContainerTypes) => (
     <>
-        <h2 css={[tw`text-xxl`, !message && tw`mb-[2rem]`]}>{title}</h2>
+        <h2 css={[tw`text-xl`, !message && tw`mb-[2rem]`]}>{title}</h2>
         {message && <p tw="text-lg">{message}</p>}
         <article>{children}</article>
     </>

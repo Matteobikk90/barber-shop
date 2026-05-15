@@ -75,16 +75,16 @@ const Booking = ({ handleToggleState }: any) => {
         currentStepIndex === 1 && tw`p-[2rem 5rem 5rem]`,
       ]}>
       <button
-        tw="absolute top-[1rem] left-[1rem] text-xxl"
+        tw="absolute top-[1rem] left-[1rem] text-lg"
         onClick={() => handleToggleState("isBooking")}
         type="button">
         Chiudi X
       </button>
-      <div tw="absolute top-[1rem] right-[1rem] text-xxl">
+      <div tw="absolute top-[1rem] right-[1rem] text-lg">
         {currentStepIndex + 1} / {steps.length}
       </div>
       {step}
-      <div tw="text-xxl flex gap-[1rem] absolute bottom-[1rem] right-[1rem] mt-[1rem]">
+      <div tw="text-lg flex gap-[1rem] absolute bottom-[1rem] right-[1rem] mt-[1rem]">
         {!isFirstStep && !isLastStep && !isLoading && (
           <button type="button" onClick={back}>
             Indietro

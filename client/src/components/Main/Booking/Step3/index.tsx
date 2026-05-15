@@ -13,7 +13,7 @@ const Step3 = ({
 }: Partial<BookingTypes>) => (
     <BookingFormContainer title="Inserisci i tuoi dati, conferma le policy e prenota">
         <div tw="flex justify-center">
-            <div tw="grid grid-cols-[repeat(auto-fit, minmax(17.75rem, auto))] gap-[1.5rem] text-xxl sm:w-full">
+            <div tw="flex flex-col gap-[1.5rem] text-lg">
                 <div tw="flex gap-[2rem] sm:flex-wrap">
                     <div tw="flex flex-col items-start gap-[0.5rem] w-full">
                         <label>Nome: *</label>
