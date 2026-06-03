@@ -254,7 +254,8 @@ export const services: Partial<IdTextPairTypes>[] = [
         text: "Taglio + rifinitura barba",
         price: 25,
         time: 30,
-        src: "https://blendon-barber-shop.it/assets/images/services/razor.svg"
+        src: "https://blendon-barber-shop.it/assets/images/services/electric-razor.svg",
+        src2: "https://blendon-barber-shop.it/assets/images/services/razor.svg"
     },
     {
         id: "barba",

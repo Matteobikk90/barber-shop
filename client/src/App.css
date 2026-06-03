@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 html {
-  font-family: "Tulpen One", system-ui;
+  font-family: "Tulpen One", cursive !important;
   scroll-behavior: smooth;
   scroll-padding-top: 7.875rem;
 }
@@ -66,19 +66,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.calendar {
-  font-family: "Tulpen One", cursive !important;
-  font-size: 1.5rem !important;
-  height: 100%;
-  overflow: hidden;
-  border-radius: 0.5rem;
-  color: #160f0f !important;
-  max-width: 42rem;
-  margin: auto;
-}
-
 .calendar .body .row .cell .number {
-  font-size: 100% !important;
   top: 50% !important;
   left: 50%;
   right: unset !important;
@@ -93,14 +81,10 @@ body {
   padding: 0.5rem !important;
 }
 
-.calendar .timeSelector {
-  font-family: "Tulpen One", cursive !important;
-}
-
-.calendar .body .row .cell {
+/* .calendar .body .row .cell {
   height: 2.8em !important;
   transition: none !important;
-}
+} */
 
 .calendar .timeSelector .cell {
   height: auto !important;
@@ -146,6 +130,36 @@ body {
   left: 0rem;
   top: 0 !important;
   right: unset !important;
+}
+
+/* Service card icons – white SVGs, invert to black on cream bg, revert to white on dark hover */
+.service-icon {
+  filter: invert(1);
+  transition: filter 0.2s ease;
+}
+button:hover .service-icon {
+  filter: invert(0);
+}
+
+/* Admin dates horizontal scrollbar */
+.dates-scroll {
+  scrollbar-color: #334a3b rgba(51, 74, 59, 0.15);
+  scrollbar-width: thin;
+}
+.dates-scroll::-webkit-scrollbar {
+  height: 6px;
+  -webkit-appearance: none;
+}
+.dates-scroll::-webkit-scrollbar-track {
+  background: rgba(51, 74, 59, 0.15);
+  border-radius: 999px;
+}
+.dates-scroll::-webkit-scrollbar-thumb {
+  background: #334a3b;
+  border-radius: 999px;
+}
+.dates-scroll::-webkit-scrollbar-thumb:window-inactive {
+  background: #334a3b;
 }
 
 /* map */
