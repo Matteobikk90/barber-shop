@@ -105,7 +105,24 @@ const AdminPanel = () => {
     }
     const { day, month, year } = formatDate(newDate);
     const label = `${day} ${month} ${year}`;
-    if (!window.confirm(`Bloccare il giorno ${label}?`)) return;
+    const bookingsForDate = bookedBookings.filter(
+      (b) => getDateKey(b.start_time) === newDate
+    );
+    if (bookingsForDate.length > 0) {
+      const list = bookingsForDate
+        .map(
+          (b) => `• ${b.name} ${b.surname} - ${getTimeDisplay(b.start_time)}`
+        )
+        .join("\n");
+      if (
+        !window.confirm(
+          `Attenzione: ci sono ${bookingsForDate.length} prenotazione/i per ${label}:\n\n${list}\n\nVuoi comunque bloccare questa data?`
+        )
+      )
+        return;
+    } else {
+      if (!window.confirm(`Bloccare il giorno ${label}?`)) return;
+    }
     addBlockedDate(newDate)
       .then(() => {
         alert(`${label} bloccato`);
@@ -165,9 +182,7 @@ const AdminPanel = () => {
         <button
           type="button"
           tw="flex-1 py-[0.65rem] rounded-lg text-[1.4rem] font-bold border-none cursor-pointer tracking-wide transition-all"
-          css={
-            tab === "blocco-date" ? tw`bg-green text-cream` : tw`text-green`
-          }
+          css={tab === "blocco-date" ? tw`bg-green text-cream` : tw`text-green`}
           onClick={() => setTab("blocco-date")}>
           Blocco date
         </button>
@@ -176,7 +191,9 @@ const AdminPanel = () => {
       {/* ── PRENOTAZIONI ── */}
       {tab === "prenotazioni" && (
         <>
-          <div className="dates-scroll" tw="flex gap-[0.5rem] overflow-x-scroll pb-[0.75rem]">
+          <div
+            className="dates-scroll"
+            tw="flex gap-[0.5rem] overflow-x-scroll pb-[0.75rem]">
             {groups.map((item) => {
               const { day, month, year, weekday } = formatDate(item.date);
               const active = selectedDate === item.date;
@@ -194,7 +211,9 @@ const AdminPanel = () => {
                   <span tw="text-[1.15rem] sm:text-[0.85rem] font-bold tracking-widest uppercase opacity-70">
                     {weekday}
                   </span>
-                  <span tw="text-[2.2rem] sm:text-[1.5rem] font-bold leading-none">{day}</span>
+                  <span tw="text-[2.2rem] sm:text-[1.5rem] font-bold leading-none">
+                    {day}
+                  </span>
                   <span tw="text-[1.05rem] sm:text-[0.8rem] font-bold tracking-wider uppercase">
                     {month} {year}
                   </span>
@@ -269,24 +288,33 @@ const AdminPanel = () => {
           <form
             onSubmit={handleAddBlock}
             tw="flex gap-[0.5rem] items-stretch w-full">
-            <div tw="relative flex-1">
-              <span tw="w-full h-full py-[0.75rem] px-4 rounded-xl border-2 border-green bg-white cursor-pointer text-[1.5rem] font-bold text-green hover:bg-cream transition-all flex items-center justify-center">
-                {newDate
-                  ? (() => {
-                      const { day, month, year } = formatDate(newDate);
-                      return `${day} ${month} ${year}`;
-                    })()
-                  : "Scegli data 📅"}
-              </span>
-              <input
-                ref={dateInputRef}
-                type="date"
-                min={today}
-                value={newDate}
-                onChange={(e) => setNewDate(e.target.value)}
-                tw="absolute inset-0 opacity-0 w-full h-full cursor-pointer"
-              />
-            </div>
+            <button
+              type="button"
+              onClick={() => {
+                const input = dateInputRef.current;
+                if (!input) return;
+                if (typeof (input as any).showPicker === "function") {
+                  (input as any).showPicker();
+                } else {
+                  input.click();
+                }
+              }}
+              tw="flex-1 py-[0.75rem] px-4 rounded-xl border-2 border-green bg-white cursor-pointer text-[1.5rem] font-bold text-green hover:bg-cream transition-all">
+              {newDate
+                ? (() => {
+                    const { day, month, year } = formatDate(newDate);
+                    return `${day} ${month} ${year}`;
+                  })()
+                : "Scegli data 📅"}
+            </button>
+            <input
+              ref={dateInputRef}
+              type="date"
+              min={today}
+              value={newDate}
+              onChange={(e) => setNewDate(e.target.value)}
+              tw="absolute w-px h-px opacity-0 pointer-events-none overflow-hidden"
+            />
             <button
               type="submit"
               tw="flex-1 py-[0.75rem] px-4 rounded-xl bg-green text-cream border-none cursor-pointer text-[1.5rem] font-bold hover:opacity-90 transition-all">
