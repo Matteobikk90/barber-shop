@@ -1,0 +1,358 @@
+/** @jsxImportSource @emotion/react */
+import { db } from "db/firebase";
+import { deleteDoc, doc } from "firebase/firestore";
+import { useEffect, useRef, useState } from "react";
+import { addBlockedDate } from "services/addBlockedDate";
+import { deleteBlockedDate } from "services/deleteBlockedDate";
+import { getBlockedDates } from "services/getBlockedDates";
+import { getBookings } from "services/getBookings";
+import tw from "twin.macro";
+import { BookingTypes } from "types/booking.types";
+import { today } from "utils/utilities";
+
+type Tab = "prenotazioni" | "blocco-date";
+
+const TZ = "Europe/Rome";
+
+// Works for both old format ("2026-10-25 10:00:00") and new ISO ("2026-10-25T09:00:00.000Z")
+// "fr-CA" locale produces YYYY-MM-DD format, used as grouping key
+const getDateKey = (start_time: string): string =>
+  new Intl.DateTimeFormat("fr-CA", {
+    timeZone: TZ,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(new Date(start_time));
+
+const getTimeDisplay = (start_time: string): string =>
+  new Intl.DateTimeFormat("it-IT", {
+    timeZone: TZ,
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).format(new Date(start_time));
+
+const TrashIcon = () => (
+  <svg
+    width="12"
+    height="12"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round">
+    <polyline points="3 6 5 6 21 6" />
+    <path d="M19 6l-1 14H6L5 6" />
+    <path d="M10 11v6M14 11v6" />
+    <path d="M9 6V4h6v2" />
+  </svg>
+);
+
+const AdminPanel = () => {
+  const [tab, setTab] = useState<Tab>("prenotazioni");
+
+  // — Prenotazioni —
+  const [bookedBookings, setBookedBookings] = useState<BookingTypes[]>([]);
+  const [selectedDate, setSelectedDate] = useState(today);
+
+  const reloadBookings = () =>
+    getBookings().then((b: any) => setBookedBookings(b));
+
+  const handleDelete = (booking: BookingTypes) => {
+    const label = `${booking.name} ${booking.surname} - ${getTimeDisplay(
+      booking.start_time
+    )}`;
+    if (!window.confirm(`Cancellare la prenotazione di ${label}?`)) return;
+    deleteDoc(doc(db, "bookings", booking.id!))
+      .then(() => {
+        alert(`${label} cancellata`);
+        reloadBookings();
+      })
+      .catch(() => alert("Qualcosa è andato storto, riprova"));
+  };
+
+  const groupedBookings = () => {
+    const sorted = [...bookedBookings].sort(
+      (a, b) => +new Date(a.start_time) - +new Date(b.start_time)
+    );
+    const groups = sorted.reduce((acc: any, booking) => {
+      const date = getDateKey(booking.start_time);
+      if (!acc[date]) acc[date] = [];
+      acc[date].push(booking);
+      return acc;
+    }, {});
+    return Object.keys(groups).map((date) => ({
+      date,
+      bookings: groups[date],
+    }));
+  };
+
+  // — Blocco date —
+  const [blockedDates, setBlockedDates] = useState<string[]>([]);
+  const [newDate, setNewDate] = useState("");
+  const dateInputRef = useRef<HTMLInputElement>(null);
+
+  const reloadBlocked = () =>
+    getBlockedDates().then((d) => setBlockedDates(d.sort()));
+
+  const handleAddBlock = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newDate) return;
+    if (blockedDates.includes(newDate)) {
+      alert("Data già bloccata");
+      return;
+    }
+    const { day, month, year } = formatDate(newDate);
+    const label = `${day} ${month} ${year}`;
+    const bookingsForDate = bookedBookings.filter(
+      (b) => getDateKey(b.start_time) === newDate
+    );
+    if (bookingsForDate.length > 0) {
+      const list = bookingsForDate
+        .map(
+          (b) => `• ${b.name} ${b.surname} - ${getTimeDisplay(b.start_time)}`
+        )
+        .join("\n");
+      if (
+        !window.confirm(
+          `Attenzione: ci sono ${bookingsForDate.length} prenotazione/i per ${label}:\n\n${list}\n\nVuoi comunque bloccare questa data?`
+        )
+      )
+        return;
+    } else {
+      if (!window.confirm(`Bloccare il giorno ${label}?`)) return;
+    }
+    addBlockedDate(newDate)
+      .then(() => {
+        alert(`${label} bloccato`);
+        setNewDate("");
+        reloadBlocked();
+      })
+      .catch(() => alert("Qualcosa è andato storto, riprova"));
+  };
+
+  const handleRemoveBlock = (date: string) => {
+    const { day, month, year } = formatDate(date);
+    const label = `${day} ${month} ${year}`;
+    if (!window.confirm(`Sbloccare il giorno ${label}?`)) return;
+    deleteBlockedDate(date)
+      .then(() => {
+        alert(`${label} sbloccato`);
+        reloadBlocked();
+      })
+      .catch(() => alert("Qualcosa è andato storto, riprova"));
+  };
+
+  const formatDate = (date: string) => {
+    const [y, m, d] = date.split("-");
+    const obj = new Date(`${y}-${m}-${d}T00:00:00`);
+    return {
+      day: d,
+      month: obj.toLocaleDateString("it-IT", { month: "short" }),
+      year: y,
+      weekday: obj.toLocaleDateString("it-IT", { weekday: "short" }),
+    };
+  };
+
+  useEffect(() => {
+    reloadBookings();
+    reloadBlocked();
+  }, []);
+
+  const groups = groupedBookings();
+  const selectedBookings =
+    groups.find((g) => g.date === selectedDate)?.bookings ?? [];
+
+  return (
+    <section
+      id="calendar"
+      tw="flex flex-col gap-[1.75rem] p-[2rem 1.5rem] sm:px-0 max-w-[64rem] mx-auto">
+      {/* Tab bar */}
+      <div tw="flex w-full bg-cream rounded-xl p-[0.3rem] gap-[0.3rem] border border-[#334a3b22]">
+        <button
+          type="button"
+          tw="flex-1 py-[0.65rem] rounded-lg text-[1.4rem] font-bold border-none cursor-pointer tracking-wide transition-all"
+          css={
+            tab === "prenotazioni" ? tw`bg-green text-cream` : tw`text-green`
+          }
+          onClick={() => setTab("prenotazioni")}>
+          Prenotazioni
+        </button>
+        <button
+          type="button"
+          tw="flex-1 py-[0.65rem] rounded-lg text-[1.4rem] font-bold border-none cursor-pointer tracking-wide transition-all"
+          css={tab === "blocco-date" ? tw`bg-green text-cream` : tw`text-green`}
+          onClick={() => setTab("blocco-date")}>
+          Blocco date
+        </button>
+      </div>
+
+      {/* ── PRENOTAZIONI ── */}
+      {tab === "prenotazioni" && (
+        <>
+          <div
+            className="dates-scroll"
+            tw="flex gap-[0.5rem] overflow-x-scroll pb-[0.75rem]">
+            {groups.map((item) => {
+              const { day, month, year, weekday } = formatDate(item.date);
+              const active = selectedDate === item.date;
+              return (
+                <button
+                  key={item.date}
+                  type="button"
+                  onClick={() => setSelectedDate(item.date)}
+                  tw="flex flex-col items-center px-[1.1rem] py-[0.85rem] sm:px-[0.7rem] sm:py-[0.55rem] rounded-xl min-w-[5.5rem] sm:min-w-[4rem] border-2 cursor-pointer transition-all hover:bg-black hover:text-cream hover:border-black"
+                  css={
+                    active
+                      ? tw`border-green bg-green text-cream shadow-[0_2px_8px_rgba(51,74,59,0.25)]`
+                      : tw`border-[#c8c3bc] bg-white text-black shadow-sm`
+                  }>
+                  <span tw="text-[1.15rem] sm:text-[0.85rem] font-bold tracking-widest uppercase opacity-70">
+                    {weekday}
+                  </span>
+                  <span tw="text-[2.2rem] sm:text-[1.5rem] font-bold leading-none">
+                    {day}
+                  </span>
+                  <span tw="text-[1.05rem] sm:text-[0.8rem] font-bold tracking-wider uppercase">
+                    {month} {year}
+                  </span>
+                  <span
+                    tw="mt-[0.4rem] text-[1.1rem] sm:text-[0.85rem] font-bold rounded-full w-8 h-8 sm:w-6 sm:h-6 flex items-center justify-center"
+                    css={
+                      active
+                        ? tw`bg-[rgba(239,236,232,0.3)] text-cream`
+                        : tw`bg-green text-cream`
+                    }>
+                    {item.bookings.length}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          {selectedBookings.length === 0 ? (
+            <p tw="text-[1.4rem] text-[#999]">
+              Nessuna prenotazione per questo giorno.
+            </p>
+          ) : (
+            <div tw="overflow-x-auto rounded-xl border border-[#e2ded9] shadow-sm">
+              <table tw="w-full border-collapse text-[1.4rem] sm:text-[1rem]">
+                <thead>
+                  <tr tw="bg-green text-cream">
+                    {["Ora", "Cliente", "Servizio", "Telefono", ""].map((h) => (
+                      <th
+                        key={h}
+                        tw="p-[0.75rem 1.1rem] sm:p-[0.5rem 0.6rem] text-left font-bold tracking-wider text-[1.1rem] sm:text-[0.85rem] uppercase">
+                        {h}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {selectedBookings.map((booking: BookingTypes, i: number) => (
+                    <tr
+                      key={booking.start_time + booking.phone}
+                      tw="border-t border-[#ede9e3]"
+                      css={i % 2 === 0 ? tw`bg-[#faf9f7]` : tw`bg-white`}>
+                      <td tw="p-[0.85rem 1.1rem] sm:p-[0.6rem 0.6rem] font-bold text-green text-[1.4rem] sm:text-[1rem]">
+                        {getTimeDisplay(booking.start_time)}
+                      </td>
+                      <td tw="p-[0.85rem 1.1rem] sm:p-[0.6rem 0.6rem] font-medium">{`${booking.name} ${booking.surname}`}</td>
+                      <td tw="p-[0.85rem 1.1rem] sm:p-[0.6rem 0.6rem] font-medium">
+                        {booking.service}
+                      </td>
+                      <td tw="p-[0.85rem 1.1rem] sm:p-[0.6rem 0.6rem] font-medium">
+                        {booking.phone}
+                      </td>
+                      <td tw="p-[0.85rem 1.1rem] sm:p-[0.6rem 0.4rem]">
+                        <button
+                          type="button"
+                          onClick={() => handleDelete(booking)}
+                          tw="flex items-center gap-[0.3rem] text-red border-2 border-red rounded-lg p-[0.75rem] sm:p-[0.4rem 0.5rem] cursor-pointer text-[1.4rem] sm:text-[1rem] font-bold whitespace-nowrap hover:bg-red hover:text-white transition-all">
+                          <TrashIcon /> Cancella
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </>
+      )}
+
+      {/* ── BLOCCO DATE ── */}
+      {tab === "blocco-date" && (
+        <>
+          <form
+            onSubmit={handleAddBlock}
+            tw="flex gap-[0.5rem] items-stretch w-full">
+            <button
+              type="button"
+              onClick={() => {
+                const input = dateInputRef.current;
+                if (!input) return;
+                if (typeof (input as any).showPicker === "function") {
+                  (input as any).showPicker();
+                } else {
+                  input.click();
+                }
+              }}
+              tw="flex-1 py-[0.75rem] px-4 rounded-xl border-2 border-green bg-white cursor-pointer text-[1.5rem] font-bold text-green hover:bg-cream transition-all">
+              {newDate
+                ? (() => {
+                    const { day, month, year } = formatDate(newDate);
+                    return `${day} ${month} ${year}`;
+                  })()
+                : "Scegli data 📅"}
+            </button>
+            <input
+              ref={dateInputRef}
+              type="date"
+              min={today}
+              value={newDate}
+              onChange={(e) => setNewDate(e.target.value)}
+              tw="absolute w-px h-px opacity-0 pointer-events-none overflow-hidden"
+            />
+            <button
+              type="submit"
+              tw="flex-1 py-[0.75rem] px-4 rounded-xl bg-green text-cream border-none cursor-pointer text-[1.5rem] font-bold hover:opacity-90 transition-all">
+              Blocca 🔒
+            </button>
+          </form>
+
+          {blockedDates.length === 0 ? (
+            <p tw="text-[1.4rem] text-[#999]">Nessun giorno bloccato.</p>
+          ) : (
+            <div tw="flex flex-wrap gap-[0.5rem]">
+              {blockedDates.map((date) => {
+                const { day, month, year, weekday } = formatDate(date);
+                return (
+                  <button
+                    key={date}
+                    type="button"
+                    onClick={() => handleRemoveBlock(date)}
+                    tw="flex flex-col items-center justify-between p-[1rem] rounded-xl min-w-[8.5rem] border-2 border-[#e2ded9] bg-white shadow-sm gap-[0.25rem] cursor-pointer hover:border-red hover:shadow-md transition-all">
+                    <span tw="text-[1.1rem] font-bold uppercase opacity-60">
+                      {weekday}
+                    </span>
+                    <span tw="text-[1.8rem] font-bold leading-none">{day}</span>
+                    <span tw="text-[1.2rem] font-bold uppercase">
+                      {month} {year}
+                    </span>
+                    <span tw="mt-[0.5rem] text-[1.3rem] font-bold text-red">
+                      Sblocca 🔓
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </>
+      )}
+    </section>
+  );
+};
+
+export default AdminPanel;

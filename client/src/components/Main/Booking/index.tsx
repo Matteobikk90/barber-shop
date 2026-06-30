@@ -1,11 +1,11 @@
-import { FormEvent, useState, useRef } from "react";
 import Step1 from "components/Main/Booking/Step1";
 import Step2 from "components/Main/Booking/Step2";
 import Step3 from "components/Main/Booking/Step3";
 import Success from "components/Main/Booking/Success";
+import useMultiStepForm from "hooks/useMultiStepForm";
+import { FormEvent, useRef, useState } from "react";
 import { handleSubmitBooking } from "services/addBooking";
 import { BookingTypes } from "types/booking.types";
-import useMultiStepForm from "hooks/useMultiStepForm";
 /** @jsxImportSource @emotion/react */
 import tw from "twin.macro";
 
@@ -69,8 +69,9 @@ const Booking = ({ handleToggleState }: any) => {
     <form
       ref={bookingFormRef}
       onSubmit={submitBooking}
+      id="booking"
       css={[
-        tw`relative text-center bg-green text-cream shadow min-h-[450px] p-[2rem 5rem 4rem] md:p-[2rem 1rem 4rem] sm:p-[4rem 1rem]`,
+        tw`relative text-center bg-green text-cream shadow flex-1 min-h-[450px] p-[2rem 5rem 4rem] md:p-[2rem 1rem 4rem] sm:p-[4rem 1rem]`,
         currentStepIndex === 1 && tw`p-[2rem 5rem 5rem]`,
       ]}>
       <button

@@ -9,9 +9,9 @@ const Gallery = () => {
     return (
         <section
             id="galleria"
-            tw="p-[3rem 2rem] sm:p-[3rem 1rem] bg-green shadow"
+            tw="py-[5rem] px-[2rem] sm:py-[3rem] sm:px-[1rem] bg-green shadow"
         >
-            <h2 tw="text-xxl text-cream text-center mb-[3rem]">
+            <h2 tw="text-xxl text-cream text-center mb-[3rem] sm:mb-[2rem]">
                 <strong>Galleria</strong>
             </h2>
             <Carousel
