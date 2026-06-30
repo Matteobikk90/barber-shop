@@ -269,25 +269,24 @@ const AdminPanel = () => {
           <form
             onSubmit={handleAddBlock}
             tw="flex gap-[0.5rem] items-stretch w-full">
-            <button
-              type="button"
-              onClick={() => dateInputRef.current?.showPicker()}
-              tw="flex-1 py-[0.75rem] px-4 rounded-xl border-2 border-green bg-white cursor-pointer text-[1.5rem] font-bold text-green hover:bg-cream transition-all">
-              {newDate
-                ? (() => {
-                    const { day, month, year } = formatDate(newDate);
-                    return `${day} ${month} ${year}`;
-                  })()
-                : "Scegli data 📅"}
-            </button>
-            <input
-              ref={dateInputRef}
-              type="date"
-              min={today}
-              value={newDate}
-              onChange={(e) => setNewDate(e.target.value)}
-              tw="sr-only"
-            />
+            <div tw="relative flex-1">
+              <span tw="w-full h-full py-[0.75rem] px-4 rounded-xl border-2 border-green bg-white cursor-pointer text-[1.5rem] font-bold text-green hover:bg-cream transition-all flex items-center justify-center">
+                {newDate
+                  ? (() => {
+                      const { day, month, year } = formatDate(newDate);
+                      return `${day} ${month} ${year}`;
+                    })()
+                  : "Scegli data 📅"}
+              </span>
+              <input
+                ref={dateInputRef}
+                type="date"
+                min={today}
+                value={newDate}
+                onChange={(e) => setNewDate(e.target.value)}
+                tw="absolute inset-0 opacity-0 w-full h-full cursor-pointer"
+              />
+            </div>
             <button
               type="submit"
               tw="flex-1 py-[0.75rem] px-4 rounded-xl bg-green text-cream border-none cursor-pointer text-[1.5rem] font-bold hover:opacity-90 transition-all">
