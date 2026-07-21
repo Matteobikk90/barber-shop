@@ -4,6 +4,7 @@ import { deleteDoc, doc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { addBlockedDate } from "services/addBlockedDate";
 import { deleteBlockedDate } from "services/deleteBlockedDate";
+import { deleteBookingsByIds } from "services/deleteBookingsByIds";
 import { getBlockedDates } from "services/getBlockedDates";
 import { getBookings } from "services/getBookings";
 import tw from "twin.macro";
@@ -92,6 +93,7 @@ const AdminPanel = () => {
   // — Blocco date —
   const [blockedDates, setBlockedDates] = useState<string[]>([]);
   const [newDate, setNewDate] = useState("");
+  const [deletingDate, setDeletingDate] = useState<string | null>(null);
 
   const reloadBlocked = () =>
     getBlockedDates().then((d) => setBlockedDates(d.sort()));
@@ -144,6 +146,61 @@ const AdminPanel = () => {
       .catch(() => alert("Qualcosa è andato storto, riprova"));
   };
 
+  const handleDeleteDayBookings = async (date: string) => {
+    if (deletingDate) return;
+    setDeletingDate(date);
+
+    try {
+      // Refresh first so the confirmation includes every current booking.
+      const currentBookings = (await getBookings()) as BookingTypes[];
+      const bookingsForDate = currentBookings.filter(
+        (booking) => getDateKey(booking.start_time) === date
+      );
+
+      if (bookingsForDate.length === 0) {
+        setBookedBookings(currentBookings);
+        alert("Non ci sono più prenotazioni da cancellare per questa giornata.");
+        return;
+      }
+
+      const bookingIds = bookingsForDate
+        .map((booking) => booking.id)
+        .filter((id): id is string => Boolean(id));
+
+      if (bookingIds.length !== bookingsForDate.length) {
+        throw new Error("A booking is missing its document id");
+      }
+
+      const { day, month, year } = formatDate(date);
+      const dateLabel = `${day} ${month} ${year}`;
+      const count = bookingsForDate.length;
+      const bookingsLabel =
+        count === 1 ? "1 prenotazione" : `${count} prenotazioni`;
+
+      if (
+        !window.confirm(
+          `ATTENZIONE: stai per cancellare definitivamente ${bookingsLabel} del ${dateLabel}.\n\nLa giornata resterà bloccata, ma le prenotazioni non potranno essere recuperate.\n\nVuoi continuare?`
+        )
+      )
+        return;
+
+      await deleteBookingsByIds(bookingIds);
+      await reloadBookings();
+      alert(
+        `${bookingsLabel} del ${dateLabel} ${
+          count === 1 ? "cancellata" : "cancellate"
+        }.`
+      );
+    } catch (error) {
+      console.error(error);
+      alert(
+        "Non è stato possibile cancellare la giornata. Nessuna prenotazione è stata rimossa: riprova."
+      );
+    } finally {
+      setDeletingDate(null);
+    }
+  };
+
   const formatDate = (date: string) => {
     const [y, m, d] = date.split("-");
     const obj = new Date(`${y}-${m}-${d}T00:00:00`);
@@ -163,6 +220,8 @@ const AdminPanel = () => {
   const groups = groupedBookings();
   const selectedBookings =
     groups.find((g) => g.date === selectedDate)?.bookings ?? [];
+  const isSelectedDateBlocked = blockedDates.includes(selectedDate);
+  const isDeletingSelectedDate = deletingDate === selectedDate;
 
   return (
     <section
@@ -236,48 +295,78 @@ const AdminPanel = () => {
               Nessuna prenotazione per questo giorno.
             </p>
           ) : (
-            <div tw="overflow-x-auto rounded-xl border border-[#e2ded9] shadow-sm">
-              <table tw="w-full border-collapse text-[1.4rem] sm:text-[1rem]">
-                <thead>
-                  <tr tw="bg-green text-cream">
-                    {["Ora", "Cliente", "Servizio", "Telefono", ""].map((h) => (
-                      <th
-                        key={h}
-                        tw="p-[0.75rem 1.1rem] sm:p-[0.5rem 0.6rem] text-left font-bold tracking-wider text-[1.1rem] sm:text-[0.85rem] uppercase">
-                        {h}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {selectedBookings.map((booking: BookingTypes, i: number) => (
-                    <tr
-                      key={booking.start_time + booking.phone}
-                      tw="border-t border-[#ede9e3]"
-                      css={i % 2 === 0 ? tw`bg-[#faf9f7]` : tw`bg-white`}>
-                      <td tw="p-[0.85rem 1.1rem] sm:p-[0.6rem 0.6rem] font-bold text-green text-[1.4rem] sm:text-[1rem]">
-                        {getTimeDisplay(booking.start_time)}
-                      </td>
-                      <td tw="p-[0.85rem 1.1rem] sm:p-[0.6rem 0.6rem] font-medium">{`${booking.name} ${booking.surname}`}</td>
-                      <td tw="p-[0.85rem 1.1rem] sm:p-[0.6rem 0.6rem] font-medium">
-                        {booking.service}
-                      </td>
-                      <td tw="p-[0.85rem 1.1rem] sm:p-[0.6rem 0.6rem] font-medium">
-                        {booking.phone}
-                      </td>
-                      <td tw="p-[0.85rem 1.1rem] sm:p-[0.6rem 0.4rem]">
-                        <button
-                          type="button"
-                          onClick={() => handleDelete(booking)}
-                          tw="flex items-center gap-[0.3rem] text-red border-2 border-red rounded-lg p-[0.75rem] sm:p-[0.4rem 0.5rem] cursor-pointer text-[1.4rem] sm:text-[1rem] font-bold whitespace-nowrap hover:bg-red hover:text-white transition-all">
-                          <TrashIcon /> Cancella
-                        </button>
-                      </td>
+            <>
+              {isSelectedDateBlocked && (
+                <div tw="flex flex-wrap items-center justify-between gap-[0.75rem] p-[0.9rem 1rem] rounded-xl border-2 border-red bg-[#fff5f6]">
+                  <div tw="flex flex-col">
+                    <strong tw="text-[1.3rem] text-red">
+                      Giornata bloccata
+                    </strong>
+                    <span tw="text-[1.05rem] text-[#555]">
+                      {selectedBookings.length === 1
+                        ? "Dopo aver contattato il cliente, puoi cancellare la prenotazione."
+                        : `Dopo aver contattato tutti, puoi cancellare insieme le ${selectedBookings.length} prenotazioni.`}
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    disabled={Boolean(deletingDate)}
+                    onClick={() => handleDeleteDayBookings(selectedDate)}
+                    tw="flex items-center justify-center gap-[0.4rem] py-[0.65rem] px-[1rem] rounded-lg border-2 border-red bg-white text-red text-[1.15rem] font-bold cursor-pointer hover:bg-red hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                    <TrashIcon />
+                    {isDeletingSelectedDate
+                      ? "Cancellazione..."
+                      : selectedBookings.length === 1
+                      ? "Cancella prenotazione"
+                      : `Cancella tutte (${selectedBookings.length})`}
+                  </button>
+                </div>
+              )}
+
+              <div tw="overflow-x-auto rounded-xl border border-[#e2ded9] shadow-sm">
+                <table tw="w-full border-collapse text-[1.4rem] sm:text-[1rem]">
+                  <thead>
+                    <tr tw="bg-green text-cream">
+                      {["Ora", "Cliente", "Servizio", "Telefono", ""].map((h) => (
+                        <th
+                          key={h}
+                          tw="p-[0.75rem 1.1rem] sm:p-[0.5rem 0.6rem] text-left font-bold tracking-wider text-[1.1rem] sm:text-[0.85rem] uppercase">
+                          {h}
+                        </th>
+                      ))}
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {selectedBookings.map((booking: BookingTypes, i: number) => (
+                      <tr
+                        key={booking.start_time + booking.phone}
+                        tw="border-t border-[#ede9e3]"
+                        css={i % 2 === 0 ? tw`bg-[#faf9f7]` : tw`bg-white`}>
+                        <td tw="p-[0.85rem 1.1rem] sm:p-[0.6rem 0.6rem] font-bold text-green text-[1.4rem] sm:text-[1rem]">
+                          {getTimeDisplay(booking.start_time)}
+                        </td>
+                        <td tw="p-[0.85rem 1.1rem] sm:p-[0.6rem 0.6rem] font-medium">{`${booking.name} ${booking.surname}`}</td>
+                        <td tw="p-[0.85rem 1.1rem] sm:p-[0.6rem 0.6rem] font-medium">
+                          {booking.service}
+                        </td>
+                        <td tw="p-[0.85rem 1.1rem] sm:p-[0.6rem 0.6rem] font-medium">
+                          {booking.phone}
+                        </td>
+                        <td tw="p-[0.85rem 1.1rem] sm:p-[0.6rem 0.4rem]">
+                          <button
+                            type="button"
+                            disabled={isDeletingSelectedDate}
+                            onClick={() => handleDelete(booking)}
+                            tw="flex items-center gap-[0.3rem] text-red border-2 border-red rounded-lg p-[0.75rem] sm:p-[0.4rem 0.5rem] cursor-pointer text-[1.4rem] sm:text-[1rem] font-bold whitespace-nowrap hover:bg-red hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                            <TrashIcon /> Cancella
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
           )}
         </>
       )}
