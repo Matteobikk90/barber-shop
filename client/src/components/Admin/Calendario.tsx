@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { db } from "db/firebase";
 import { deleteDoc, doc } from "firebase/firestore";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { addBlockedDate } from "services/addBlockedDate";
 import { deleteBlockedDate } from "services/deleteBlockedDate";
 import { getBlockedDates } from "services/getBlockedDates";
@@ -9,6 +9,7 @@ import { getBookings } from "services/getBookings";
 import tw from "twin.macro";
 import { BookingTypes } from "types/booking.types";
 import { today } from "utils/utilities";
+import BlockDatePicker from "./BlockDatePicker";
 
 type Tab = "prenotazioni" | "blocco-date";
 
@@ -91,7 +92,6 @@ const AdminPanel = () => {
   // — Blocco date —
   const [blockedDates, setBlockedDates] = useState<string[]>([]);
   const [newDate, setNewDate] = useState("");
-  const dateInputRef = useRef<HTMLInputElement>(null);
 
   const reloadBlocked = () =>
     getBlockedDates().then((d) => setBlockedDates(d.sort()));
@@ -288,32 +288,11 @@ const AdminPanel = () => {
           <form
             onSubmit={handleAddBlock}
             tw="flex gap-[0.5rem] items-stretch w-full">
-            <button
-              type="button"
-              onClick={() => {
-                const input = dateInputRef.current;
-                if (!input) return;
-                if (typeof (input as any).showPicker === "function") {
-                  (input as any).showPicker();
-                } else {
-                  input.click();
-                }
-              }}
-              tw="flex-1 py-[0.75rem] px-4 rounded-xl border-2 border-green bg-white cursor-pointer text-[1.5rem] font-bold text-green hover:bg-cream transition-all">
-              {newDate
-                ? (() => {
-                    const { day, month, year } = formatDate(newDate);
-                    return `${day} ${month} ${year}`;
-                  })()
-                : "Scegli data 📅"}
-            </button>
-            <input
-              ref={dateInputRef}
-              type="date"
-              min={today}
+            <BlockDatePicker
               value={newDate}
-              onChange={(e) => setNewDate(e.target.value)}
-              tw="absolute w-px h-px opacity-0 pointer-events-none overflow-hidden"
+              min={today}
+              unavailableDates={blockedDates}
+              onChange={setNewDate}
             />
             <button
               type="submit"
