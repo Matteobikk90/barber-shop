@@ -26,6 +26,7 @@ const INITIAL_DATA: BookingTypes = {
 const Booking = ({ handleToggleState }: any) => {
   const [booking, setBooking] = useState(INITIAL_DATA);
   const bookingFormRef = useRef<HTMLFormElement | null>(null);
+  const submittingRef = useRef(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleBookingInfo = (bookinfInfo: Partial<BookingTypes>) => {
@@ -39,10 +40,13 @@ const Booking = ({ handleToggleState }: any) => {
       confirmation: checked,
     });
 
-  const submitBooking = (e: FormEvent<HTMLFormElement>) => {
+  const submitBooking = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (submittingRef.current) return;
+    submittingRef.current = true;
     setIsLoading(true);
-    handleSubmitBooking(booking, next, setIsLoading);
+    await handleSubmitBooking(booking, next, setIsLoading);
+    submittingRef.current = false;
   };
 
   const {
@@ -96,7 +100,7 @@ const Booking = ({ handleToggleState }: any) => {
         booking.phone &&
         booking.email &&
         booking.confirmation ? (
-          <button type="submit" value="Send">
+          <button type="submit" value="Send" disabled={isLoading}>
             {isLoading ? "Prenotazione in corso, attendi" : "Prenota"}
           </button>
         ) : null}

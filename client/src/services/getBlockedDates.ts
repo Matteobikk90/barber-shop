@@ -1,29 +1,58 @@
 import { db } from "db/firebase";
-import { collection, doc, getDocs, deleteDoc } from "firebase/firestore";
+import {
+    collection,
+    deleteDoc,
+    doc,
+    DocumentData,
+    getDocsFromServer,
+    onSnapshot,
+    QuerySnapshot,
+    Unsubscribe,
+} from "firebase/firestore";
+import type { FirestoreSource } from "services/getBookings";
+import { getRomeDateKey } from "utils/bookingDate";
 
 const blockedDatesRef = collection(db, "blockedDates");
 
-/* Fetch blocked dates from Firestore, auto-delete past ones */
-export const getBlockedDates = (): Promise<string[]> =>
-    getDocs(blockedDatesRef).then((res) => {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
+const readBlockedDates = (
+    snapshot: QuerySnapshot<DocumentData>,
+    removePast: boolean
+): string[] => {
+    const today = getRomeDateKey(new Date());
+    const dates: string[] = [];
 
-        const dates: string[] = [];
-
-        res.docs.forEach((docSnap) => {
-            const date: string = docSnap.data().date;
-            const dateObj = new Date(date + "T00:00:00");
-
-            // Auto-delete dates that have already passed
-            if (dateObj < today) {
-                deleteDoc(doc(db, "blockedDates", docSnap.id))
-                    .then(() => console.log(`Blocked date ${date} auto-removed (past)`))
-                    .catch((err) => console.log(err));
-            } else {
-                dates.push(date);
+    snapshot.docs.forEach((document) => {
+        const date = document.data().date as string;
+        if (date < today) {
+            if (removePast) {
+                deleteDoc(doc(db, "blockedDates", document.id)).catch((error) =>
+                    console.log(error)
+                );
             }
-        });
-
-        return dates;
+        } else {
+            dates.push(date);
+        }
     });
+
+    return dates;
+};
+
+/** Fetch blocked dates from the server and auto-delete past ones. */
+export const getBlockedDates = (): Promise<string[]> =>
+    getDocsFromServer(blockedDatesRef).then((snapshot) =>
+        readBlockedDates(snapshot, true)
+    );
+
+export const subscribeToBlockedDates = (
+    onDates: (dates: string[], source: FirestoreSource) => void,
+    onError?: (error: Error) => void
+): Unsubscribe =>
+    onSnapshot(
+        blockedDatesRef,
+        { includeMetadataChanges: true },
+        (snapshot) => {
+            const fromCache = snapshot.metadata.fromCache;
+            onDates(readBlockedDates(snapshot, !fromCache), { fromCache });
+        },
+        onError
+    );

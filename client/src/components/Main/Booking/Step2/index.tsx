@@ -2,15 +2,25 @@ import BookingFormContainer from "components/Main/Booking/Container";
 import useCalendar from "hooks/useCalendar";
 import TimeCalendar from "libs/react-timecalendar/build";
 import { useEffect, useState } from "react";
-import { getBlockedDates } from "services/getBlockedDates";
-import { getBookings } from "services/getBookings";
+import { subscribeToBlockedDates } from "services/getBlockedDates";
+import { subscribeToBookings } from "services/getBookings";
 import { BookingTypes } from "types/booking.types";
+import {
+  isBookingSlotUnavailable,
+  parseBookingDateTime,
+} from "utils/bookingDate";
 import { openHours } from "utils/calendar";
 import { thirtyMinutes } from "utils/utilities";
 /** @jsxImportSource @emotion/react */
 import "twin.macro";
 
 const BLOCKED_STYLE_ID = "dynamic-blocked-dates";
+
+type CalendarBooking = {
+  id: string;
+  start_time: Date;
+  end_time: Date;
+};
 
 const injectBlockedDatesCss = (dates: string[]) => {
   let styleEl = document.getElementById(
@@ -21,43 +31,129 @@ const injectBlockedDatesCss = (dates: string[]) => {
     styleEl.id = BLOCKED_STYLE_ID;
     document.head.appendChild(styleEl);
   }
-  if (dates.length === 0) {
-    styleEl.textContent = "";
-    return;
-  }
-  const rules = dates
+
+  styleEl.textContent = dates
     .map((date) => {
       const [, month, day] = date.split("-");
       const cls = `t${day}-${month}`;
-      return `.${cls}, .${cls} p { cursor: not-allowed !important; color: #e52b50 !important; pointer-events: none; }\n.timeSelector.${cls} .tbody { display: none; }`;
+      return `.${cls}, .${cls} p { cursor: not-allowed !important; color: #e52b50 !important; }\n.calendar > .body .row .cell.${cls} { pointer-events: none; }\n.timeSelector.${cls} .optionHolder .cell { color: #e52b50 !important; cursor: not-allowed !important; }`;
     })
     .join("\n");
-  styleEl.textContent = rules;
+};
+
+const toCalendarBooking = (
+  booking: Partial<BookingTypes>
+): CalendarBooking | null => {
+  if (!booking.start_time || !booking.end_time) return null;
+  const startTime = parseBookingDateTime(booking.start_time);
+  const endTime = parseBookingDateTime(booking.end_time);
+  if (Number.isNaN(startTime.getTime()) || Number.isNaN(endTime.getTime())) {
+    return null;
+  }
+  return {
+    id: booking.id || `booking-${startTime.toISOString()}`,
+    start_time: startTime,
+    end_time: endTime,
+  };
 };
 
 const Step2 = ({ handleBookingInfo }: Partial<BookingTypes>) => {
   const { goToTimeSelection } = useCalendar();
+  const [bookedBookings, setBookedBookings] = useState<
+    CalendarBooking[] | null
+  >(null);
+  const [blockedDates, setBlockedDates] = useState<string[]>([]);
+  const [bookingsSynced, setBookingsSynced] = useState(false);
+  const [blockedDatesSynced, setBlockedDatesSynced] = useState(false);
+  const [calendarError, setCalendarError] = useState(false);
 
-  const [bookedBookings, setBookedBookings] = useState<any>([]);
-
-  const formatDateTime = (bookingDateTime: any) => {
+  const formatDateTime = (bookingDateTime: Date) => {
     const serviceDuration = new Date(bookingDateTime.getTime() + thirtyMinutes);
     const tz = "Europe/Rome";
-    const datePart = new Intl.DateTimeFormat("it-IT", { timeZone: tz, year: "numeric", month: "2-digit", day: "2-digit" }).format(bookingDateTime);
-    const timePart = new Intl.DateTimeFormat("it-IT", { timeZone: tz, hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false }).format(bookingDateTime);
-    const readable_start_time = `${datePart} ${timePart}`;
-    const start_time = bookingDateTime.toISOString();
-    const end_time = serviceDuration.toISOString();
-    handleBookingInfo!({ start_time, end_time, readable_start_time });
+    const datePart = new Intl.DateTimeFormat("it-IT", {
+      timeZone: tz,
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }).format(bookingDateTime);
+    const timePart = new Intl.DateTimeFormat("it-IT", {
+      timeZone: tz,
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    }).format(bookingDateTime);
+    handleBookingInfo!({
+      start_time: bookingDateTime.toISOString(),
+      end_time: serviceDuration.toISOString(),
+      readable_start_time: `${datePart} ${timePart}`,
+    });
+  };
+
+  const selectDateTime = (bookingDateTime: Date) => {
+    if (
+      isBookingSlotUnavailable(
+        bookingDateTime,
+        bookedBookings || [],
+        blockedDates
+      )
+    ) {
+      window.alert(
+        "Questo orario non è disponibile. Il calendario è stato aggiornato: scegli un altro orario."
+      );
+      return;
+    }
+
+    formatDateTime(bookingDateTime);
   };
 
   useEffect(() => {
-    getBookings().then((item) => setBookedBookings(item));
-    getBlockedDates().then((dates) => injectBlockedDatesCss(dates));
+    const handleError = (error: Error) => {
+      console.error(error);
+      setCalendarError(true);
+    };
+
+    const unsubscribeBookings = subscribeToBookings(
+      (bookings, source) => {
+        if (source.fromCache) return;
+        const calendarBookings = bookings
+          .map(toCalendarBooking)
+          .filter((booking): booking is CalendarBooking => booking !== null);
+        setBookedBookings(calendarBookings);
+        setBookingsSynced(true);
+        setCalendarError(false);
+      },
+      handleError
+    );
+
+    const unsubscribeBlockedDates = subscribeToBlockedDates(
+      (dates, source) => {
+        if (source.fromCache) return;
+        setBlockedDates(dates);
+        injectBlockedDatesCss(dates);
+        setBlockedDatesSynced(true);
+        setCalendarError(false);
+      },
+      handleError
+    );
+
     return () => {
+      unsubscribeBookings();
+      unsubscribeBlockedDates();
       document.getElementById(BLOCKED_STYLE_ID)?.remove();
     };
   }, []);
+
+  const blockedDateBookings: CalendarBooking[] = blockedDates.map((date) => ({
+    id: `blocked-${date}`,
+    start_time: parseBookingDateTime(`${date} 00:00:00`),
+    end_time: parseBookingDateTime(`${date} 23:59:59`),
+  }));
+  const calendarBookings = [
+    ...(bookedBookings || []),
+    ...blockedDateBookings,
+  ];
+  const calendarReady = bookingsSynced && blockedDatesSynced;
 
   return (
     <BookingFormContainer title="Seleziona una data e un orario">
@@ -72,14 +168,21 @@ const Step2 = ({ handleBookingInfo }: Partial<BookingTypes>) => {
         </div>
       </div>
       <article>
-        {bookedBookings && (
+        {calendarError ? (
+          <p tw="text-xl">
+            Non riesco ad aggiornare le disponibilità. Controlla la connessione e
+            ricarica la pagina.
+          </p>
+        ) : !calendarReady ? (
+          <p tw="text-xl">Aggiornamento disponibilità in corso...</p>
+        ) : (
           <TimeCalendar
             disableHistory
             clickable
             timeSlot={30}
             openHours={openHours}
-            onTimeClick={formatDateTime}
-            bookings={bookedBookings}
+            onTimeClick={selectDateTime}
+            bookings={calendarBookings}
             onDateFunction={goToTimeSelection}
             selectedTime={{
               start: "",

@@ -5,8 +5,11 @@ import { useEffect, useState } from "react";
 import { addBlockedDate } from "services/addBlockedDate";
 import { deleteBlockedDate } from "services/deleteBlockedDate";
 import { deleteBookingsByIds } from "services/deleteBookingsByIds";
-import { getBlockedDates } from "services/getBlockedDates";
-import { getBookings } from "services/getBookings";
+import {
+  getBlockedDates,
+  subscribeToBlockedDates,
+} from "services/getBlockedDates";
+import { getBookings, subscribeToBookings } from "services/getBookings";
 import tw from "twin.macro";
 import { BookingTypes } from "types/booking.types";
 import { today } from "utils/utilities";
@@ -213,8 +216,17 @@ const AdminPanel = () => {
   };
 
   useEffect(() => {
-    reloadBookings();
-    reloadBlocked();
+    const unsubscribeBookings = subscribeToBookings((bookings, source) => {
+      if (!source.fromCache) setBookedBookings(bookings as BookingTypes[]);
+    });
+    const unsubscribeBlockedDates = subscribeToBlockedDates((dates, source) => {
+      if (!source.fromCache) setBlockedDates(dates.sort());
+    });
+
+    return () => {
+      unsubscribeBookings();
+      unsubscribeBlockedDates();
+    };
   }, []);
 
   const groups = groupedBookings();

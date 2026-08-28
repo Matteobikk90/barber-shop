@@ -5892,7 +5892,7 @@ var DayTitle = /** @class */ (function (_super) {
 //@ts-nocheck
 function Day(props) {
     var classSet = props.classSet, onDateClick = props.onDateClick, date = props.date, day = props.day;
-    return (React.createElement("div", { className: "col cell" + classSet + " t" + day.replaceAll("/", "-"), role: "gridcell3", tabIndex: 0, onClick: onDateClick, onKeyDown: onDateClick },
+    return (React.createElement("div", { className: "col cell" + classSet + " t" + day.replace(/\//g, "-"), role: "gridcell3", tabIndex: 0, onClick: onDateClick, onKeyDown: onDateClick },
         React.createElement("span", { className: "number" }, date),
         React.createElement("span", { className: "bg" }, date)));
 }
@@ -7098,7 +7098,8 @@ var defaultProps = {
 };
 function TimeSlot(props) {
     var classSet = props.classSet, onTimeClick = props.onTimeClick, time = props.time;
-    return (React.createElement("div", { className: "col cell " + classSet, onClick: onTimeClick, onKeyDown: onTimeClick, role: "button", tabIndex: 0 },
+    var isDisabled = classSet.indexOf("disabled") !== -1;
+    return (React.createElement("div", { className: "col cell " + classSet, onClick: isDisabled ? null : onTimeClick, onKeyDown: isDisabled ? null : onTimeClick, role: "button", "aria-disabled": isDisabled, tabIndex: isDisabled ? -1 : 0 },
         React.createElement("p", null, time)));
 }
 TimeSlot.propTypes = propTypes;
@@ -7220,7 +7221,7 @@ var TimeSelect = /** @class */ (function (_super) {
             rows.push(React.createElement("div", { className: "row", key: String(timePick) }, timeSlots));
             timeSlots = [];
         }
-        return (React.createElement("div", { className: "timeSelector t" + this.props.day.replaceAll("/", "-") },
+        return (React.createElement("div", { className: "timeSelector t" + this.props.day.replace(/\//g, "-") },
             React.createElement("div", { className: "optionSpacer body" },
                 React.createElement("div", { className: "optionHolder " + selectorClass }, rows))));
     };

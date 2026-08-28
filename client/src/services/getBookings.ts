@@ -1,45 +1,76 @@
 import { BookingTypes } from "types/booking.types";
 import { db } from "db/firebase";
-import { collection, doc, getDocs, deleteDoc } from "firebase/firestore";
+import {
+    collection,
+    deleteDoc,
+    doc,
+    DocumentData,
+    getDocsFromServer,
+    onSnapshot,
+    QuerySnapshot,
+    Unsubscribe,
+} from "firebase/firestore";
+import { normalizeBookingDateTime, parseBookingDateTime } from "utils/bookingDate";
 import { yesterday } from "utils/utilities";
 
 const productsRef = collection(db, "bookings");
 
-/* function to get bookings from firestore */
+const readBookings = (
+    snapshot: QuerySnapshot<DocumentData>
+): Partial<BookingTypes>[] =>
+    snapshot.docs.map((document) => {
+        const data = document.data();
+        return {
+            id: document.id,
+            service: data.service,
+            name: data.name,
+            surname: data.surname,
+            phone: data.phone,
+            email: data.email,
+            readable_start_time: data.readable_start_time,
+            start_time: normalizeBookingDateTime(data.start_time),
+            end_time: normalizeBookingDateTime(data.end_time),
+        };
+    });
+
+const removePastBookings = (bookings: Partial<BookingTypes>[]) => {
+    const cutoff = Date.now() - yesterday;
+    bookings.forEach((booking) => {
+        if (!booking.id || !booking.start_time) return;
+        const startTime = parseBookingDateTime(booking.start_time).getTime();
+        if (!Number.isNaN(startTime) && startTime < cutoff) {
+            deleteDoc(doc(db, "bookings", booking.id)).catch((error) =>
+                console.log(error)
+            );
+        }
+    });
+};
+
+/** Read the authoritative server state, never a stale browser cache. */
 export const getBookings = () =>
-    getDocs(productsRef).then((res) => {
-        const ords = res.docs.map((doc) => ({
-            data: doc.data(),
-            id: doc.id
-        }));
-
-        const bookings: Partial<BookingTypes>[] = ords.map((ord) => ({
-            id: ord.id,
-            service: ord.data.service,
-            name: ord.data.name,
-            surname: ord.data.surname,
-            phone: ord.data.phone,
-            email: ord.data.email,
-            readable_start_time: ord.data.readable_start_time,
-            start_time: ord.data.start_time,
-            end_time: ord.data.end_time
-        }));
-
-        // Remove past days from db
-        [...bookings].forEach((booking) => {
-            const givenDate = new Date(booking.start_time!);
-            const currentDate = new Date();
-            if (givenDate.getTime() < currentDate.getTime() - yesterday) {
-                const docToDelete = booking.id!;
-                deleteDoc(doc(db, "bookings", docToDelete))
-                    .then(() =>
-                        console.log(
-                            "Entire Document has been deleted successfully."
-                        )
-                    )
-                    .catch((error) => console.log(error));
-            }
-        });
-
+    getDocsFromServer(productsRef).then((snapshot) => {
+        const bookings = readBookings(snapshot);
+        removePastBookings(bookings);
         return bookings;
     });
+
+export type FirestoreSource = { fromCache: boolean };
+
+/** Keep every open calendar aligned with Firestore changes made by other devices. */
+export const subscribeToBookings = (
+    onBookings: (
+        bookings: Partial<BookingTypes>[],
+        source: FirestoreSource
+    ) => void,
+    onError?: (error: Error) => void
+): Unsubscribe =>
+    onSnapshot(
+        productsRef,
+        { includeMetadataChanges: true },
+        (snapshot) => {
+            const bookings = readBookings(snapshot);
+            if (!snapshot.metadata.fromCache) removePastBookings(bookings);
+            onBookings(bookings, { fromCache: snapshot.metadata.fromCache });
+        },
+        onError
+    );

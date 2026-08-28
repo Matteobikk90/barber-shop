@@ -6133,7 +6133,7 @@ function Day(props) {
   return React__default["default"].createElement(
     "div",
     {
-      className: "col cell" + classSet + " t" + day.replaceAll("/", "-"),
+      className: "col cell" + classSet + " t" + day.replace(/\//g, "-"),
       role: "gridcell3",
       tabIndex: 0,
       onClick: onDateClick,
@@ -7863,14 +7863,16 @@ function TimeSlot(props) {
   var classSet = props.classSet,
     onTimeClick = props.onTimeClick,
     time = props.time;
+  var isDisabled = classSet.indexOf("disabled") !== -1;
   return React__default["default"].createElement(
     "div",
     {
       className: "col cell " + classSet,
-      onClick: onTimeClick,
-      onKeyDown: onTimeClick,
+      onClick: isDisabled ? null : onTimeClick,
+      onKeyDown: isDisabled ? null : onTimeClick,
       role: "button",
-      tabIndex: 0,
+      "aria-disabled": isDisabled,
+      tabIndex: isDisabled ? -1 : 0,
     },
     React__default["default"].createElement("p", null, time)
   );
@@ -8033,7 +8035,7 @@ var TimeSelect = /** @class */ (function (_super) {
     }
     return React__default["default"].createElement(
       "div",
-      { className: "timeSelector t" + this.props.day.replaceAll("/", "-") },
+      { className: "timeSelector t" + this.props.day.replace(/\//g, "-") },
       React__default["default"].createElement(
         "div",
         { className: "optionSpacer body" },
