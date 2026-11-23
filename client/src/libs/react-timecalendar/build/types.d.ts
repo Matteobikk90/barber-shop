@@ -30,6 +30,8 @@ export interface TimeCalendarProps {
     onDateFunction: Function;
     onTimeClick: Function;
     selectedTime: SelectedTime;
+    initialDate?: Date;
+    currentDate?: Date;
 }
 export interface TimeSelectProps {
     disableHistory: boolean;
@@ -40,6 +42,7 @@ export interface TimeSelectProps {
     onTimeClick: Function;
     bookings: Booking[];
     selectedTime: SelectedTime;
+    currentDate?: Date;
 }
 export interface TimeSlotProps {
     classSet: string;
@@ -54,4 +57,5 @@ export interface WeeksProps {
     clickable: boolean;
     disableHistory: boolean;
     selectedTime: SelectedTime;
+    currentDate?: Date;
 }

@@ -5905,7 +5905,7 @@ var Weeks = /** @class */ (function (_super) {
     Weeks.prototype.generateClasses = function (day) {
         var classSet = "";
         classSet += " " + dateFns.format(day, "ddd");
-        classSet += dateFns.isToday(day) ? " today" : "";
+        classSet += dateFns.isSameDay(day, this.props.currentDate || new Date()) ? " today" : "";
         classSet += this.isDaySelected(day) ? " selected" : "";
         classSet += this.isdayDisabled(day) ? " disabled" : "";
         return classSet;
@@ -5918,10 +5918,10 @@ var Weeks = /** @class */ (function (_super) {
         }
     };
     Weeks.prototype.isdayDisabled = function (day) {
-        var _a = this.props, clickable = _a.clickable, disableHistory = _a.disableHistory, selectedDate = _a.selectedDate, timeSlot = _a.timeSlot;
+        var _a = this.props, clickable = _a.clickable, disableHistory = _a.disableHistory, selectedDate = _a.selectedDate, timeSlot = _a.timeSlot, currentDate = _a.currentDate;
         if (!clickable ||
             (disableHistory &&
-                dateFns.isBefore(day, dateFns.endOfYesterday())) ||
+                dateFns.isBefore(day, dateFns.startOfDay(currentDate || new Date()))) ||
             !dateFns.isSameMonth(day, selectedDate)) {
             return true;
         }
@@ -7176,8 +7176,8 @@ var TimeSelect = /** @class */ (function (_super) {
         return openTimes;
     };
     TimeSelect.prototype.isTimeDisabled = function (time, openHours) {
-        var _a = this.props, bookings = _a.bookings, disableHistory = _a.disableHistory;
-        if ((disableHistory && dateFns.isBefore(time, new Date())) ||
+        var _a = this.props, bookings = _a.bookings, disableHistory = _a.disableHistory, currentDate = _a.currentDate;
+        if ((disableHistory && dateFns.isBefore(time, currentDate || new Date())) ||
             !dateFns.isBefore(time, openHours[1])) {
             return true;
         }
@@ -7263,7 +7263,7 @@ var TimeCalendar = /** @class */ (function (_super) {
     function TimeCalendar(props) {
         var _this = _super.call(this, props) || this;
         _this.state = {
-            selectedDate: new Date(),
+            selectedDate: props.initialDate || new Date(),
             timeSelect: false,
         };
         _this.onDateClick = _this.onDateClick.bind(_this);
@@ -7291,9 +7291,10 @@ var TimeCalendar = /** @class */ (function (_super) {
     TimeCalendar.prototype.prevTime = function () {
         var _a = this.state, selectedDate = _a.selectedDate, timeSelect = _a.timeSelect;
         var disableHistory = this.props.disableHistory;
+        var currentDate = this.props.currentDate || new Date();
         if (disableHistory &&
-            ((dateFns.isPast(dateFns.startOfMonth(selectedDate)) && !timeSelect) ||
-                (dateFns.isPast(dateFns.startOfDay(selectedDate)) && timeSelect)))
+            ((dateFns.isBefore(dateFns.startOfMonth(selectedDate), dateFns.startOfMonth(currentDate)) && !timeSelect) ||
+                (dateFns.isBefore(dateFns.startOfDay(selectedDate), dateFns.startOfDay(currentDate)) && timeSelect)))
             return;
         this.setState({
             selectedDate: timeSelect
@@ -7308,7 +7309,7 @@ var TimeCalendar = /** @class */ (function (_super) {
         });
     };
     TimeCalendar.prototype.render = function () {
-        var _a = this.props, disableHistory = _a.disableHistory, timeSlot = _a.timeSlot, openHours = _a.openHours, onTimeClick = _a.onTimeClick, bookings = _a.bookings, startTime = _a.startTime, endTime = _a.endTime, clickable = _a.clickable;
+        var _a = this.props, disableHistory = _a.disableHistory, timeSlot = _a.timeSlot, openHours = _a.openHours, onTimeClick = _a.onTimeClick, bookings = _a.bookings, startTime = _a.startTime, endTime = _a.endTime, clickable = _a.clickable, currentDate = _a.currentDate;
         var _b = this.state, selectedDate = _b.selectedDate, timeSelect = _b.timeSelect;
         return (React.createElement("div", { className: "calendar" },
             React.createElement(Header, { selectedDate: !timeSelect
@@ -7319,8 +7320,8 @@ var TimeCalendar = /** @class */ (function (_super) {
                         locale: it,
                     }), nextTime: this.nextTime, prevTime: this.prevTime, timeSelect: timeSelect }),
             timeSelect ? (React.createElement(React.Fragment, null,
-                React.createElement(TimeSelect, { selectedDate: selectedDate, disableHistory: disableHistory, timeSlot: timeSlot, openHours: openHours, onTimeClick: onTimeClick, bookings: bookings, selectedTime: { start: startTime, end: endTime }, day: dateFns.format(this.state.selectedDate, "DD/MM") }))) : (React.createElement(React.Fragment, null,
-                React.createElement(Weeks, { selectedDate: selectedDate, disableHistory: disableHistory, onDateClick: this.onDateClick, bookings: bookings, timeSlot: timeSlot, clickable: clickable, selectedTime: { start: startTime, end: endTime } }))),
+                React.createElement(TimeSelect, { selectedDate: selectedDate, disableHistory: disableHistory, timeSlot: timeSlot, openHours: openHours, onTimeClick: onTimeClick, bookings: bookings, currentDate: currentDate, selectedTime: { start: startTime, end: endTime }, day: dateFns.format(this.state.selectedDate, "DD/MM") }))) : (React.createElement(React.Fragment, null,
+                React.createElement(Weeks, { selectedDate: selectedDate, disableHistory: disableHistory, onDateClick: this.onDateClick, bookings: bookings, timeSlot: timeSlot, clickable: clickable, currentDate: currentDate, selectedTime: { start: startTime, end: endTime } }))),
             timeSlot && openHours && (React.createElement("button", { className: "timeSelector", onClick: this.timeSelectToggle, type: "button" },
                 React.createElement("p", null, timeSelect ? "Scegli un'altra data" : "Select Time")))));
     };

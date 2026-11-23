@@ -13,11 +13,20 @@ import {
   getRomeDateKey,
   parseBookingDateTime,
 } from "utils/bookingDate";
+import { isSelectableRomeBookingStart } from "utils/availability";
+import { thirtyMinutes } from "utils/utilities";
 
 export class BookingSlotUnavailableError extends Error {
   constructor() {
     super("Booking slot is no longer available");
     this.name = "BookingSlotUnavailableError";
+  }
+}
+
+export class BookingOutsideOpeningHoursError extends Error {
+  constructor() {
+    super("Booking time is outside the selectable Rome opening hours");
+    this.name = "BookingOutsideOpeningHoursError";
   }
 }
 
@@ -55,6 +64,12 @@ export const reserveBookingSlot = async (booking: BookingPayload) => {
   const bookingsRef = collection(db, "bookings");
   const requestedStart = parseBookingDateTime(booking.start_time).getTime();
   const requestedEnd = parseBookingDateTime(booking.end_time).getTime();
+  if (
+    !isSelectableRomeBookingStart(booking.start_time) ||
+    requestedEnd - requestedStart !== thirtyMinutes
+  ) {
+    throw new BookingOutsideOpeningHoursError();
+  }
   const slotDocument = doc(
     db,
     "bookings",
@@ -150,7 +165,11 @@ export const handleSubmitBooking = async (
 
     next();
   } catch (error) {
-    if (error instanceof BookingSlotUnavailableError) {
+    if (error instanceof BookingOutsideOpeningHoursError) {
+      window.alert(
+        "Questo orario non fa parte degli orari disponibili in Italia. Torna al calendario e seleziona una casella libera."
+      );
+    } else if (error instanceof BookingSlotUnavailableError) {
       window.alert(
         "Questo orario è appena diventato non disponibile. Torna al calendario e scegline un altro."
       );

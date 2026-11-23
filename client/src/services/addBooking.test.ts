@@ -15,6 +15,7 @@ import {
   Timestamp,
 } from "firebase/firestore";
 import {
+  BookingOutsideOpeningHoursError,
   BookingSlotUnavailableError,
   reserveBookingSlot,
 } from "./addBooking";
@@ -93,5 +94,19 @@ describe("reserveBookingSlot", () => {
       BookingSlotUnavailableError
     );
     expect(mockTransactionSet).not.toHaveBeenCalled();
+  });
+
+  it("rejects 19:00 Rome even if a device submits it directly", async () => {
+    await expect(
+      reserveBookingSlot({
+        ...booking,
+        start_time: "2026-09-05T17:00:00.000Z",
+        end_time: "2026-09-05T17:30:00.000Z",
+        readable_start_time: "05/09/2026 19:00:00",
+      })
+    ).rejects.toBeInstanceOf(BookingOutsideOpeningHoursError);
+
+    expect(mockGetDocsFromServer).not.toHaveBeenCalled();
+    expect(mockRunTransaction).not.toHaveBeenCalled();
   });
 });

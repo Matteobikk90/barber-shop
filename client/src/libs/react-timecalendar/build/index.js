@@ -6156,7 +6156,9 @@ var Weeks = /** @class */ (function (_super) {
   Weeks.prototype.generateClasses = function (day) {
     var classSet = "";
     classSet += " " + dateFns.format(day, "ddd");
-    classSet += dateFns.isToday(day) ? " today" : "";
+    classSet += dateFns.isSameDay(day, this.props.currentDate || new Date())
+      ? " today"
+      : "";
     classSet += this.isDaySelected(day) ? " selected" : "";
     classSet += this.isdayDisabled(day) ? " disabled" : "";
     return classSet;
@@ -6177,10 +6179,12 @@ var Weeks = /** @class */ (function (_super) {
       clickable = _a.clickable,
       disableHistory = _a.disableHistory,
       selectedDate = _a.selectedDate,
-      timeSlot = _a.timeSlot;
+      timeSlot = _a.timeSlot,
+      currentDate = _a.currentDate;
     if (
       !clickable ||
-      (disableHistory && dateFns.isBefore(day, dateFns.endOfYesterday())) ||
+      (disableHistory &&
+        dateFns.isBefore(day, dateFns.startOfDay(currentDate || new Date()))) ||
       !dateFns.isSameMonth(day, selectedDate)
     ) {
       return true;
@@ -7957,9 +7961,10 @@ var TimeSelect = /** @class */ (function (_super) {
   TimeSelect.prototype.isTimeDisabled = function (time, openHours) {
     var _a = this.props,
       bookings = _a.bookings,
-      disableHistory = _a.disableHistory;
+      disableHistory = _a.disableHistory,
+      currentDate = _a.currentDate;
     if (
-      (disableHistory && dateFns.isBefore(time, new Date())) ||
+      (disableHistory && dateFns.isBefore(time, currentDate || new Date())) ||
       !dateFns.isBefore(time, openHours[1])
     ) {
       return true;
@@ -8088,7 +8093,7 @@ var TimeCalendar = /** @class */ (function (_super) {
   function TimeCalendar(props) {
     var _this = _super.call(this, props) || this;
     _this.state = {
-      selectedDate: new Date(),
+      selectedDate: props.initialDate || new Date(),
       timeSelect: false,
     };
     _this.onDateClick = _this.onDateClick.bind(_this);
@@ -8119,10 +8124,19 @@ var TimeCalendar = /** @class */ (function (_super) {
       selectedDate = _a.selectedDate,
       timeSelect = _a.timeSelect;
     var disableHistory = this.props.disableHistory;
+    var currentDate = this.props.currentDate || new Date();
     if (
       disableHistory &&
-      ((dateFns.isPast(dateFns.startOfMonth(selectedDate)) && !timeSelect) ||
-        (dateFns.isPast(dateFns.startOfDay(selectedDate)) && timeSelect))
+      ((dateFns.isBefore(
+        dateFns.startOfMonth(selectedDate),
+        dateFns.startOfMonth(currentDate)
+      ) &&
+        !timeSelect) ||
+        (dateFns.isBefore(
+          dateFns.startOfDay(selectedDate),
+          dateFns.startOfDay(currentDate)
+        ) &&
+          timeSelect))
     )
       return;
     this.setState({
@@ -8146,7 +8160,8 @@ var TimeCalendar = /** @class */ (function (_super) {
       bookings = _a.bookings,
       startTime = _a.startTime,
       endTime = _a.endTime,
-      clickable = _a.clickable;
+      clickable = _a.clickable,
+      currentDate = _a.currentDate;
     var _b = this.state,
       selectedDate = _b.selectedDate,
       timeSelect = _b.timeSelect;
@@ -8176,6 +8191,7 @@ var TimeCalendar = /** @class */ (function (_super) {
               openHours: openHours,
               onTimeClick: onTimeClick,
               bookings: bookings,
+              currentDate: currentDate,
               selectedTime: { start: startTime, end: endTime },
               day: dateFns.format(this.state.selectedDate, "DD/MM"),
             })
@@ -8190,6 +8206,7 @@ var TimeCalendar = /** @class */ (function (_super) {
               bookings: bookings,
               timeSlot: timeSlot,
               clickable: clickable,
+              currentDate: currentDate,
               selectedTime: { start: startTime, end: endTime },
             })
           ),

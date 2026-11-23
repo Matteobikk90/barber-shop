@@ -1,7 +1,9 @@
 import {
+  calendarWallTimeToRomeDate,
   getBookingSlotDocumentId,
   isBookingSlotUnavailable,
   parseBookingDateTime,
+  toRomeCalendarWallTime,
 } from "./bookingDate";
 
 describe("bookingDate", () => {
@@ -17,6 +19,21 @@ describe("bookingDate", () => {
   it("creates the same document id for every client booking the same Rome slot", () => {
     expect(getBookingSlotDocumentId("2026-09-05T14:00:00.000Z")).toBe(
       "slot_2026-09-05_16-00"
+    );
+  });
+
+  it("treats calendar labels as Rome wall time in every device timezone", () => {
+    const calendarTime = toRomeCalendarWallTime(
+      "2026-11-20T18:00:00.000Z"
+    );
+    expect(calendarTime.getFullYear()).toBe(2026);
+    expect(calendarTime.getMonth()).toBe(10);
+    expect(calendarTime.getDate()).toBe(20);
+    expect(calendarTime.getHours()).toBe(19);
+
+    const selectedBox = new Date(2026, 10, 20, 18, 0, 0);
+    expect(calendarWallTimeToRomeDate(selectedBox).toISOString()).toBe(
+      "2026-11-20T17:00:00.000Z"
     );
   });
 

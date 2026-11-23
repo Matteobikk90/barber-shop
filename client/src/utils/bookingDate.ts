@@ -2,7 +2,7 @@ const ROME_TIME_ZONE = "Europe/Rome";
 
 const pad2 = (value: number): string => (value < 10 ? `0${value}` : `${value}`);
 
-type DateParts = {
+export type DateParts = {
   year: number;
   month: number;
   day: number;
@@ -72,6 +72,47 @@ const romeWallTimeToDate = (parts: DateParts): Date => {
   return result;
 };
 
+export const getRomeDateTimeParts = (value: string | Date): DateParts =>
+  getDateParts(parseBookingDateTime(value), ROME_TIME_ZONE);
+
+/**
+ * Convert a real instant to the calendar's wall-clock representation. The
+ * returned Date deliberately uses local getters to carry Rome date/time fields,
+ * so the bundled calendar renders identical labels in every device timezone.
+ */
+export const toRomeCalendarWallTime = (value: string | Date): Date => {
+  const parts = getRomeDateTimeParts(value);
+  return new Date(
+    parts.year,
+    parts.month - 1,
+    parts.day,
+    parts.hour,
+    parts.minute,
+    parts.second
+  );
+};
+
+/** Interpret the calendar's local-looking fields exclusively as Rome time. */
+export const calendarWallTimeToRomeDate = (value: Date): Date =>
+  romeWallTimeToDate({
+    year: value.getFullYear(),
+    month: value.getMonth() + 1,
+    day: value.getDate(),
+    hour: value.getHours(),
+    minute: value.getMinutes(),
+    second: value.getSeconds(),
+  });
+
+export const createCalendarWallTime = (
+  dateKey: string,
+  hour = 0,
+  minute = 0,
+  second = 0
+): Date => {
+  const [year, month, day] = dateKey.split("-").map(Number);
+  return new Date(year, month - 1, day, hour, minute, second);
+};
+
 /** Parse both ISO timestamps and the legacy Firestore format without browser-specific Date parsing. */
 export const parseBookingDateTime = (value: string | Date): Date => {
   if (value instanceof Date) return new Date(value.getTime());
@@ -99,12 +140,12 @@ export const normalizeBookingDateTime = (value: string): string => {
 };
 
 export const getRomeDateKey = (value: string | Date): string => {
-  const parts = getDateParts(parseBookingDateTime(value), ROME_TIME_ZONE);
+  const parts = getRomeDateTimeParts(value);
   return `${parts.year}-${pad2(parts.month)}-${pad2(parts.day)}`;
 };
 
 export const getRomeTimeKey = (value: string | Date): string => {
-  const parts = getDateParts(parseBookingDateTime(value), ROME_TIME_ZONE);
+  const parts = getRomeDateTimeParts(value);
   return `${pad2(parts.hour)}-${pad2(parts.minute)}`;
 };
 

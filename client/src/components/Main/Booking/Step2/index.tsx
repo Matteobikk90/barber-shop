@@ -6,9 +6,13 @@ import { subscribeToBlockedDates } from "services/getBlockedDates";
 import { subscribeToBookings } from "services/getBookings";
 import { BookingTypes } from "types/booking.types";
 import {
+  calendarWallTimeToRomeDate,
+  createCalendarWallTime,
   isBookingSlotUnavailable,
   parseBookingDateTime,
+  toRomeCalendarWallTime,
 } from "utils/bookingDate";
+import { isSelectableRomeBookingStart } from "utils/availability";
 import { openHours } from "utils/calendar";
 import { thirtyMinutes } from "utils/utilities";
 /** @jsxImportSource @emotion/react */
@@ -90,8 +94,10 @@ const Step2 = ({ handleBookingInfo }: Partial<BookingTypes>) => {
     });
   };
 
-  const selectDateTime = (bookingDateTime: Date) => {
+  const selectDateTime = (calendarDateTime: Date) => {
+    const bookingDateTime = calendarWallTimeToRomeDate(calendarDateTime);
     if (
+      !isSelectableRomeBookingStart(bookingDateTime) ||
       isBookingSlotUnavailable(
         bookingDateTime,
         bookedBookings || [],
@@ -146,13 +152,18 @@ const Step2 = ({ handleBookingInfo }: Partial<BookingTypes>) => {
 
   const blockedDateBookings: CalendarBooking[] = blockedDates.map((date) => ({
     id: `blocked-${date}`,
-    start_time: parseBookingDateTime(`${date} 00:00:00`),
-    end_time: parseBookingDateTime(`${date} 23:59:59`),
+    start_time: createCalendarWallTime(date, 0, 0, 0),
+    end_time: createCalendarWallTime(date, 23, 59, 59),
   }));
   const calendarBookings = [
-    ...(bookedBookings || []),
+    ...(bookedBookings || []).map((booking) => ({
+      ...booking,
+      start_time: toRomeCalendarWallTime(booking.start_time),
+      end_time: toRomeCalendarWallTime(booking.end_time),
+    })),
     ...blockedDateBookings,
   ];
+  const calendarNow = toRomeCalendarWallTime(new Date());
   const calendarReady = bookingsSynced && blockedDatesSynced;
 
   return (
@@ -184,6 +195,8 @@ const Step2 = ({ handleBookingInfo }: Partial<BookingTypes>) => {
             onTimeClick={selectDateTime}
             bookings={calendarBookings}
             onDateFunction={goToTimeSelection}
+            initialDate={calendarNow}
+            currentDate={calendarNow}
             selectedTime={{
               start: "",
               end: "",
