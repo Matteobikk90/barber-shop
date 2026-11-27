@@ -7,6 +7,10 @@ export declare type SelectedTime = {
     start: string;
     end: string;
 };
+type OpeningWindow = readonly [opening: number, closing: number];
+export declare type OpeningHoursByDate = Readonly<
+    Partial<Record<string, readonly [OpeningWindow, ...OpeningWindow[]]>>
+>;
 export interface DayProps {
     classSet: string;
     date: string;
@@ -23,6 +27,7 @@ export interface HeaderProps {
 }
 export interface TimeCalendarProps {
     openHours: number[][];
+    openingHoursByDate?: OpeningHoursByDate;
     bookings: Booking[];
     disableHistory: boolean;
     clickable: boolean;
@@ -39,6 +44,7 @@ export interface TimeSelectProps {
     selectedDate: Date;
     timeSlot: number;
     openHours: number[][];
+    openingHoursByDate?: OpeningHoursByDate;
     onTimeClick: Function;
     bookings: Booking[];
     selectedTime: SelectedTime;
@@ -57,5 +63,6 @@ export interface WeeksProps {
     clickable: boolean;
     disableHistory: boolean;
     selectedTime: SelectedTime;
+    openingHoursByDate?: OpeningHoursByDate;
     currentDate?: Date;
 }

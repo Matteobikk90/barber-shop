@@ -27,4 +27,24 @@ describe("isSelectableRomeBookingStart", () => {
       false
     ); // Monday
   });
+
+  it.each([
+    ["08:30", false],
+    ["09:00", true],
+    ["12:30", true],
+    ["13:00", false],
+    ["13:30", false],
+    ["14:00", true],
+    ["16:30", true],
+    ["17:00", false],
+  ])("checks the 28 December opening at %s Rome time", (time, available) => {
+    expect(isSelectableRomeBookingStart(`2026-12-28 ${time}:00`)).toBe(available);
+  });
+
+  it("does not change other closed days or repeat the exception every year", () => {
+    expect(isSelectableRomeBookingStart("2026-12-21 10:00:00")).toBe(false);
+    expect(isSelectableRomeBookingStart("2026-12-25 10:00:00")).toBe(false);
+    expect(isSelectableRomeBookingStart("2026-12-27 10:00:00")).toBe(false);
+    expect(isSelectableRomeBookingStart("2027-12-28 18:30:00")).toBe(true);
+  });
 });

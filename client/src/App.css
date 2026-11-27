@@ -175,8 +175,8 @@ button:hover .service-icon {
 }
 
 /* Festività + chiusura */
-.Sun,
-.Mon,
+.Sun:not(.special-opening),
+.Mon:not(.special-opening),
 .t12-45,
 .t13-00,
 .t13-15,
@@ -195,8 +195,8 @@ button:hover .service-icon {
 .t08-12,
 .t25-12,
 .t26-12,
-.Sun p,
-.Mon p,
+.Sun:not(.special-opening) p,
+.Mon:not(.special-opening) p,
 .t12-45 p,
 .t13-00 p,
 .t13-15 p,

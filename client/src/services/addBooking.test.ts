@@ -39,6 +39,13 @@ const booking = {
   readable_start_time: "05/09/2026 16:00:00",
 };
 
+const exceptionalBooking = {
+  ...booking,
+  start_time: "2026-12-28T15:30:00.000Z",
+  end_time: "2026-12-28T16:00:00.000Z",
+  readable_start_time: "28/12/2026 16:30:00",
+};
+
 describe("reserveBookingSlot", () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -52,9 +59,7 @@ describe("reserveBookingSlot", () => {
     mockRunTransaction.mockImplementation((_db, callback) =>
       callback({ get: mockTransactionGet, set: mockTransactionSet })
     );
-    mockTransactionGet
-      .mockResolvedValueOnce({ exists: () => false })
-      .mockResolvedValueOnce({ exists: () => false });
+    mockTransactionGet.mockReset().mockResolvedValue({ exists: () => false });
   });
 
   it("rejects an occupied legacy slot before writing", async () => {
@@ -84,17 +89,28 @@ describe("reserveBookingSlot", () => {
     );
   });
 
-  it("rejects a date blocked while the user was completing the form", async () => {
-    mockTransactionGet
-      .mockReset()
-      .mockResolvedValueOnce({ exists: () => false })
-      .mockResolvedValueOnce({ exists: () => true });
+  it("writes a valid slot during the special opening", async () => {
+    await reserveBookingSlot(exceptionalBooking);
 
-    await expect(reserveBookingSlot(booking)).rejects.toBeInstanceOf(
-      BookingSlotUnavailableError
+    expect(mockTransactionSet).toHaveBeenCalledWith(
+      { collectionName: "bookings", id: "slot_2026-12-28_16-30" },
+      expect.objectContaining({ start_time: exceptionalBooking.start_time })
     );
-    expect(mockTransactionSet).not.toHaveBeenCalled();
   });
+
+  it.each([booking, exceptionalBooking])(
+    "rejects $readable_start_time if the date was blocked while completing the form",
+    async (selectedBooking) => {
+      mockTransactionGet
+        .mockResolvedValueOnce({ exists: () => false })
+        .mockResolvedValueOnce({ exists: () => true });
+
+      await expect(reserveBookingSlot(selectedBooking)).rejects.toBeInstanceOf(
+        BookingSlotUnavailableError
+      );
+      expect(mockTransactionSet).not.toHaveBeenCalled();
+    }
+  );
 
   it("rejects 19:00 Rome even if a device submits it directly", async () => {
     await expect(

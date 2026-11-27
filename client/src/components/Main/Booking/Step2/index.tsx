@@ -13,7 +13,7 @@ import {
   toRomeCalendarWallTime,
 } from "utils/bookingDate";
 import { isSelectableRomeBookingStart } from "utils/availability";
-import { openHours } from "utils/calendar";
+import { openHours, openingHoursByDate } from "utils/calendar";
 import { thirtyMinutes } from "utils/utilities";
 /** @jsxImportSource @emotion/react */
 import "twin.macro";
@@ -192,6 +192,7 @@ const Step2 = ({ handleBookingInfo }: Partial<BookingTypes>) => {
             clickable
             timeSlot={30}
             openHours={openHours}
+            openingHoursByDate={openingHoursByDate}
             onTimeClick={selectDateTime}
             bookings={calendarBookings}
             onDateFunction={goToTimeSelection}

@@ -1,5 +1,5 @@
 import { getRomeDateTimeParts } from "utils/bookingDate";
-import { openHours } from "utils/calendar";
+import { openHours, openingHoursByDate } from "utils/calendar";
 
 const CLOSED_TIMES = new Set(["13-00", "13-30", "19-30"]);
 
@@ -31,6 +31,21 @@ const pad2 = (value: number): string => (value < 10 ? `0${value}` : `${value}`);
 /** Match the selectable 30-minute boxes using Europe/Rome only. */
 export const isSelectableRomeBookingStart = (value: string | Date): boolean => {
   const parts = getRomeDateTimeParts(value);
+  if (parts.second !== 0 || ![0, 30].includes(parts.minute)) return false;
+
+  const day = pad2(parts.day);
+  const month = pad2(parts.month);
+  if (CLOSED_DAYS.has(`${day}-${month}`)) return false;
+
+  const minutes = parts.hour * 60 + parts.minute;
+  const specialHours = openingHoursByDate[`${parts.year}-${month}-${day}`];
+  if (specialHours) {
+    return specialHours.some(
+      ([opening, closing]) =>
+        minutes >= opening * 60 && minutes + 30 <= closing * 60
+    );
+  }
+
   const dayOfWeek = new Date(
     Date.UTC(parts.year, parts.month - 1, parts.day)
   ).getUTCDay();
@@ -39,14 +54,10 @@ export const isSelectableRomeBookingStart = (value: string | Date): boolean => {
     return false;
   }
 
-  if (parts.second !== 0 || ![0, 30].includes(parts.minute)) return false;
-
-  const minutes = parts.hour * 60 + parts.minute;
   const openingMinutes = dayHours[0] * 60;
   const closingMinutes = dayHours[1] * 60;
   if (minutes < openingMinutes || minutes >= closingMinutes) return false;
 
   const timeKey = `${pad2(parts.hour)}-${pad2(parts.minute)}`;
-  const dayKey = `${pad2(parts.day)}-${pad2(parts.month)}`;
-  return !CLOSED_TIMES.has(timeKey) && !CLOSED_DAYS.has(dayKey);
+  return !CLOSED_TIMES.has(timeKey);
 };
