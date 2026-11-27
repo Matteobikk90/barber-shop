@@ -5892,9 +5892,15 @@ var DayTitle = /** @class */ (function (_super) {
 //@ts-nocheck
 function Day(props) {
     var classSet = props.classSet, onDateClick = props.onDateClick, date = props.date, day = props.day;
-    return (React.createElement("div", { className: "col cell" + classSet + " t" + day.replace(/\//g, "-"), role: "gridcell3", tabIndex: 0, onClick: onDateClick, onKeyDown: onDateClick },
+    var isDisabled = classSet.indexOf("disabled") !== -1;
+    return (React.createElement("div", { className: "col cell" + classSet + " t" + day.replace(/\//g, "-"), role: "button", "aria-disabled": isDisabled, tabIndex: isDisabled ? -1 : 0, onClick: isDisabled ? null : onDateClick, onKeyDown: isDisabled ? null : function (event) {
+            if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                onDateClick();
+            }
+        } },
         React.createElement("span", { className: "number" }, date),
-        React.createElement("span", { className: "bg" }, date)));
+        React.createElement("span", { className: "bg", "aria-hidden": true }, date)));
 }
 
 function getDateOpeningHours(day, openingHoursByDate) {
@@ -5914,7 +5920,11 @@ var Weeks = /** @class */ (function (_super) {
         }
         classSet += dateFns.isSameDay(day, this.props.currentDate || new Date()) ? " today" : "";
         classSet += this.isDaySelected(day) ? " selected" : "";
-        classSet += this.isdayDisabled(day) ? " disabled" : "";
+        if (this.props.isDateUnavailable && this.props.isDateUnavailable(day)) {
+            classSet += " closed-date disabled";
+        } else {
+            classSet += this.isdayDisabled(day) ? " disabled" : "";
+        }
         return classSet;
     };
     Weeks.prototype.isDaySelected = function (day) {
@@ -7180,6 +7190,7 @@ var TimeSelect = /** @class */ (function (_super) {
     TimeSelect.prototype.isTimeDisabled = function (time, openHours) {
         var _a = this.props, bookings = _a.bookings, disableHistory = _a.disableHistory, currentDate = _a.currentDate;
         if ((disableHistory && dateFns.isBefore(time, currentDate || new Date())) ||
+            (this.props.isTimeUnavailable && this.props.isTimeUnavailable(time)) ||
             !dateFns.isBefore(time, openHours[1])) {
             return true;
         }
@@ -7203,13 +7214,13 @@ var TimeSelect = /** @class */ (function (_super) {
         var _a = this.props, timeSlot = _a.timeSlot, selectedTime = _a.selectedTime, onTimeClick = _a.onTimeClick;
         var selectorClass = this.state.selectorClass;
         var openHours = this.generateOpenHours();
-        console.log(openHours);
+        var specialHours = getDateOpeningHours(this.props.selectedDate, this.props.openingHoursByDate);
         var dateFormat = "HH-mm";
         var rows = [];
         var timeSlots = [];
         var timePick = openHours[0];
         // eslint-disable-next-line no-mixed-operators
-        var difference = (dateFns.differenceInMinutes(openHours[1], openHours[0]) / timeSlot) % 4;
+        var difference = specialHours ? 0 : (dateFns.differenceInMinutes(openHours[1], openHours[0]) / timeSlot) % 4;
         while (timePick < dateFns.addMinutes(openHours[1], timeSlot * difference)) {
             var _loop_1 = function (i) {
                 var classSet = "";
@@ -7227,7 +7238,7 @@ var TimeSelect = /** @class */ (function (_super) {
                 timePick = dateFns.addMinutes(timePick, timeSlot);
             };
             var this_1 = this;
-            for (var i = 0; i < 4; i += 1) {
+            for (var i = 0; i < 4 && (!specialHours || timePick < openHours[1]); i += 1) {
                 _loop_1(i);
             }
             rows.push(React.createElement("div", { className: "row", key: String(timePick) }, timeSlots));
@@ -7333,8 +7344,8 @@ var TimeCalendar = /** @class */ (function (_super) {
                         locale: it,
                     }), nextTime: this.nextTime, prevTime: this.prevTime, timeSelect: timeSelect }),
             timeSelect ? (React.createElement(React.Fragment, null,
-                React.createElement(TimeSelect, { selectedDate: selectedDate, disableHistory: disableHistory, timeSlot: timeSlot, openHours: openHours, openingHoursByDate: openingHoursByDate, onTimeClick: onTimeClick, bookings: bookings, currentDate: currentDate, selectedTime: { start: startTime, end: endTime }, day: dateFns.format(this.state.selectedDate, "DD/MM") }))) : (React.createElement(React.Fragment, null,
-                React.createElement(Weeks, { selectedDate: selectedDate, disableHistory: disableHistory, onDateClick: this.onDateClick, bookings: bookings, timeSlot: timeSlot, clickable: clickable, openingHoursByDate: openingHoursByDate, currentDate: currentDate, selectedTime: { start: startTime, end: endTime } }))),
+                React.createElement(TimeSelect, { selectedDate: selectedDate, disableHistory: disableHistory, timeSlot: timeSlot, openHours: openHours, openingHoursByDate: openingHoursByDate, isTimeUnavailable: this.props.isTimeUnavailable, onTimeClick: onTimeClick, bookings: bookings, currentDate: currentDate, selectedTime: { start: startTime, end: endTime }, day: dateFns.format(this.state.selectedDate, "DD/MM") }))) : (React.createElement(React.Fragment, null,
+                React.createElement(Weeks, { selectedDate: selectedDate, disableHistory: disableHistory, onDateClick: this.onDateClick, bookings: bookings, timeSlot: timeSlot, clickable: clickable, openingHoursByDate: openingHoursByDate, isDateUnavailable: this.props.isDateUnavailable, currentDate: currentDate, selectedTime: { start: startTime, end: endTime } }))),
             timeSlot && openHours && (React.createElement("button", { className: "timeSelector", onClick: this.timeSelectToggle, type: "button" },
                 React.createElement("p", null, timeSelect ? "Scegli un'altra data" : "Select Time")))));
     };

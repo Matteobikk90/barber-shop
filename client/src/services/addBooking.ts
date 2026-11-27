@@ -7,6 +7,10 @@ import {
   Timestamp,
 } from "firebase/firestore";
 import { Dispatch, SetStateAction } from "react";
+import {
+  getSpecialOpeningsRef,
+  readSpecialOpenings,
+} from "services/specialOpenings";
 import { BookingTypes } from "types/booking.types";
 import {
   getBookingSlotDocumentId,
@@ -14,6 +18,7 @@ import {
   parseBookingDateTime,
 } from "utils/bookingDate";
 import { isSelectableRomeBookingStart } from "utils/availability";
+import { getOpeningHoursByDate, isNormallyClosedDate } from "utils/calendar";
 import { thirtyMinutes } from "utils/utilities";
 
 export class BookingSlotUnavailableError extends Error {
@@ -64,9 +69,15 @@ export const reserveBookingSlot = async (booking: BookingPayload) => {
   const bookingsRef = collection(db, "bookings");
   const requestedStart = parseBookingDateTime(booking.start_time).getTime();
   const requestedEnd = parseBookingDateTime(booking.end_time).getTime();
+  if (requestedEnd - requestedStart !== thirtyMinutes) {
+    throw new BookingOutsideOpeningHoursError();
+  }
+
+  const date = getRomeDateKey(booking.start_time);
+  const requiresSpecialOpening = isNormallyClosedDate(date);
   if (
-    !isSelectableRomeBookingStart(booking.start_time) ||
-    requestedEnd - requestedStart !== thirtyMinutes
+    !requiresSpecialOpening &&
+    !isSelectableRomeBookingStart(booking.start_time)
   ) {
     throw new BookingOutsideOpeningHoursError();
   }
@@ -75,11 +86,7 @@ export const reserveBookingSlot = async (booking: BookingPayload) => {
     "bookings",
     getBookingSlotDocumentId(booking.start_time)
   );
-  const blockedDateDocument = doc(
-    db,
-    "blockedDates",
-    getRomeDateKey(booking.start_time)
-  );
+  const blockedDateDocument = doc(db, "blockedDates", date);
 
   // Existing records used surname-based ids. Check them before moving all new
   // bookings to the atomic, slot-based id.
@@ -105,6 +112,21 @@ export const reserveBookingSlot = async (booking: BookingPayload) => {
 
     if (existingSlot.exists() || blockedDate.exists()) {
       throw new BookingSlotUnavailableError();
+    }
+
+    if (requiresSpecialOpening) {
+      // Re-read the current hours in the same transaction, in case the owner
+      // changed or revoked the opening after the customer selected the slot.
+      const settings = await transaction.get(getSpecialOpeningsRef());
+      const openings = readSpecialOpenings(settings);
+      if (
+        !isSelectableRomeBookingStart(
+          booking.start_time,
+          getOpeningHoursByDate(openings)
+        )
+      ) {
+        throw new BookingOutsideOpeningHoursError();
+      }
     }
 
     transaction.set(slotDocument, newBooking);

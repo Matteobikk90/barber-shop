@@ -1,63 +1,63 @@
-import { getRomeDateTimeParts } from "utils/bookingDate";
-import { openHours, openingHoursByDate } from "utils/calendar";
+import type { OpeningHoursByDate } from "libs/react-timecalendar/build/types";
+import {
+  getCalendarDateKey,
+  getRomeDateTimeParts,
+  toDateKey,
+} from "utils/bookingDate";
+import {
+  bookingSlotMinutes,
+  getWeekday,
+  isNormallyClosedDate,
+  lunchEnd,
+  lunchStart,
+  openHours,
+} from "utils/calendar";
 
-const CLOSED_TIMES = new Set(["13-00", "13-30", "19-30"]);
+const isSelectableStart = (
+  date: string,
+  minutes: number,
+  seconds: number,
+  openingHoursByDate: OpeningHoursByDate
+): boolean => {
+  if (seconds !== 0 || minutes % bookingSlotMinutes !== 0) return false;
+  const end = minutes + bookingSlotMinutes;
+  if (minutes < lunchEnd && end > lunchStart) return false;
 
-// These recurring closures are currently rendered as unavailable in App.css.
-const CLOSED_DAYS = new Set([
-  "01-01",
-  "06-01",
-  "25-04",
-  "01-05",
-  "02-06",
-  "06-06",
-  "13-06",
-  "03-07",
-  "04-07",
-  "13-08",
-  "14-08",
-  "15-08",
-  "16-08",
-  "17-08",
-  "18-08",
-  "01-11",
-  "08-12",
-  "25-12",
-  "26-12",
-]);
-
-const pad2 = (value: number): string => (value < 10 ? `0${value}` : `${value}`);
-
-/** Match the selectable 30-minute boxes using Europe/Rome only. */
-export const isSelectableRomeBookingStart = (value: string | Date): boolean => {
-  const parts = getRomeDateTimeParts(value);
-  if (parts.second !== 0 || ![0, 30].includes(parts.minute)) return false;
-
-  const day = pad2(parts.day);
-  const month = pad2(parts.month);
-  if (CLOSED_DAYS.has(`${day}-${month}`)) return false;
-
-  const minutes = parts.hour * 60 + parts.minute;
-  const specialHours = openingHoursByDate[`${parts.year}-${month}-${day}`];
-  if (specialHours) {
-    return specialHours.some(
-      ([opening, closing]) =>
-        minutes >= opening * 60 && minutes + 30 <= closing * 60
+  if (isNormallyClosedDate(date)) {
+    return !!openingHoursByDate[date]?.some(
+      ([from, to]) => minutes >= from * 60 && end <= to * 60
     );
   }
 
-  const dayOfWeek = new Date(
-    Date.UTC(parts.year, parts.month - 1, parts.day)
-  ).getUTCDay();
-  const dayHours = openHours[dayOfWeek];
-  if (!dayHours || dayHours.length < 2 || dayHours[0] === dayHours[1]) {
-    return false;
-  }
-
-  const openingMinutes = dayHours[0] * 60;
-  const closingMinutes = dayHours[1] * 60;
-  if (minutes < openingMinutes || minutes >= closingMinutes) return false;
-
-  const timeKey = `${pad2(parts.hour)}-${pad2(parts.minute)}`;
-  return !CLOSED_TIMES.has(timeKey);
+  const weekday = getWeekday(date);
+  if (weekday === undefined) return false;
+  const [from, to] = openHours[weekday];
+  // Keep the existing 19:30 closure on the ordinary weekly schedule.
+  return minutes >= from * 60 && end <= to * 60 && minutes !== 19 * 60 + 30;
 };
+
+/** Match the selectable 30-minute boxes using Europe/Rome only. */
+export const isSelectableRomeBookingStart = (
+  value: string | Date,
+  openingHoursByDate: OpeningHoursByDate = {}
+): boolean => {
+  const parts = getRomeDateTimeParts(value);
+  return isSelectableStart(
+    toDateKey(parts.year, parts.month, parts.day),
+    parts.hour * 60 + parts.minute,
+    parts.second,
+    openingHoursByDate
+  );
+};
+
+/** The calendar carries Rome wall-clock values in its Date's local fields. */
+export const isSelectableCalendarBookingStart = (
+  value: Date,
+  openingHoursByDate: OpeningHoursByDate
+): boolean =>
+  isSelectableStart(
+    getCalendarDateKey(value),
+    value.getHours() * 60 + value.getMinutes(),
+    value.getSeconds(),
+    openingHoursByDate
+  );

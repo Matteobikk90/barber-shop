@@ -1,11 +1,16 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import { subscribeToBlockedDates } from "services/getBlockedDates";
 import { subscribeToBookings } from "services/getBookings";
+import { subscribeToSpecialOpenings } from "services/specialOpenings";
+import { initialSpecialOpenings } from "utils/calendar";
 import Step2 from ".";
 
 jest.mock("services/getBookings", () => ({ subscribeToBookings: jest.fn() }));
 jest.mock("services/getBlockedDates", () => ({
   subscribeToBlockedDates: jest.fn(),
+}));
+jest.mock("services/specialOpenings", () => ({
+  subscribeToSpecialOpenings: jest.fn(),
 }));
 
 const mockBookings = subscribeToBookings as jest.MockedFunction<
@@ -14,8 +19,11 @@ const mockBookings = subscribeToBookings as jest.MockedFunction<
 const mockBlockedDates = subscribeToBlockedDates as jest.MockedFunction<
   typeof subscribeToBlockedDates
 >;
+const mockOpenings = subscribeToSpecialOpenings as jest.MockedFunction<
+  typeof subscribeToSpecialOpenings
+>;
 
-describe("28 December special opening", () => {
+describe("special openings in the public calendar", () => {
   beforeEach(() => {
     jest.useFakeTimers();
     jest.setSystemTime(new Date("2026-11-27T12:00:00.000Z"));
@@ -36,6 +44,10 @@ describe("28 December special opening", () => {
       onDates([], { fromCache: false });
       return jest.fn();
     });
+    mockOpenings.mockImplementation((onOpenings) => {
+      onOpenings(initialSpecialOpenings);
+      return jest.fn();
+    });
   });
 
   afterEach(() => {
@@ -49,9 +61,10 @@ describe("28 December special opening", () => {
     fireEvent.click(screen.getByText("chevron_right"));
     const specialDay = container.querySelector(".calendar .cell.t28-12");
     expect(specialDay?.classList.contains("special-opening")).toBe(true);
-    expect(
-      container.querySelector(".calendar .cell.Mon:not(.special-opening).t21-12")
-    ).not.toBeNull();
+    const ordinaryMonday = container.querySelector(".calendar .cell.closed-date.t21-12");
+    expect(ordinaryMonday?.getAttribute("aria-disabled")).toBe("true");
+    fireEvent.click(ordinaryMonday!);
+    expect(screen.queryByText("09-00")).toBeNull();
 
     fireEvent.click(specialDay!);
     const availableSlots = Array.from(
@@ -87,6 +100,9 @@ describe("28 December special opening", () => {
     const { container } = render(<Step2 handleBookingInfo={handleBookingInfo} />);
 
     fireEvent.click(screen.getByText("chevron_right"));
+    expect(
+      container.querySelector(".calendar .cell.t28-12")?.getAttribute("aria-disabled")
+    ).toBe("true");
     fireEvent.click(container.querySelector(".calendar .cell.t29-12")!);
     fireEvent.click(screen.getByText("chevron_left"));
 
@@ -97,5 +113,52 @@ describe("28 December special opening", () => {
     ).toBeNull();
     fireEvent.click(firstSlot!);
     expect(handleBookingInfo).not.toHaveBeenCalled();
+  });
+
+  it("updates a reopened holiday and returns it to closed when revoked", () => {
+    mockOpenings.mockImplementationOnce((onOpenings) => {
+      onOpenings({ "2026-12-25": { from: 18 * 60 + 30, to: 20 * 60 } });
+      return jest.fn();
+    });
+    const handleBookingInfo = jest.fn();
+    const { container } = render(<Step2 handleBookingInfo={handleBookingInfo} />);
+
+    fireEvent.click(screen.getByText("chevron_right"));
+    const christmas = container.querySelector(".calendar .cell.t25-12")!;
+    expect(christmas.getAttribute("aria-disabled")).toBe("false");
+    expect(
+      container.querySelector(".calendar .cell.t26-12")?.getAttribute("aria-disabled")
+    ).toBe("true");
+    fireEvent.click(christmas);
+    expect(screen.queryByText("20-00")).toBeNull();
+    fireEvent.click(screen.getByText("19-30"));
+    expect(handleBookingInfo).toHaveBeenCalledWith(
+      expect.objectContaining({ start_time: "2026-12-25T18:30:00.000Z" })
+    );
+
+    act(() => mockOpenings.mock.calls.at(-1)![0]({}));
+    expect(
+      container.querySelector('.optionHolder .cell[aria-disabled="false"]')
+    ).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Scegli un'altra data" }));
+    expect(
+      container.querySelector(".calendar .cell.t25-12")?.getAttribute("aria-disabled")
+    ).toBe("true");
+  });
+
+  it("keeps ordinary days usable if the special openings have not synced", () => {
+    mockOpenings.mockImplementationOnce((onOpenings) => {
+      onOpenings(null);
+      return jest.fn();
+    });
+    const { container } = render(<Step2 handleBookingInfo={jest.fn()} />);
+    fireEvent.click(screen.getByText("chevron_right"));
+
+    expect(
+      container.querySelector(".calendar .cell.t28-12")?.getAttribute("aria-disabled")
+    ).toBe("true");
+    expect(
+      container.querySelector(".calendar .cell.t29-12")?.getAttribute("aria-disabled")
+    ).toBe("false");
   });
 });

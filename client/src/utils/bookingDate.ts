@@ -103,16 +103,6 @@ export const calendarWallTimeToRomeDate = (value: Date): Date =>
     second: value.getSeconds(),
   });
 
-export const createCalendarWallTime = (
-  dateKey: string,
-  hour = 0,
-  minute = 0,
-  second = 0
-): Date => {
-  const [year, month, day] = dateKey.split("-").map(Number);
-  return new Date(year, month - 1, day, hour, minute, second);
-};
-
 /** Parse both ISO timestamps and the legacy Firestore format without browser-specific Date parsing. */
 export const parseBookingDateTime = (value: string | Date): Date => {
   if (value instanceof Date) return new Date(value.getTime());
@@ -139,9 +129,15 @@ export const normalizeBookingDateTime = (value: string): string => {
   return Number.isNaN(date.getTime()) ? value : date.toISOString();
 };
 
+export const toDateKey = (year: number, month: number, day: number): string =>
+  `${year}-${pad2(month)}-${pad2(day)}`;
+
+export const getCalendarDateKey = (value: Date): string =>
+  toDateKey(value.getFullYear(), value.getMonth() + 1, value.getDate());
+
 export const getRomeDateKey = (value: string | Date): string => {
   const parts = getRomeDateTimeParts(value);
-  return `${parts.year}-${pad2(parts.month)}-${pad2(parts.day)}`;
+  return toDateKey(parts.year, parts.month, parts.day);
 };
 
 export const getRomeTimeKey = (value: string | Date): string => {

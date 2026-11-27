@@ -13,9 +13,10 @@ import { getBookings, subscribeToBookings } from "services/getBookings";
 import tw from "twin.macro";
 import { BookingTypes } from "types/booking.types";
 import { today } from "utils/utilities";
+import SpecialOpenings from "./SpecialOpenings";
 import BlockDatePicker from "./BlockDatePicker";
 
-type Tab = "prenotazioni" | "blocco-date";
+type Tab = "prenotazioni" | "blocco-date" | "aperture";
 
 const TZ = "Europe/Rome";
 
@@ -257,6 +258,13 @@ const AdminPanel = () => {
           onClick={() => setTab("blocco-date")}>
           Blocco date
         </button>
+        <button
+          type="button"
+          tw="flex-1 py-[0.65rem] px-[0.3rem] rounded-lg text-[1.4rem] sm:text-[1.15rem] font-bold border-none cursor-pointer tracking-wide transition-all"
+          css={tab === "aperture" ? tw`bg-green text-cream` : tw`text-green`}
+          onClick={() => setTab("aperture")}>
+          Aperture straordinarie
+        </button>
       </div>
 
       {/* ── PRENOTAZIONI ── */}
@@ -431,6 +439,7 @@ const AdminPanel = () => {
           )}
         </>
       )}
+      {tab === "aperture" && <SpecialOpenings blockedDates={blockedDates} />}
     </section>
   );
 };

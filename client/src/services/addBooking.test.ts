@@ -87,6 +87,7 @@ describe("reserveBookingSlot", () => {
       { collectionName: "bookings", id: "slot_2026-09-05_16-00" },
       expect.objectContaining({ name: "Mario", id: "timestamp" })
     );
+    expect(mockTransactionGet).toHaveBeenCalledTimes(2);
   });
 
   it("writes a valid slot during the special opening", async () => {
@@ -96,6 +97,45 @@ describe("reserveBookingSlot", () => {
       { collectionName: "bookings", id: "slot_2026-12-28_16-30" },
       expect.objectContaining({ start_time: exceptionalBooking.start_time })
     );
+    expect(mockTransactionGet).toHaveBeenCalledWith({
+      collectionName: "calendarSettings",
+      id: "specialOpenings",
+    });
+  });
+
+  it("books a holiday only using the hours read in the booking transaction", async () => {
+    mockTransactionGet
+      .mockResolvedValueOnce({ exists: () => false })
+      .mockResolvedValueOnce({ exists: () => false })
+      .mockResolvedValueOnce({
+        exists: () => true,
+        data: () => ({ openings: { "2026-12-25": { from: 540, to: 1020 } } }),
+      });
+
+    await reserveBookingSlot({
+      ...exceptionalBooking,
+      start_time: "2026-12-25T15:30:00.000Z",
+      end_time: "2026-12-25T16:00:00.000Z",
+    });
+    expect(mockTransactionSet).toHaveBeenCalledWith(
+      { collectionName: "bookings", id: "slot_2026-12-25_16-30" },
+      expect.any(Object)
+    );
+  });
+
+  it.each([
+    {},
+    { "2026-12-28": { from: 540, to: 960 } },
+  ])("rejects a slot when the opening was revoked or shortened (%j)", async (openings) => {
+    mockTransactionGet
+      .mockResolvedValueOnce({ exists: () => false })
+      .mockResolvedValueOnce({ exists: () => false })
+      .mockResolvedValueOnce({ exists: () => true, data: () => ({ openings }) });
+
+    await expect(reserveBookingSlot(exceptionalBooking)).rejects.toBeInstanceOf(
+      BookingOutsideOpeningHoursError
+    );
+    expect(mockTransactionSet).not.toHaveBeenCalled();
   });
 
   it.each([booking, exceptionalBooking])(

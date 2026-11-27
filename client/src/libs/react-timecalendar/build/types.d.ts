@@ -28,6 +28,8 @@ export interface HeaderProps {
 export interface TimeCalendarProps {
     openHours: number[][];
     openingHoursByDate?: OpeningHoursByDate;
+    isDateUnavailable?: (date: Date) => boolean;
+    isTimeUnavailable?: (time: Date) => boolean;
     bookings: Booking[];
     disableHistory: boolean;
     clickable: boolean;
@@ -45,6 +47,7 @@ export interface TimeSelectProps {
     timeSlot: number;
     openHours: number[][];
     openingHoursByDate?: OpeningHoursByDate;
+    isTimeUnavailable?: (time: Date) => boolean;
     onTimeClick: Function;
     bookings: Booking[];
     selectedTime: SelectedTime;
@@ -64,5 +67,6 @@ export interface WeeksProps {
     disableHistory: boolean;
     selectedTime: SelectedTime;
     openingHoursByDate?: OpeningHoursByDate;
+    isDateUnavailable?: (date: Date) => boolean;
     currentDate?: Date;
 }

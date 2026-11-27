@@ -1,0 +1,22 @@
+// Reference rules for the two new paths. Merge them into the existing rules;
+// this standalone file does not grant access to any of the existing collections.
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function canManageSpecialOpenings() {
+      return request.auth != null &&
+        get(/databases/$(database)/documents/openingAdmins/$(request.auth.uid)).data.enabled == true;
+    }
+
+    match /calendarSettings/specialOpenings {
+      allow get: if true;
+      allow create, update: if canManageSpecialOpenings()
+        && request.resource.data.keys().hasOnly(['openings'])
+        && request.resource.data.openings is map;
+    }
+
+    match /openingAdmins/{uid} {
+      allow get: if request.auth != null && request.auth.uid == uid;
+    }
+  }
+}

@@ -6,6 +6,8 @@ type BlockDatePickerProps = {
   value: string;
   min: string;
   unavailableDates: string[];
+  isDateSelectable?: (date: string) => boolean;
+  helpText?: string;
   onChange: (date: string) => void;
 };
 
@@ -38,6 +40,8 @@ const BlockDatePicker = ({
   value,
   min,
   unavailableDates,
+  isDateSelectable,
+  helpText = "I giorni già bloccati non sono selezionabili.",
   onChange,
 }: BlockDatePickerProps) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -152,13 +156,16 @@ const BlockDatePicker = ({
               const date = toDateValue(new Date(year, month, day));
               const isPast = date < min;
               const isUnavailable = unavailableDates.includes(date);
+              const isIneligible = isDateSelectable
+                ? !isDateSelectable(date)
+                : false;
               const isSelected = value === date;
 
               return (
                 <button
                   key={date}
                   type="button"
-                  disabled={isPast || isUnavailable}
+                  disabled={isPast || isUnavailable || isIneligible}
                   aria-label={parseDate(date).toLocaleDateString("it-IT", {
                     weekday: "long",
                     day: "numeric",
@@ -166,7 +173,13 @@ const BlockDatePicker = ({
                     year: "numeric",
                   })}
                   aria-pressed={isSelected}
-                  title={isUnavailable ? "Data già bloccata" : undefined}
+                  title={
+                    isUnavailable
+                      ? "Data già bloccata"
+                      : isIneligible
+                      ? "Data normalmente aperta"
+                      : undefined
+                  }
                   onClick={() => selectDate(date)}
                   tw="w-full h-[2.4rem] rounded-lg border border-[#00000000] bg-white text-[1.15rem] font-bold cursor-pointer hover:border-green hover:bg-cream disabled:cursor-not-allowed"
                   css={
@@ -174,7 +187,7 @@ const BlockDatePicker = ({
                       ? tw`bg-green text-cream hover:bg-green`
                       : isUnavailable
                       ? tw`text-red bg-[#fff1f3] opacity-60`
-                      : isPast
+                      : isPast || isIneligible
                       ? tw`text-[#aaa] opacity-40`
                       : tw`text-black`
                   }>
@@ -186,7 +199,7 @@ const BlockDatePicker = ({
 
           <div tw="flex items-center justify-between gap-3 mt-[0.75rem] pt-[0.75rem] border-t border-[#e2ded9]">
             <span tw="text-[0.95rem] text-[#777]">
-              I giorni già bloccati non sono selezionabili.
+              {helpText}
             </span>
             <button
               type="button"

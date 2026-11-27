@@ -1,48 +1,37 @@
 import BookingFormContainer from "components/Main/Booking/Container";
 import useCalendar from "hooks/useCalendar";
 import TimeCalendar from "libs/react-timecalendar/build";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { subscribeToBlockedDates } from "services/getBlockedDates";
 import { subscribeToBookings } from "services/getBookings";
+import { subscribeToSpecialOpenings } from "services/specialOpenings";
 import { BookingTypes } from "types/booking.types";
 import {
   calendarWallTimeToRomeDate,
-  createCalendarWallTime,
+  getCalendarDateKey,
   isBookingSlotUnavailable,
   parseBookingDateTime,
   toRomeCalendarWallTime,
 } from "utils/bookingDate";
-import { isSelectableRomeBookingStart } from "utils/availability";
-import { openHours, openingHoursByDate } from "utils/calendar";
+import {
+  isSelectableCalendarBookingStart,
+  isSelectableRomeBookingStart,
+} from "utils/availability";
+import {
+  bookingSlotMinutes,
+  getOpeningHoursByDate,
+  isNormallyClosedDate,
+  openHours,
+  SpecialOpenings,
+} from "utils/calendar";
 import { thirtyMinutes } from "utils/utilities";
 /** @jsxImportSource @emotion/react */
 import "twin.macro";
-
-const BLOCKED_STYLE_ID = "dynamic-blocked-dates";
 
 type CalendarBooking = {
   id: string;
   start_time: Date;
   end_time: Date;
-};
-
-const injectBlockedDatesCss = (dates: string[]) => {
-  let styleEl = document.getElementById(
-    BLOCKED_STYLE_ID
-  ) as HTMLStyleElement | null;
-  if (!styleEl) {
-    styleEl = document.createElement("style");
-    styleEl.id = BLOCKED_STYLE_ID;
-    document.head.appendChild(styleEl);
-  }
-
-  styleEl.textContent = dates
-    .map((date) => {
-      const [, month, day] = date.split("-");
-      const cls = `t${day}-${month}`;
-      return `.${cls}, .${cls} p { cursor: not-allowed !important; color: #e52b50 !important; }\n.calendar > .body .row .cell.${cls} { pointer-events: none; }\n.timeSelector.${cls} .optionHolder .cell { color: #e52b50 !important; cursor: not-allowed !important; }`;
-    })
-    .join("\n");
 };
 
 const toCalendarBooking = (
@@ -70,6 +59,26 @@ const Step2 = ({ handleBookingInfo }: Partial<BookingTypes>) => {
   const [bookingsSynced, setBookingsSynced] = useState(false);
   const [blockedDatesSynced, setBlockedDatesSynced] = useState(false);
   const [calendarError, setCalendarError] = useState(false);
+  const [specialOpenings, setSpecialOpenings] = useState<SpecialOpenings | null>(
+    null
+  );
+  const [specialOpeningsError, setSpecialOpeningsError] = useState(false);
+  const openingHoursByDate = useMemo(
+    () => getOpeningHoursByDate(specialOpenings ?? {}),
+    [specialOpenings]
+  );
+
+  const isDateUnavailable = (calendarDate: Date) => {
+    const date = getCalendarDateKey(calendarDate);
+    return (
+      blockedDates.includes(date) ||
+      (isNormallyClosedDate(date) && !openingHoursByDate[date])
+    );
+  };
+
+  const isTimeUnavailable = (calendarDateTime: Date) =>
+    blockedDates.includes(getCalendarDateKey(calendarDateTime)) ||
+    !isSelectableCalendarBookingStart(calendarDateTime, openingHoursByDate);
 
   const formatDateTime = (bookingDateTime: Date) => {
     const serviceDuration = new Date(bookingDateTime.getTime() + thirtyMinutes);
@@ -97,7 +106,9 @@ const Step2 = ({ handleBookingInfo }: Partial<BookingTypes>) => {
   const selectDateTime = (calendarDateTime: Date) => {
     const bookingDateTime = calendarWallTimeToRomeDate(calendarDateTime);
     if (
-      !isSelectableRomeBookingStart(bookingDateTime) ||
+      toRomeCalendarWallTime(bookingDateTime).getTime() !==
+        calendarDateTime.getTime() ||
+      !isSelectableRomeBookingStart(bookingDateTime, openingHoursByDate) ||
       isBookingSlotUnavailable(
         bookingDateTime,
         bookedBookings || [],
@@ -136,33 +147,33 @@ const Step2 = ({ handleBookingInfo }: Partial<BookingTypes>) => {
       (dates, source) => {
         if (source.fromCache) return;
         setBlockedDates(dates);
-        injectBlockedDatesCss(dates);
         setBlockedDatesSynced(true);
         setCalendarError(false);
       },
       handleError
     );
 
+    const unsubscribeOpenings = subscribeToSpecialOpenings(
+      setSpecialOpenings,
+      (error) => {
+        console.error(error);
+        setSpecialOpenings(null);
+        setSpecialOpeningsError(true);
+      }
+    );
+
     return () => {
       unsubscribeBookings();
       unsubscribeBlockedDates();
-      document.getElementById(BLOCKED_STYLE_ID)?.remove();
+      unsubscribeOpenings();
     };
   }, []);
 
-  const blockedDateBookings: CalendarBooking[] = blockedDates.map((date) => ({
-    id: `blocked-${date}`,
-    start_time: createCalendarWallTime(date, 0, 0, 0),
-    end_time: createCalendarWallTime(date, 23, 59, 59),
+  const calendarBookings = (bookedBookings || []).map((booking) => ({
+    ...booking,
+    start_time: toRomeCalendarWallTime(booking.start_time),
+    end_time: toRomeCalendarWallTime(booking.end_time),
   }));
-  const calendarBookings = [
-    ...(bookedBookings || []).map((booking) => ({
-      ...booking,
-      start_time: toRomeCalendarWallTime(booking.start_time),
-      end_time: toRomeCalendarWallTime(booking.end_time),
-    })),
-    ...blockedDateBookings,
-  ];
   const calendarNow = toRomeCalendarWallTime(new Date());
   const calendarReady = bookingsSynced && blockedDatesSynced;
 
@@ -187,22 +198,32 @@ const Step2 = ({ handleBookingInfo }: Partial<BookingTypes>) => {
         ) : !calendarReady ? (
           <p tw="text-xl">Aggiornamento disponibilità in corso...</p>
         ) : (
-          <TimeCalendar
-            disableHistory
-            clickable
-            timeSlot={30}
-            openHours={openHours}
-            openingHoursByDate={openingHoursByDate}
-            onTimeClick={selectDateTime}
-            bookings={calendarBookings}
-            onDateFunction={goToTimeSelection}
-            initialDate={calendarNow}
-            currentDate={calendarNow}
-            selectedTime={{
-              start: "",
-              end: "",
-            }}
-          />
+          <>
+            {specialOpeningsError && (
+              <p tw="text-xl">
+                Non riesco a caricare le aperture straordinarie. Le date
+                ordinarie restano prenotabili.
+              </p>
+            )}
+            <TimeCalendar
+              disableHistory
+              clickable
+              timeSlot={bookingSlotMinutes}
+              openHours={openHours}
+              openingHoursByDate={openingHoursByDate}
+              isDateUnavailable={isDateUnavailable}
+              isTimeUnavailable={isTimeUnavailable}
+              onTimeClick={selectDateTime}
+              bookings={calendarBookings}
+              onDateFunction={goToTimeSelection}
+              initialDate={calendarNow}
+              currentDate={calendarNow}
+              selectedTime={{
+                start: "",
+                end: "",
+              }}
+            />
+          </>
         )}
       </article>
     </BookingFormContainer>

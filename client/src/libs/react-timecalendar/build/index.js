@@ -6130,21 +6130,34 @@ function Day(props) {
     onDateClick = props.onDateClick,
     date = props.date,
     day = props.day;
+  var isDisabled = classSet.indexOf("disabled") !== -1;
   return React__default["default"].createElement(
     "div",
     {
       className: "col cell" + classSet + " t" + day.replace(/\//g, "-"),
-      role: "gridcell3",
-      tabIndex: 0,
-      onClick: onDateClick,
-      onKeyDown: onDateClick,
+      role: "button",
+      "aria-disabled": isDisabled,
+      tabIndex: isDisabled ? -1 : 0,
+      onClick: isDisabled ? null : onDateClick,
+      onKeyDown: isDisabled
+        ? null
+        : function (event) {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              onDateClick();
+            }
+          },
     },
     React__default["default"].createElement(
       "span",
       { className: "number" },
       date
     ),
-    React__default["default"].createElement("span", { className: "bg" }, date)
+    React__default["default"].createElement(
+      "span",
+      { className: "bg", "aria-hidden": true },
+      date
+    )
   );
 }
 
@@ -6169,7 +6182,11 @@ var Weeks = /** @class */ (function (_super) {
       ? " today"
       : "";
     classSet += this.isDaySelected(day) ? " selected" : "";
-    classSet += this.isdayDisabled(day) ? " disabled" : "";
+    if (this.props.isDateUnavailable && this.props.isDateUnavailable(day)) {
+      classSet += " closed-date disabled";
+    } else {
+      classSet += this.isdayDisabled(day) ? " disabled" : "";
+    }
     return classSet;
   };
   Weeks.prototype.isDaySelected = function (day) {
@@ -7967,6 +7984,7 @@ var TimeSelect = /** @class */ (function (_super) {
       currentDate = _a.currentDate;
     if (
       (disableHistory && dateFns.isBefore(time, currentDate || new Date())) ||
+      (this.props.isTimeUnavailable && this.props.isTimeUnavailable(time)) ||
       !dateFns.isBefore(time, openHours[1])
     ) {
       return true;
@@ -8002,14 +8020,19 @@ var TimeSelect = /** @class */ (function (_super) {
       onTimeClick = _a.onTimeClick;
     var selectorClass = this.state.selectorClass;
     var openHours = this.generateOpenHours();
-    console.log(openHours);
+    var specialHours = getDateOpeningHours(
+      this.props.selectedDate,
+      this.props.openingHoursByDate
+    );
     var dateFormat = "HH-mm";
     var rows = [];
     var timeSlots = [];
     var timePick = openHours[0];
     // eslint-disable-next-line no-mixed-operators
     var difference =
-      (dateFns.differenceInMinutes(openHours[1], openHours[0]) / timeSlot) % 4;
+      specialHours
+        ? 0
+        : (dateFns.differenceInMinutes(openHours[1], openHours[0]) / timeSlot) % 4;
     while (timePick < dateFns.addMinutes(openHours[1], timeSlot * difference)) {
       var _loop_1 = function (i) {
         var classSet = "";
@@ -8040,7 +8063,7 @@ var TimeSelect = /** @class */ (function (_super) {
         timePick = dateFns.addMinutes(timePick, timeSlot);
       };
       var this_1 = this;
-      for (var i = 0; i < 4; i += 1) {
+      for (var i = 0; i < 4 && (!specialHours || timePick < openHours[1]); i += 1) {
         _loop_1(i);
       }
       rows.push(
@@ -8205,6 +8228,7 @@ var TimeCalendar = /** @class */ (function (_super) {
               timeSlot: timeSlot,
               openHours: openHours,
               openingHoursByDate: openingHoursByDate,
+              isTimeUnavailable: this.props.isTimeUnavailable,
               onTimeClick: onTimeClick,
               bookings: bookings,
               currentDate: currentDate,
@@ -8223,6 +8247,7 @@ var TimeCalendar = /** @class */ (function (_super) {
               timeSlot: timeSlot,
               clickable: clickable,
               openingHoursByDate: openingHoursByDate,
+              isDateUnavailable: this.props.isDateUnavailable,
               currentDate: currentDate,
               selectedTime: { start: startTime, end: endTime },
             })
