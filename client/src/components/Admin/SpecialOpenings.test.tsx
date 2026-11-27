@@ -1,34 +1,20 @@
-import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
-import {
-  signInOpeningAdmin,
-  subscribeToOpeningAdmin,
-} from "services/openingAdmin";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { saveSpecialOpening, subscribeToSpecialOpenings } from "services/specialOpenings";
 import { initialSpecialOpenings } from "utils/calendar";
 import SpecialOpenings from "./SpecialOpenings";
 
-jest.mock("services/openingAdmin", () => ({
-  signInOpeningAdmin: jest.fn(),
-  signOutOpeningAdmin: jest.fn(),
-  subscribeToOpeningAdmin: jest.fn(),
-}));
 jest.mock("services/specialOpenings", () => ({
   saveSpecialOpening: jest.fn(),
   subscribeToSpecialOpenings: jest.fn(),
   SpecialOpeningBlockedError: class extends Error {},
 }));
 
-const subscribeToAuth = subscribeToOpeningAdmin as jest.MockedFunction<typeof subscribeToOpeningAdmin>;
 const subscribeToOpenings = subscribeToSpecialOpenings as jest.MockedFunction<typeof subscribeToSpecialOpenings>;
 
 describe("admin special openings", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     jest.useFakeTimers().setSystemTime(new Date("2026-11-27T12:00:00Z"));
-    subscribeToAuth.mockImplementation((notify) => {
-      notify("allowed");
-      return jest.fn();
-    });
     subscribeToOpenings.mockImplementation((notify) => {
       notify(initialSpecialOpenings);
       return jest.fn();
@@ -38,22 +24,6 @@ describe("admin special openings", () => {
   afterEach(() => {
     jest.restoreAllMocks();
     jest.useRealTimers();
-  });
-
-  it("requires a signed-in and authorized account", async () => {
-    subscribeToAuth.mockImplementationOnce((notify) => {
-      notify("signed-out");
-      return jest.fn();
-    });
-    render(<SpecialOpenings blockedDates={[]} />);
-    expect(screen.queryByRole("button", { name: "Salva apertura" })).toBeNull();
-    fireEvent.change(screen.getByLabelText("Email"), { target: { value: "test@example.com" } });
-    fireEvent.change(screen.getByLabelText("Password"), { target: { value: "test-password" } });
-    fireEvent.click(screen.getByRole("button", { name: "Accedi" }));
-    await waitFor(() => expect(signInOpeningAdmin).toHaveBeenCalledWith("test@example.com", "test-password"));
-    act(() => subscribeToAuth.mock.calls[0][0]("denied"));
-    expect(screen.getByText("Questo account non è autorizzato.")).not.toBeNull();
-    expect(subscribeToOpenings).not.toHaveBeenCalled();
   });
 
   it("selects only normally closed, non-blocked dates and saves custom hours", async () => {

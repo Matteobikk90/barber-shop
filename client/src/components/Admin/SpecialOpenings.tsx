@@ -1,12 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { FormEvent, useEffect, useState } from "react";
 import {
-  OpeningAdminAccess,
-  signInOpeningAdmin,
-  signOutOpeningAdmin,
-  subscribeToOpeningAdmin,
-} from "services/openingAdmin";
-import {
   saveSpecialOpening,
   SpecialOpeningBlockedError,
   subscribeToSpecialOpenings,
@@ -46,7 +40,7 @@ const formatDate = (date: string) =>
 
 type Props = { blockedDates: string[] };
 
-const OpeningForm = ({ blockedDates }: Props) => {
+const SpecialOpenings = ({ blockedDates }: Props) => {
   const [openings, setOpenings] = useState<OpeningDates | null>(null);
   const [date, setDate] = useState("");
   const [hours, setHours] = useState<SpecialOpening>(defaultHours);
@@ -122,6 +116,7 @@ const OpeningForm = ({ blockedDates }: Props) => {
 
   return (
     <>
+      <h2 tw="text-[1.65rem] font-bold">Aperture straordinarie</h2>
       <form onSubmit={handleSave}>
         <fieldset
           disabled={saving || !openings}
@@ -203,72 +198,6 @@ const OpeningForm = ({ blockedDates }: Props) => {
         </ul>
       ))}
     </>
-  );
-};
-
-const SpecialOpenings = ({ blockedDates }: Props) => {
-  const [access, setAccess] = useState<OpeningAdminAccess>("checking");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState("");
-
-  useEffect(() => subscribeToOpeningAdmin(setAccess), []);
-
-  const handleSignIn = async (event: FormEvent) => {
-    event.preventDefault();
-    if (busy) return;
-    setBusy(true);
-    setError("");
-    try {
-      await signInOpeningAdmin(email.trim(), password);
-    } catch {
-      setError("Accesso non riuscito. Controlla email e password e riprova.");
-    } finally {
-      setPassword("");
-      setBusy(false);
-    }
-  };
-
-  const handleSignOut = async () => {
-    setError("");
-    try {
-      await signOutOpeningAdmin();
-    } catch {
-      setError("Non è stato possibile uscire. Riprova.");
-    }
-  };
-
-  return (
-    <div tw="flex flex-col gap-4">
-      <div tw="flex items-center justify-between gap-2">
-        <h2 tw="text-[1.65rem] font-bold">Aperture straordinarie</h2>
-        {["allowed", "denied", "unavailable"].includes(access) && (
-          <button type="button" css={buttonStyle} onClick={handleSignOut}>Esci</button>
-        )}
-      </div>
-      {access === "checking" && <p tw="text-[1.25rem]">Verifica accesso…</p>}
-      {access === "denied" && <p role="alert">Questo account non è autorizzato.</p>}
-      {access === "unavailable" && <p role="alert">Non riesco a verificare l’accesso. Riprova.</p>}
-      {access === "signed-out" && (
-        <form onSubmit={handleSignIn} tw="flex flex-col gap-3 max-w-[24rem]">
-          <p tw="text-[1.25rem]">Accedi per aggiungere o modificare le aperture.</p>
-          <label tw="flex flex-col gap-1 text-[1.2rem]">
-            Email
-            <input css={inputStyle} type="email" autoComplete="username" required value={email} onChange={(event) => setEmail(event.target.value)} />
-          </label>
-          <label tw="flex flex-col gap-1 text-[1.2rem]">
-            Password
-            <input css={inputStyle} type="password" autoComplete="current-password" required value={password} onChange={(event) => setPassword(event.target.value)} />
-          </label>
-          <button type="submit" css={buttonStyle} disabled={busy}>
-            {busy ? "Accesso…" : "Accedi"}
-          </button>
-        </form>
-      )}
-      {error && <p role="alert" tw="text-red text-[1.2rem]">{error}</p>}
-      {access === "allowed" && <OpeningForm blockedDates={blockedDates} />}
-    </div>
   );
 };
 

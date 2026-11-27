@@ -13,6 +13,7 @@ import { getBookings, subscribeToBookings } from "services/getBookings";
 import tw from "twin.macro";
 import { BookingTypes } from "types/booking.types";
 import { today } from "utils/utilities";
+import CalendarAccess from "./CalendarAccess";
 import SpecialOpenings from "./SpecialOpenings";
 import BlockDatePicker from "./BlockDatePicker";
 
@@ -237,9 +238,7 @@ const AdminPanel = () => {
   const isDeletingSelectedDate = deletingDate === selectedDate;
 
   return (
-    <section
-      id="calendar"
-      tw="flex flex-col gap-[1.75rem] p-[2rem 1.5rem] sm:px-0 max-w-[64rem] mx-auto">
+    <>
       {/* Tab bar */}
       <div tw="flex w-full bg-cream rounded-xl p-[0.3rem] gap-[0.3rem] border border-[#334a3b22]">
         <button
@@ -440,8 +439,14 @@ const AdminPanel = () => {
         </>
       )}
       {tab === "aperture" && <SpecialOpenings blockedDates={blockedDates} />}
-    </section>
+    </>
   );
 };
 
-export default AdminPanel;
+const Calendario = () => (
+  <CalendarAccess>
+    <AdminPanel />
+  </CalendarAccess>
+);
+
+export default Calendario;

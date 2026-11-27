@@ -1,22 +1,25 @@
 import { db } from "db/firebase";
 import {
+  browserLocalPersistence,
+  browserSessionPersistence,
   getAuth,
   onAuthStateChanged,
+  setPersistence,
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
 import { doc, onSnapshot } from "firebase/firestore";
 import type { Unsubscribe } from "firebase/firestore";
 
-export type OpeningAdminAccess =
+export type CalendarAdminAccess =
   | "checking"
   | "signed-out"
   | "allowed"
   | "denied"
   | "unavailable";
 
-export const subscribeToOpeningAdmin = (
-  onAccess: (access: OpeningAdminAccess) => void
+export const subscribeToCalendarAdmin = (
+  onAccess: (access: CalendarAdminAccess) => void
 ): Unsubscribe => {
   let unsubscribeRole: Unsubscribe | undefined;
   const unsubscribeAuth = onAuthStateChanged(getAuth(), (user) => {
@@ -29,6 +32,7 @@ export const subscribeToOpeningAdmin = (
     }
 
     onAccess("checking");
+    // Keep using the permissions already provisioned for special openings.
     unsubscribeRole = onSnapshot(
       doc(db, "openingAdmins", user.uid),
       { includeMetadataChanges: true },
@@ -49,7 +53,17 @@ export const subscribeToOpeningAdmin = (
   };
 };
 
-export const signInOpeningAdmin = (email: string, password: string) =>
-  signInWithEmailAndPassword(getAuth(), email, password);
+export const signInCalendarAdmin = async (
+  email: string,
+  password: string,
+  rememberDevice: boolean
+) => {
+  const auth = getAuth();
+  await setPersistence(
+    auth,
+    rememberDevice ? browserLocalPersistence : browserSessionPersistence
+  );
+  await signInWithEmailAndPassword(auth, email, password);
+};
 
-export const signOutOpeningAdmin = () => signOut(getAuth());
+export const signOutCalendarAdmin = () => signOut(getAuth());
